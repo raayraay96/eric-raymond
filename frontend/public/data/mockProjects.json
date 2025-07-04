@@ -1,0 +1,29 @@
+[
+  {
+    "id": "robotic-arm-control",
+    "title": "Real-time Robotic Arm Control",
+    "description": "Machine learning algorithms for real-time robotic imitation using ROS, PyTorch, and depth perception.",
+    "tags": ["ROS", "PyTorch", "Computer Vision", "ML"],
+    "iframeUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "sourceUrl": "https://github.com/eric-raymond/robotic-arm-ml",
+    "featured": true
+  },
+  {
+    "id": "nano-vision-ar",
+    "title": "Nano Vision AR",
+    "description": "Augmented reality application for interactive nanoscience education with accessibility features.",
+    "tags": ["Unity", "AR", "C#", "iOS"],
+    "iframeUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "sourceUrl": "https://github.com/eric-raymond/nano-vision",
+    "featured": true
+  },
+  {
+    "id": "style-transfer",
+    "title": "Neural Style Transfer",
+    "description": "Graph neural network model replicating Van Gogh's art style with improved accuracy.",
+    "tags": ["Deep Learning", "OpenCV", "Python"],
+    "iframeUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    "sourceUrl": "https://github.com/eric-raymond/style-transfer",
+    "featured": false
+  }
+]
