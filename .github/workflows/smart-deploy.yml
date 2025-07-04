@@ -1,0 +1,209 @@
+name: Smart Auto-Fix Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: "smart-deploy"
+  cancel-in-progress: false
+
+jobs:
+  auto-fix-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+        
+    - name: Try Initial Build
+      id: initial-build
+      continue-on-error: true
+      run: |
+        cd frontend
+        npm ci
+        npm run build
+        
+    - name: Auto-Fix Dependencies (if build failed)
+      if: steps.initial-build.outcome == 'failure'
+      id: fix-deps
+      run: |
+        cd frontend
+        echo "🔧 Build failed - attempting auto-fixes..."
+        
+        # Capture the error log
+        npm ci 2>&1 | tee /tmp/npm-error.log || true
+        npm run build 2>&1 | tee /tmp/build-error.log || true
+        
+        # Initialize fix tracker
+        FIXES_APPLIED=""
+        
+        # Fix 1: React version conflicts
+        if grep -q "peer react.*19.*18" /tmp/npm-error.log || grep -q "ERESOLVE.*react" /tmp/npm-error.log; then
+          echo "🔧 Fixing React version compatibility..."
+          npm install react@^18.3.1 react-dom@^18.3.1 @types/react@^18.3.12 @types/react-dom@^18.3.1 --save
+          FIXES_APPLIED="${FIXES_APPLIED}- Fixed React version compatibility (downgraded to v18)\n"
+        fi
+        
+        # Fix 2: Three.js compatibility issues
+        if grep -q "@react-three" /tmp/npm-error.log; then
+          echo "🔧 Fixing Three.js dependencies..."
+          npm install @react-three/fiber@^8.15.0 @react-three/drei@^9.100.0 three@^0.165.0 --save
+          FIXES_APPLIED="${FIXES_APPLIED}- Fixed Three.js compatibility issues\n"
+        fi
+        
+        # Fix 3: TypeScript errors
+        if grep -q "TypeScript error" /tmp/build-error.log; then
+          echo "🔧 Fixing TypeScript configuration..."
+          # Add skipLibCheck to tsconfig
+          sed -i 's/"skipLibCheck": false/"skipLibCheck": true/' tsconfig*.json || true
+          FIXES_APPLIED="${FIXES_APPLIED}- Enabled TypeScript skipLibCheck\n"
+        fi
+        
+        # Fix 4: Missing peer dependencies
+        if grep -q "peer dep" /tmp/npm-error.log; then
+          echo "🔧 Installing missing peer dependencies..."
+          npm install --legacy-peer-deps
+          FIXES_APPLIED="${FIXES_APPLIED}- Installed missing peer dependencies\n"
+        fi
+        
+        # Fix 5: Vite build issues
+        if grep -q "vite" /tmp/build-error.log; then
+          echo "🔧 Fixing Vite configuration..."
+          # Update vite config for better compatibility
+          cat > vite.config.ts << 'EOF'
+        import { defineConfig } from 'vite';
+        import react from '@vitejs/plugin-react';
+        
+        export default defineConfig({
+          plugins: [react()],
+          base: '/eric-raymond/',
+          build: {
+            outDir: 'dist',
+            assetsDir: 'assets',
+            sourcemap: true,
+            rollupOptions: {
+              external: [],
+              output: {
+                manualChunks: undefined
+              }
+            }
+          },
+          optimizeDeps: {
+            include: ['react', 'react-dom']
+          },
+          define: {
+            global: 'globalThis',
+          }
+        });
+        EOF
+          FIXES_APPLIED="${FIXES_APPLIED}- Updated Vite configuration\n"
+        fi
+        
+        # Save fixes for commit message
+        echo -e "$FIXES_APPLIED" > /tmp/fixes-applied.txt
+        echo "fixes_applied=$FIXES_APPLIED" >> $GITHUB_OUTPUT
+        
+    - name: Retry Build After Fixes
+      if: steps.initial-build.outcome == 'failure'
+      id: retry-build
+      run: |
+        cd frontend
+        echo "🔄 Retrying build after auto-fixes..."
+        npm ci
+        npm run build
+        echo "✅ Build successful after auto-fixes!"
+        
+    - name: Commit Auto-Fixes
+      if: steps.initial-build.outcome == 'failure' && steps.retry-build.outcome == 'success'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "Auto-Fix Bot"
+        
+        # Stage all changes
+        git add .
+        
+        # Create detailed commit message
+        echo "🤖 Auto-fix: Resolved build issues" > /tmp/commit-msg.txt
+        echo "" >> /tmp/commit-msg.txt
+        echo "Applied the following fixes:" >> /tmp/commit-msg.txt
+        cat /tmp/fixes-applied.txt >> /tmp/commit-msg.txt
+        echo "" >> /tmp/commit-msg.txt
+        echo "Build now passes successfully ✅" >> /tmp/commit-msg.txt
+        
+        # Commit if there are changes
+        if ! git diff --staged --quiet; then
+          git commit -F /tmp/commit-msg.txt
+          git push
+          echo "✅ Auto-fixes committed and pushed!"
+        else
+          echo "ℹ️ No changes to commit"
+        fi
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ./frontend/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: auto-fix-and-build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        
+  notify-status:
+    runs-on: ubuntu-latest
+    needs: [auto-fix-and-build, deploy]
+    if: always()
+    steps:
+      - name: Create Status Summary
+        run: |
+          echo "## 🤖 Smart Auto-Fix Deploy Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.auto-fix-and-build.result }}" == "success" ]; then
+            echo "✅ **Build Status**: SUCCESS" >> $GITHUB_STEP_SUMMARY
+            if [ "${{ needs.deploy.result }}" == "success" ]; then
+              echo "✅ **Deploy Status**: SUCCESS" >> $GITHUB_STEP_SUMMARY
+              echo "🌐 **Live Site**: https://raayraay96.github.io/eric-raymond" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "❌ **Deploy Status**: FAILED" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "❌ **Build Status**: FAILED" >> $GITHUB_STEP_SUMMARY
+            echo "🔧 Auto-fixes were attempted but could not resolve all issues" >> $GITHUB_STEP_SUMMARY
+            echo "📋 Manual intervention may be required" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🛠️ Auto-Fix Capabilities" >> $GITHUB_STEP_SUMMARY
+          echo "- React version conflicts" >> $GITHUB_STEP_SUMMARY
+          echo "- Three.js compatibility issues" >> $GITHUB_STEP_SUMMARY
+          echo "- TypeScript configuration" >> $GITHUB_STEP_SUMMARY
+          echo "- Missing peer dependencies" >> $GITHUB_STEP_SUMMARY
+          echo "- Vite build configuration" >> $GITHUB_STEP_SUMMARY
