@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import '../styles/Home.css';
 import Navbar from '../components/Navbar';
 import RoboticArmScene from '../components/RoboticArmScene';
 import { useMousePosition } from '../hooks/useMousePosition';
