@@ -1,0 +1,64 @@
+/* Optional custom scroll styling */
+.timeline-container::-webkit-scrollbar {
+  height: 6px;
+}
+.timeline-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+.timeline-wrapper {
+  @apply relative px-6 py-10;
+}
+
+.timeline-line {
+  @apply border-l-2 border-zinc-700;
+}
+
+.timeline-entry {
+  @apply mb-10 ml-4;
+}
+
+.timeline-header {
+  @apply flex items-center gap-2;
+}
+
+.timeline-date {
+  @apply text-sm text-gray-400;
+}
+
+.timeline-title {
+  @apply mt-2 text-xl font-semibold text-white;
+}
+
+.timeline-description ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.timeline-description p {
+  margin-bottom: 0.5rem;
+}
+.timeline-description strong {
+  font-weight: 600;
+  color: white;
+}
+
+.timeline-category {
+  @apply mt-1 inline-block text-xs font-medium uppercase tracking-wide text-gray-400;
+}
+
+.timeline-dot {
+  @apply h-4 w-4 rounded-full border-2 border-white;
+}
+
+.timeline-dot.work {
+  @apply bg-blue-500;
+}
+
+.timeline-dot.school {
+  @apply bg-yellow-500;
+}
+
+.timeline-dot.personal {
+  @apply bg-green-500;
+}

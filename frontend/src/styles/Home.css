@@ -1,0 +1,68 @@
+/* Main layout */
+.home-wrapper {
+  @apply mx-auto flex max-w-6xl flex-col gap-20;
+}
+
+/* Navbar */
+.navbar {
+  @apply fixed top-0 z-50 flex w-full items-center justify-between bg-black px-10 py-6 text-white shadow-md;
+}
+
+.navbar-logo {
+  @apply text-2xl font-bold;
+}
+
+.navbar-links {
+  @apply flex gap-6 text-sm uppercase;
+}
+
+.navbar-link {
+  @apply text-white transition-colors duration-200 hover:text-blue-400;
+}
+
+.navbar-socials {
+  @apply flex gap-4 text-lg;
+}
+
+.navbar-icon {
+  @apply hover:text-blue-500;
+}
+
+/* Hero section */
+.home-hero {
+  @apply relative flex h-screen w-full flex-col items-center justify-between overflow-hidden px-4 py-8 md:flex-row;
+}
+
+.hero-image {
+  @apply absolute bottom-0 right-0 z-10 w-[250px] object-cover md:w-[700px];
+}
+
+.text-group {
+  @apply mb-80 mr-[500px] flex flex-col items-end gap-4 text-right;
+}
+
+.hero-title {
+  @apply text-5xl font-bold;
+}
+
+.hero-description {
+  @apply max-w-md text-gray-600;
+}
+
+/* Projects */
+.github-section {
+  @apply rounded-xl bg-gray-800 p-6;
+}
+
+.github-title {
+  @apply mb-2 text-2xl font-semibold;
+}
+
+.github-placeholder {
+  @apply text-gray-400;
+}
+
+/* Footer */
+.home-footer {
+  @apply mt-8 border-t pt-4 text-center text-sm text-gray-500;
+}

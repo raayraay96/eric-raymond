@@ -1,0 +1,11 @@
+[
+  {
+    "id": "weather-app",
+    "title": "Weather Visualizer",
+    "description": "A D3-based weather pattern visualizer.",
+    "tags": ["d3", "weather", "canvas"],
+    "iframeUrl": "https://cdn.yoursite.dev/weather-app/index.html",
+    "sourceUrl": "https://github.com/yourname/weather-app",
+    "featured": true
+  }
+]

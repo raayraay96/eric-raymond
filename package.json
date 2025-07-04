@@ -1,0 +1,32 @@
+{
+  "name": "personalwebsite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:frontend": "npm --prefix ./frontend run dev",
+    "dev:backend": "npm --prefix ./backend/project run dev",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.13"
+  },
+  "lint-staged": {
+    "frontend/src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --plugin=prettier-plugin-tailwindcss --write",
+    "backend/project/src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --plugin=prettier-plugin-tailwindcss --write"
+  },
+  "dependencies": {
+    "csv-parser": "^3.2.0",
+    "framer-motion": "^12.23.0",
+    "github-contributions-react": "^1.0.15",
+    "react-markdown": "^10.1.0"
+  }
+}

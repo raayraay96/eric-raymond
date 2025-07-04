@@ -1,0 +1,25 @@
+category,skill,level
+Programming Languages,Python,8
+Programming Languages,Java,7
+Programming Languages,JavaScript,6
+Programming Languages,C++,6
+Programming Languages,C#,6
+Programming Languages,MATLAB,5
+Programming Languages,R,5
+AI / Machine Learning,PyTorch,8
+AI / Machine Learning,OpenCV,7
+AI / Machine Learning,Scikit-learn,7
+AI / Machine Learning,Computer Vision,8
+AI / Machine Learning,Natural Language Processing,6
+AI / Machine Learning,Neural Networks,7
+AI / Machine Learning,Supervised Learning,7
+Frameworks & Technologies,Robot Operating System (ROS),8
+Frameworks & Technologies,Unity,7
+Frameworks & Technologies,ARKit,7
+Frameworks & Technologies,Google Cloud Platform (GCP),6
+Frameworks & Technologies,Docker,5
+Developer Tools,Git,7
+Developer Tools,Xcode,6
+Developer Tools,AutoCAD,5
+Developer Tools,Shapr3D,6
+Developer Tools,Visual Studio,6

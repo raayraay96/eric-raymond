@@ -1,0 +1,93 @@
+[
+  {
+    "category": "Work",
+    "date": "2023-05-15",
+    "title": "Workforce Integrations – Bridgestone of Americas",
+    "description": "Collaborated with the Bridgestone of Americas team to develop a reporting pipeline that supported the transition between HRIS platforms. Led efforts to standardize and clean incoming pay reports from Workforce, ensuring data consistency, correctness, and compatibility with downstream payroll processing. This work streamlined payroll operations and improved overall data integrity during a critical enterprise system migration."
+  },
+  {
+    "category": "Work",
+    "date": "2023-08-15",
+    "title": "Enterprise IoT Scanner",
+    "description": "Developed advanced fingerprinting techniques for identifying IoT devices based on network traffic analysis. I worked extensively with a wide range of network protocols—such as WSD, HTTP, Telnet, and proprietary device protocols—to extract meaningful device metadata from raw scan data. My primary focus was on analyzing individual network transactions and constructing reliable device profiles capable of identifying key attributes like device model, MAC address, serial number, and firmware version.\nTo support this, I collaborated closely with the team behind our patented, high-performance network scanner—recognized as the fastest on the market—to process high-throughput scan data at scale. I engineered heuristics and protocol-specific parsers to enhance fingerprinting accuracy across a diverse range of IoT device classes, including printers, IP cameras, industrial controllers, and medical equipment. This work required both low-level packet analysis and high-level behavioral pattern recognition to reliably distinguish between devices, even within the same vendor ecosystem.\nThe results of my contributions significantly improved the platform’s ability to build a real-time, comprehensive inventory of unmanaged IoT devices and assess their risk posture across enterprise environments."
+  },
+  {
+    "category": "Work",
+    "date": "2023-09-30",
+    "title": "Custom VS Code Application",
+    "description": "Built a custom Node.js-based VS Code application to unify and streamline internal fingerprinting workflows. When I joined the organization, I identified that the tools used for IoT fingerprint creation and analysis were fragmented across multiple scripts and manual processes. To address this, I developed a cohesive environment using Node.js that integrated key utilities into a single, developer-friendly workspace within VS Code.\nNotable tools and features I implemented:\nCross-vendor fingerprint validation linter: Identifies and flags fingerprints that incorrectly merge traits from different vendors, helping ensure accurate and clean device classification.\nLevenshtein-based network scan merger: Groups and merges similar network scans based on string distance to reduce redundancy and surface common patterns across noisy datasets.\nAutomated rainbow dictionary attack utility: Uses a database of known fingerprints to automatically compare against unknown scans, generating candidate fingerprints by matching protocol traits, values, and metadata formats.\nThis centralized toolset significantly reduced manual fingerprinting effort, improved consistency, and enabled faster onboarding of new devices into the platform."
+  },
+  {
+    "category": "Personal",
+    "date": "2023-09-30",
+    "title": "Phosphorus Run Club",
+    "description": "Founded a workplace run/walk club to promote physical health, team bonding, and personal accountability. The club encouraged employees to stay active by setting a monthly goal of 20 miles, with optional group runs and a playful \"social tax\" for those who didn’t meet the target."
+  },
+  {
+    "category": "Work",
+    "date": "2023-09-30",
+    "title": "Reverse Engineered Device APIs",
+    "description": "Used tools like Wireshark and browser developer tools to capture and analyze network traffic between web applications and IoT devices. I reverse engineered the structure and behavior of these packets to replicate the exact communication expected by the devices. In line with the company’s philosophy—“talking to your devices the way they expect to be talked to”—we deliberately avoided high-level automation tools like Puppeteer, focusing instead on replicating raw HTTP requests, encryption mechanisms, authentication headers, and protocol-specific payloads.\nThis work enabled us to programmatically interact with thousands of devices at scale through fully mocked APIs. As a result, we were able to automate critical operations such as device login, metadata extraction, configuration backups, password rotation, settings adjustments, and firmware updates—all with a single click."
+  },
+  {
+    "category": "Work",
+    "date": "2024-01-30",
+    "title": "Architected a Solution for Cloud-Managed Devices",
+    "description": "While most IoT devices expose local APIs or communication protocols, a growing number—particularly in the enterprise space—are managed exclusively through cloud infrastructure. These devices, such as consumer-grade Nest cameras or enterprise-grade Cisco routers, often lock down local interfaces, exposing only minimal ports for cloud communication.\nTo address this challenge, I architected a solution that extended our existing device composition model to support cloud-managed devices. This involved designing new abstracted definitions—such as `login{}`, `mac{}`, `update{}`—that allowed us to track and interact with cloud-bound devices using a consistent interface. This work enabled us to maintain visibility and control over otherwise opaque devices while integrating them seamlessly into our platform’s broader device management capabilities."
+  },
+  {
+    "category": "Work",
+    "date": "2024-04-01",
+    "title": "Architected and Implemented Scalable Coding Practices",
+    "description": "During a company hack week, I identified a recurring, manual, and error-prone pattern used to determine **IoT device types** and their associated icons. Following the **DRY** (*Don't Repeat Yourself*) principle, I refactored this logic into a **centralized, reusable module**.\n**Key outcomes:**\n• Touched **250+ directories** across the codebase\n• Eliminated redundant logic and simplified future maintenance\n• Reduced pull request corrections and onboarding confusion\n• Improved **code consistency, developer velocity**, and long-term maintainability"
+  },
+  {
+    "category": "Personal",
+    "date": "2024-08-01",
+    "title": "Enrolled in Master’s Program",
+    "description": "Enrolled in a Master’s degree program to deepen my knowledge of advanced computer science and engineering concepts. This was a personal commitment to continuous growth and a way to level up my technical skillset in areas such as systems design, AI, and software architecture to become a more effective and well-rounded engineer."
+  },
+  {
+    "category": "Work",
+    "date": "2024-09-30",
+    "title": "Designed and Built Data Processing & Fingerprinting Platform",
+    "description": "In a fast-paced startup environment with limited resources but high expectations, I architected a scalable data processing pipeline to streamline customer onboarding and fingerprint generation. Collaborating with the Chief Architect, I designed and implemented a lightweight sales portal that ingested raw customer data, automated preprocessing steps previously done manually, and generated pre-filled engineering Jira tickets for product prioritization.\nThe pipeline stored processed data in a PostgreSQL database, which fed into a custom-built engineering platform. This platform drastically reduced the technical barrier to fingerprinting IoT devices by enabling non-engineers to contribute meaningfully to the process. It included advanced tooling such as:\n• **Smart sorting and clustering** to group similar scans\n• **Automated fingerprinting hints** using traits like favicon hashes, unique color codes, and function names\n• A **\\\"Write My Regex\\\" feature**, powered by the ChatGPT API, which generated styled regular expressions from backend-crafted prompts to accelerate fingerprint creation.\nThis system enabled scalable, repeatable, and democratized fingerprinting—freeing up engineering time and improving overall operational efficiency."
+  },
+  {
+    "category": "School",
+    "date": "2025-01-02",
+    "title": "Credit Card Default Prediction ML Model",
+    "description": "Designed and implemented a machine learning model to predict credit card default likelihood. Built using Jupyter Notebooks, the project includes:\n  • Comprehensive evaluation using confusion matrix metrics (accuracy, precision, recall, F1 score), ROC curve, and cost-based business metrics.  \n• Customized cost modeling that accounts for false positives ($200 each) and false negatives ($5,000), used to calculate expected loss per customer and overall ROI.  \n• Visualizations including heatmaps, ROC curves, and cost-benefit analysis graphs for clear stakeholder communication.  \n• Estimated outcomes suggesting 92% accuracy, ~70.6% precision, 80% recall, and an estimated ROI of 400%, highlighting the model’s potential business impact.${' '}"
+  },
+  {
+    "category": "School",
+    "date": "2025-04-19",
+    "title": "Digital Forensics Investigations – Vanderbilt CS 8395",
+    "description": "Completed a comprehensive series of forensic investigations as part of Vanderbilt University's graduate-level CS 8395 course on Digital Forensics. Across multiple labs, I performed hands-on analysis using industry-standard tools such as OSForensics, FTK Imager, and Wireshark. Key focus areas included:\n• **Memory Forensics**: Captured and analyzed volatile memory to extract running processes, callbacks, SSDT entries, and suspicious activity.  \n• **Network Forensics**: Used Wireshark to capture, dissect, and filter live network traffic, reconstruct TCP sessions, and trace endpoints via MAC/IP resolution.  \n• **Disk Imaging & Indexing**: Created live forensic images and verified integrity via SHA-1/SHA-256 hashing; indexed file systems to support keyword search and structured analysis.  \n• **System Artifact Recovery**: Retrieved browser history, registry activity, event logs, USB device history, and recent documents to reconstruct user behavior.  \n• **Preservation & Chain of Custody**: Maintained detailed documentation for data integrity, acquisition conditions, and system isolation across all exercises.\nThese reports demonstrate practical knowledge in digital forensics workflows, evidence preservation, investigative tooling, and real-world application of forensic methodology in both live and static environments."
+  },
+  {
+    "category": "Personal",
+    "date": "2025-05-02",
+    "title": "Checkout App – QR Code Auth Platform",
+    "description": "Built a full-stack web application called **Checkout** that allows users to register, authenticate, and generate dynamic QR codes tied to their accounts. Designed for versatility, the QR codes can be used for payments, identity, or data sharing.\nKey features include: \n • **User Authentication**: Secure sign-up and sign-in with JWT-based token handling  \n• **Dynamic QR Code Generation**: Auto-refreshing codes generated via QRCode.react on the frontend  \n• **Responsive UI**: Mobile-friendly React application styled for cross-device support  \n• **Full-Stack Architecture**: React frontend, Golang backend, and AWS-powered storage (RDS/DynamoDB)  \n• **API-first Design**: REST endpoints for signup, login, and QR retrieval with bearer token support\nThis project demonstrates experience with multi-language stacks (React + Go), AWS cloud integration, and secure, scalable app design."
+  },
+  {
+    "category": "School",
+    "date": "2025-06-02",
+    "title": "AI World: Conversational Question‑Answering System",
+    "description": "Developed \"AI World,\" a conversational Q&A system that leverages vector embeddings and language models for context-aware responses. The project includes:\n\n• **Data ingestion pipeline**: Reads text files, chunks documents, and converts them into vector embeddings stored in a vector database (e.g. Chroma).  \n• **Query interface**: Accepts user questions, retrieves relevant embeddings, and constructs prompt contexts.  \n• **AI response generation**: Uses OpenAI’s GPT‑3.5 to generate accurate and contextually informed answers.  \n• **Interactive REPL**: CLI interface providing real-time interaction, with configurable parameters like chain type, top‑k retrieval, and temperature.  \n• **Performance monitoring**: Logs response latencies, token usage, and retrieval accuracy to help tune model performance and scalability."
+  },
+  {
+    "category": "School",
+    "date": "2025-06-30",
+    "title": "Klondike Solitaire – Interactive Web Game",
+    "description": "Built a full-featured Klondike Solitaire game as a React single-page application (SPA) for Vanderbilt's CS 5288 course on Web-Based System Architecture. The game includes drag-and-drop interactivity, win condition detection, and a dynamic client-server architecture.\n\nKey features include:\n• **Card Shuffle & Game State Logic**: Implemented server-side game logic in Node.js for shuffling cards and generating a valid initial game state according to official Klondike rules.  \n• **Drag-and-Drop UI**: Built an interactive frontend using React and React DnD to support intuitive card movement, including flip and stack logic.  \n• **Persistent Auth & Profile Routing**: Developed login, logout, and registration flows with persistent login state and protected routing using React Router v6.  \n• **Gravatar Integration**: Displayed user profile icons and conditionally rendered UI based on auth status.  \n• **SPA Architecture & Build**: Compiled and deployed the app using a custom Webpack config with modular routing, state management via hooks, and client/server separation.\n\nThis project demonstrates hands-on experience with modern frontend development, backend game logic, and full-stack SPA architecture."
+  },
+
+  {
+    "category": "Personal",
+    "date": "2025-07-02",
+    "title": "Over-Engineered Developer Portfolio",
+    "description": "Built a full-stack developer portfolio to showcase both technical ability and real-world engineering practices. While the site functions as a resume, it is intentionally over-engineered to reflect production-grade architecture and workflows.\n\nKey features include:\n• Frontend: React + TypeScript with Vite, Tailwind CSS, and Axios  \n• Backend: Node.js + Express (TypeScript) with a mock JSON REST API  \n• Tooling: ESLint, Prettier, Husky, lint-staged, and modular service layers  \n• Developer Experience: Concurrent dev servers, fully type-safe and linted stack  \n• Infrastructure readiness: AWS S3, EC2, Route 53, and GitHub Actions pipeline planned\n\nThe site is responsive, modular (Home, About, Portfolio), and structured to scale with future additions like a contact form, dark mode, DB integration, and CI/CD. This project reflects my backend focus, full-stack fluency, and ability to architect systems for growth and maintainability."
+  }
+]

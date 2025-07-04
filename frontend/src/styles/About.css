@@ -1,0 +1,106 @@
+.about-page {
+  @apply min-h-screen bg-white px-6 py-20 text-gray-900 dark:bg-zinc-900 dark:text-white;
+}
+
+.about-container {
+  @apply mx-auto flex max-w-4xl flex-col gap-10;
+}
+
+.about-title {
+  @apply text-center text-4xl font-bold md:text-5xl;
+}
+.contact-line {
+  @apply mb-0 text-center;
+}
+
+.linkedin-link {
+  @apply text-blue-400 hover:underline;
+}
+
+.about-bio {
+  @apply max-w-3xl pl-6 text-left text-base leading-relaxed text-gray-300;
+}
+
+.about-section {
+  @apply mt-8;
+}
+
+.section-title {
+  @apply mb-4 text-2xl font-semibold;
+}
+
+.fun-facts-list {
+  @apply grid list-disc grid-cols-2 gap-4 pl-6 sm:grid-cols-3;
+}
+.experience-section {
+  @apply mt-10 space-y-10;
+}
+
+.job-entry {
+  @apply border-l-4 border-blue-500 pl-6;
+}
+
+.job-title {
+  @apply text-lg font-bold text-white;
+}
+
+.job-meta {
+  @apply mb-2 mt-1 text-sm text-gray-400;
+}
+
+.job-list {
+  @apply list-disc space-y-1 pl-6 text-base leading-relaxed text-gray-300;
+}
+
+.skills-list {
+  @apply flex flex-col gap-6;
+}
+.skill-entry {
+  @apply border-l-4 border-blue-500 pl-4;
+}
+.skill-category {
+  @apply mb-1 text-base font-semibold text-white;
+}
+.nested-skill-list {
+  @apply list-disc space-y-1 pl-6 text-sm text-gray-300;
+}
+
+.education-list {
+  @apply flex flex-col gap-6;
+}
+
+.education-entry {
+  @apply border-l-4 border-blue-500 pl-4;
+}
+
+.degree {
+  @apply text-lg font-semibold text-white;
+}
+
+.school {
+  @apply mt-1 text-sm text-gray-400;
+}
+
+.date {
+  @apply italic text-gray-500;
+}
+
+.community-list {
+  @apply flex list-disc flex-col gap-2 pl-6;
+}
+
+.community-entry {
+  @apply text-base leading-relaxed text-gray-300;
+}
+
+.community-entry:hover {
+  @apply text-white;
+}
+.community-entry {
+  @apply border-l-4 border-blue-500 pl-4 text-base leading-relaxed text-gray-300;
+}
+.about-bio {
+  @apply max-w-3xl text-left text-base leading-relaxed text-gray-300;
+  margin-left: 0;
+  padding-left: 1rem;
+}
