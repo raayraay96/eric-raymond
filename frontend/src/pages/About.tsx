@@ -1,9 +1,9 @@
 // src/pages/About.tsx
 import '../styles/About.css';
 import Navbar from '../components/Navbar';
-import Skills from '../components/Skills';
-import Jobs from '../components/Jobs';
-import Education from '../components/education';
+import Skills from '../components/skills';
+import Jobs from '../components/jobs';
+import Education from '../components/Education';
 import Leadership from '../components/Leadership';
 
 const About = () => {
@@ -13,11 +13,11 @@ const About = () => {
 
       <section className="about-page overflow-y-scroll">
         <div className="about-container">
-          <h1 className="about-title">Christopher M. Raymond</h1>
+          <h1 className="about-title">Eric Raymond</h1>
           <p className="contact-line">
-            📍 Nashville, TN | 📞 (915) 760-0904 | 📧 christopher.m.raymond2@gmail.com | 🌐{' '}
+            📍 Indianapolis, IN | 📞 (317) 835-5211 | 📧 erraymon@iu.edu | 🌐{' '}
             <a
-              href="https://www.linkedin.com/in/cmraymon/"
+              href="https://linkedin.com/in/eric–raymond"
               target="_blank"
               rel="noopener noreferrer"
               className="linkedin-link"
@@ -30,12 +30,10 @@ const About = () => {
           <div className="about-section">
             <h2 className="section-title">Summary</h2>
             <p className="about-bio">
-              Multidisciplinary software engineer with a robust background in cybersecurity,
-              full-stack development, and system integrations. Skilled in Golang, PostgreSQL,
-              JavaScript, and CI/CD. I’m driven by a deep passion for elegant problem-solving,
-              crafting scalable systems, and mentoring teams. When not coding, I’m experimenting
-              with the science of espresso and mixology—two pursuits that fuel both my creativity
-              and attention to detail.
+              AI/ML Developer specializing in robotics, computer vision, and human-robot interaction. 
+              Currently developing machine learning control algorithms for real-time robotic imitation 
+              at the University of Wyoming. Experienced in ROS, PyTorch, OpenCV, and full-stack development. 
+              Passionate about creating intelligent systems that bridge the gap between humans and machines.
             </p>
           </div>
 
@@ -51,7 +49,7 @@ const About = () => {
             <Education />
             <div className="education-entry mt-4">
               <h3 className="degree">Honors & Awards</h3>
-              <p className="school">Butler Grant Academic Scholarship, Outstanding Tutor Award</p>
+              <p className="school">Dean's List, Academic Scholarship, Robotics Competition Awards</p>
             </div>
           </div>
 
@@ -62,12 +60,11 @@ const About = () => {
 
           {/* Passions */}
           <div className="about-section">
-            <h2 className="section-title">Passions & Creative Interests</h2>
+            <h2 className="section-title">Research & Innovation</h2>
             <p className="about-bio">
-              Outside of tech, I’m a devoted craftsman—whether it’s dialing in the perfect espresso
-              shot or balancing the chemistry of a signature cocktail. I find joy in precision,
-              experimentation, and aesthetics—qualities that influence both my engineering and
-              personal life.
+              My work focuses on advancing the field of human-robot interaction through machine learning. 
+              I'm particularly interested in developing systems that can understand and adapt to human behavior 
+              in real-time, making robotics more accessible and intuitive for everyday use.
             </p>
           </div>
         </div>
