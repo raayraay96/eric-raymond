@@ -2,7 +2,7 @@
 
 Welcome! This is my **developer portfolio site** featuring an **interactive 3D robotic arm** that showcases my expertise in robotics, ROS, and human-robot interaction systems.
 
-> **🎯 Live Demo:** [View the interactive 3D robotic arm in action!](https://raayraay96.github.io/eric-raymond)
+> **🎯 Live Demo:** [View the interactive 3D robotic arm in action!](https://raayraay96.github.io/eric-raymond/)
 
 ---
 
@@ -26,7 +26,7 @@ Welcome! This is my **developer portfolio site** featuring an **interactive 3D r
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 19** + **TypeScript** for robust component architecture
+- **React 18** + **TypeScript** for robust component architecture
 - **Vite** for lightning-fast development and building
 - **Three.js + React Three Fiber** for 3D graphics and robotics simulation
 - **Tailwind CSS** for responsive, atomic styling
@@ -67,7 +67,7 @@ This portfolio demonstrates practical skills from my research:
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 20+ 
 - npm or yarn
 
 ### Installation
@@ -177,7 +177,7 @@ This portfolio showcases:
 **Eric Raymond**  
 📧 erraymon@iu.edu  
 📱 (317) 835-5211  
-🌐 [Portfolio Site](https://raayraay96.github.io/eric-raymond)  
+🌐 [Portfolio Site](https://raayraay96.github.io/eric-raymond/)  
 💼 [LinkedIn](https://linkedin.com/in/eric–raymond)
 
 ---
@@ -188,4 +188,4 @@ MIT © 2025 Eric Raymond
 
 ---
 
-**⚡ Ready to see robotics in action? [Visit the live site!](https://raayraay96.github.io/eric-raymond)**
+**⚡ Ready to see robotics in action? [Visit the live site!](https://raayraay96.github.io/eric-raymond/)**
