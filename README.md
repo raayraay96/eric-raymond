@@ -1,93 +1,191 @@
-# 🌐 Eric Raymond – AI/ML Developer Portfolio
+# 🤖 Eric Raymond – AI/ML Developer Portfolio
 
-Welcome! This is my **developer portfolio site**, built not just to show off my work—but to **demonstrate how I engineer**. I’ve taken a simple project (a personal website) and layered in real-world practices you'd expect in a production-grade system.
+Welcome! This is my **developer portfolio site** featuring an **interactive 3D robotic arm** that showcases my expertise in robotics, ROS, and human-robot interaction systems.
 
-> Think of this site as an open-source resume _and_ a code sample.
-
----
-
-## 🎯 Purpose
-
-This project showcases my ability to:
-
-- Build and scale full-stack applications
-- Write clean, maintainable TypeScript (both frontend and backend)
-- Set up efficient tooling and developer workflows
-- Architect systems with growth in mind
-- Work across the entire stack: from UI to API, infra to automation
+> **🎯 Live Demo:** [View the interactive 3D robotic arm in action!](https://raayraay96.github.io/eric-raymond)
 
 ---
 
-## 🛠️ Tech Stack Overview
+## ✨ Key Features
+
+### 🦾 **Interactive 3D Robotic Arm**
+- **Real-time cursor tracking** with smooth inverse kinematics
+- **6-DOF articulated arm** with realistic joint movements  
+- **Professional lighting & shadows** using Three.js
+- **Responsive design** that works on all devices
+- **Demonstrates real-world robotics concepts** from my research
+
+### 💼 **Professional Portfolio**
+- Clean, modern React + TypeScript architecture
+- Responsive design with Tailwind CSS
+- Automated GitHub Pages deployment
+- Performance-optimized 3D rendering
+
+---
+
+## 🛠️ Tech Stack
 
 ### Frontend
+- **React 19** + **TypeScript** for robust component architecture
+- **Vite** for lightning-fast development and building
+- **Three.js + React Three Fiber** for 3D graphics and robotics simulation
+- **Tailwind CSS** for responsive, atomic styling
+- **Framer Motion** for smooth animations and transitions
 
-- **React + TypeScript**
-- **Vite** (fast builds + hot reloading)
-- **Tailwind CSS** for atomic, responsive styling
-- **FontAwesome** for icons
-- **Axios** for API communication
+### 3D Graphics & Robotics
+- **@react-three/fiber** - React renderer for Three.js
+- **@react-three/drei** - Useful helpers and abstractions
+- **Custom inverse kinematics** implementation
+- **Real-time mouse tracking** and coordinate transformation
+- **Smooth interpolated joint movements** with realistic physics
 
-### Backend
-
-- **Node.js + Express (TypeScript)**
-- **Mock JSON-based REST API**
-- Ready for future swap-in with a real DB (e.g., Postgres or DynamoDB)
-
-### Tooling / DX
-
-- **Prettier + ESLint** for consistent code style
-- **Husky + lint-staged** for pre-commit formatting
-- **Modular, testable structure** using service layers
-- **Concurrent dev servers** for full-stack iteration
-
----
-
-## 🧭 Features
-
-- 🚀 Responsive UI with Tailwind
-- 🧩 Modular pages: `Home`, `About`, `Portfolio`
-- 🔌 Connected to a mock API backend
-- ✅ Type-safe, linted, and formatted across the stack
-- 🔁 Git hooks to maintain consistency pre-commit
-- 🧪 Ready for future integration testing
+### Deployment & DevOps
+- **GitHub Actions** for automated CI/CD
+- **GitHub Pages** for free, fast hosting
+- **ESLint + Prettier** for code quality
+- **TypeScript** for type safety across the stack
 
 ---
 
-## 👨‍💼 For Recruiters & Hiring Managers
+## 🎯 Robotics Showcase
 
-- 🔹 This project is intentionally **over-engineered** to showcase production-level thinking.
-- 🔹 My **focus is backend and infrastructure**, but I enjoy working across the full stack.
-- 🔹 I’ve worked in **fast-paced startup environments** and thrive in cross-functional teams.
-- 🔹 I’m comfortable with **DevOps**, **scalable system design**, and **low-level networking (IoT)**.
+This portfolio demonstrates practical skills from my research:
 
-If you're evaluating engineering candidates for roles requiring **ownership**, **cross-discipline skills**, and **real-world pragmatism**—this project is designed to show what I bring to the table.
+### 🎓 **University of Wyoming REU** 
+- Developed ML control algorithms for real-time robotic imitation
+- Enhanced system responsiveness by 40%
+- Integrated MonoDepth2 for depth perception
 
----
-
-## 📦 Future Enhancements
-
-| Feature                                 | Status         |
-| --------------------------------------- | -------------- |
-| Portfolio projects from API             | ✅ Done        |
-| Contact form with validation            | ⏳ In Progress |
-| Dark mode toggle                        | ⏳ Planned     |
-| Database integration                    | ⏳ Planned     |
-| Deployment to AWS (EC2 + S3 + Route 53) | ⏳ Planned     |
-| CI/CD Pipeline (GitHub Actions)         | ⏳ Planned     |
+### 🔬 **Technical Implementations**
+- **Inverse Kinematics**: 6-DOF arm with realistic joint constraints
+- **Real-time Control**: Smooth cursor-to-3D coordinate transformation
+- **Performance Optimization**: 60fps 3D rendering with efficient algorithms
+- **Responsive Design**: Works seamlessly across desktop and mobile
 
 ---
 
-## 🔗 Get in Touch
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/raayraay96/eric-raymond.git
+cd eric-raymond
+
+# Install frontend dependencies
+cd frontend
+npm install
+
+# Start development server
+npm run dev
+```
+
+### Development
+```bash
+# Frontend development (with hot reload)
+cd frontend
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+---
+
+## 🎨 3D Robotic Arm Features
+
+### Real-time Inverse Kinematics
+- **Base Joint**: Rotates to follow horizontal mouse movement
+- **Shoulder Joint**: Primary vertical articulation
+- **Elbow Joint**: Secondary positioning with realistic constraints  
+- **Wrist Joint**: Fine positioning and end-effector orientation
+- **End Effector**: Targeting system with visual laser guide
+
+### Visual Elements
+- **Professional Materials**: Metallic finishes with proper PBR shading
+- **Dynamic Lighting**: Directional and ambient lighting for depth
+- **Contact Shadows**: Ground plane shadows for spatial awareness
+- **Color-coded Joints**: Each joint has distinct colors for clarity
+- **Smooth Animations**: Linear interpolation for realistic movement
+
+---
+
+## 📈 Performance Optimizations
+
+- **Efficient Rendering**: Optimized Three.js scene with 60fps target
+- **Smart Updates**: Only recalculates IK when mouse moves
+- **Responsive Loading**: Progressive enhancement for mobile devices
+- **Memory Management**: Proper cleanup and resource disposal
+- **Code Splitting**: Lazy loading for optimal bundle sizes
+
+---
+
+## 🏗️ Architecture
+
+```
+frontend/
+├── src/
+│   ├── components/
+│   │   ├── RoboticArmScene.tsx    # 3D arm implementation
+│   │   └── Navbar.tsx
+│   ├── hooks/
+│   │   └── useMousePosition.tsx    # Mouse tracking logic
+│   ├── pages/
+│   │   ├── Home.tsx               # Main page with 3D showcase
+│   │   ├── About.tsx
+│   │   └── Portfolio.tsx
+│   └── styles/
+│       └── Home.css               # Enhanced 3D styling
+├── package.json                   # Dependencies including Three.js
+└── vite.config.ts
+```
+
+---
+
+## 🌟 Deployment
+
+This site automatically deploys to GitHub Pages via GitHub Actions:
+
+1. **Push to main** triggers the deployment workflow
+2. **Build process** compiles TypeScript and optimizes assets  
+3. **Deploy** to GitHub Pages with custom domain support
+4. **Live in seconds** with global CDN distribution
+
+---
+
+## 🎯 Professional Impact
+
+This portfolio showcases:
+
+- **Technical Excellence**: Complex 3D programming with performance optimization
+- **User Experience**: Intuitive, engaging interface design
+- **Engineering Practices**: Clean architecture, type safety, automated deployment
+- **Domain Expertise**: Real robotics knowledge applied to web development
+- **Innovation**: Creative use of web technologies to demonstrate technical skills
+
+---
+
+## 📞 Contact
 
 **Eric Raymond**  
-📫 📧 erraymon@iu.edu
-📱 (317) 835-5211
-🌍 [Deployed site link]  
-📁 https://linkedin.com/in/eric–raymond
+📧 erraymon@iu.edu  
+📱 (317) 835-5211  
+🌐 [Portfolio Site](https://raayraay96.github.io/eric-raymond)  
+💼 [LinkedIn](https://linkedin.com/in/eric–raymond)
 
 ---
 
 ## 📄 License
 
 MIT © 2025 Eric Raymond
+
+---
+
+**⚡ Ready to see robotics in action? [Visit the live site!](https://raayraay96.github.io/eric-raymond)**
