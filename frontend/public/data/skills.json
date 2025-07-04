@@ -1,0 +1,47 @@
+[
+  {
+    "category": "Programming Languages",
+    "skills": [
+      { "name": "Python", "level": 5 },
+      { "name": "JavaScript", "level": 4 },
+      { "name": "TypeScript", "level": 4 },
+      { "name": "Java", "level": 3 },
+      { "name": "C++", "level": 3 },
+      { "name": "C#", "level": 3 },
+      { "name": "MATLAB", "level": 3 },
+      { "name": "R", "level": 2 }
+    ]
+  },
+  {
+    "category": "AI/ML & Computer Vision",
+    "skills": [
+      { "name": "PyTorch", "level": 5 },
+      { "name": "OpenCV", "level": 5 },
+      { "name": "Computer Vision", "level": 4 },
+      { "name": "Neural Networks", "level": 4 },
+      { "name": "Scikit-learn", "level": 4 },
+      { "name": "NLP", "level": 3 },
+      { "name": "Supervised Learning", "level": 4 }
+    ]
+  },
+  {
+    "category": "Robotics & Systems",
+    "skills": [
+      { "name": "ROS", "level": 5 },
+      { "name": "Unity", "level": 3 },
+      { "name": "ARKit", "level": 3 },
+      { "name": "Docker", "level": 3 }
+    ]
+  },
+  {
+    "category": "Cloud & Tools",
+    "skills": [
+      { "name": "Google Cloud Platform", "level": 3 },
+      { "name": "Git", "level": 4 },
+      { "name": "Visual Studio", "level": 4 },
+      { "name": "Xcode", "level": 3 },
+      { "name": "AutoCAD", "level": 2 },
+      { "name": "Shapr3D", "level": 2 }
+    ]
+  }
+]
