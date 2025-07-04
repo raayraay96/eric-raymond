@@ -1,187 +1,288 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
+import { OrbitControls, Environment, ContactShadows, Text, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Individual joint component with smooth rotation
-function ArmJoint({ position, rotation, children, targetRotation }: {
+// Loading component
+function LoadingScreen() {
+  return (
+    <div className="flex items-center justify-center h-full">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <p className="text-gray-400">Loading Robotic Arm...</p>
+      </div>
+    </div>
+  );
+}
+
+// Enhanced joint component with smooth rotation
+function ArmJoint({ position, children, targetRotation, color = "#ffffff", name }: {
   position: [number, number, number];
-  rotation: [number, number, number];
   children?: React.ReactNode;
   targetRotation: [number, number, number];
+  color?: string;
+  name?: string;
 }) {
   const ref = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (ref.current) {
-      // Smooth interpolation to target rotation
-      ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, targetRotation[0], 0.05);
-      ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, targetRotation[1], 0.05);
-      ref.current.rotation.z = THREE.MathUtils.lerp(ref.current.rotation.z, targetRotation[2], 0.05);
+      // Smooth interpolation to target rotation with easing
+      ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, targetRotation[0], 0.08);
+      ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, targetRotation[1], 0.08);
+      ref.current.rotation.z = THREE.MathUtils.lerp(ref.current.rotation.z, targetRotation[2], 0.08);
     }
   });
 
   return (
-    <group ref={ref} position={position} rotation={rotation}>
+    <group ref={ref} position={position}>
       {children}
     </group>
   );
 }
 
-// Individual arm segment
-function ArmSegment({ length, radius, color }: {
+// Enhanced arm segment with better materials
+function ArmSegment({ length, radius, color, emissive = "#000000" }: {
   length: number;
   radius: number;
   color: string;
+  emissive?: string;
 }) {
   return (
-    <mesh position={[0, length / 2, 0]}>
-      <cylinderGeometry args={[radius, radius, length, 8]} />
-      <meshStandardMaterial color={color} metalness={0.8} roughness={0.2} />
+    <mesh position={[0, length / 2, 0]} castShadow receiveShadow>
+      <cylinderGeometry args={[radius, radius * 0.8, length, 12]} />
+      <meshStandardMaterial 
+        color={color} 
+        metalness={0.9} 
+        roughness={0.1}
+        emissive={emissive}
+        emissiveIntensity={0.1}
+      />
     </mesh>
   );
 }
 
-// Joint connector
-function Joint({ radius, color }: { radius: number; color: string }) {
+// Enhanced joint connector
+function Joint({ radius, color, emissive = "#000000" }: { 
+  radius: number; 
+  color: string;
+  emissive?: string;
+}) {
   return (
-    <mesh>
+    <mesh castShadow receiveShadow>
       <sphereGeometry args={[radius, 16, 16]} />
-      <meshStandardMaterial color={color} metalness={0.9} roughness={0.1} />
+      <meshStandardMaterial 
+        color={color} 
+        metalness={0.95} 
+        roughness={0.05}
+        emissive={emissive}
+        emissiveIntensity={0.2}
+      />
     </mesh>
   );
 }
 
-// Main robotic arm component
+// Target sphere that follows mouse
+function TargetSphere({ position }: { position: [number, number, number] }) {
+  const ref = useRef<THREE.Mesh>(null);
+  
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.position.lerp(new THREE.Vector3(...position), 0.1);
+    }
+  });
+
+  return (
+    <mesh ref={ref}>
+      <sphereGeometry args={[0.1, 8, 8]} />
+      <meshBasicMaterial color="#ff4444" transparent opacity={0.6} />
+    </mesh>
+  );
+}
+
+// Main enhanced robotic arm component
 function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   const { viewport } = useThree();
   
-  // Convert mouse position to 3D world coordinates
+  // Convert mouse position to 3D world coordinates with better mapping
   const target = useMemo(() => {
-    const x = (mousePosition.x / window.innerWidth) * 2 - 1;
-    const y = -(mousePosition.y / window.innerHeight) * 2 + 1;
+    const x = (mousePosition.x / window.innerWidth - 0.5) * 2;
+    const y = -(mousePosition.y / window.innerHeight - 0.5) * 2;
     
-    return {
-      x: x * viewport.width / 2,
-      y: y * viewport.height / 2,
-      z: 0
-    };
+    // Map to 3D space with better constraints
+    const targetX = x * viewport.width * 0.8;
+    const targetY = y * viewport.height * 0.8 + 1;
+    const targetZ = Math.sin(x * Math.PI) * 2;
+    
+    return { x: targetX, y: targetY, z: targetZ };
   }, [mousePosition, viewport]);
 
-  // Calculate inverse kinematics (simplified approach)
+  // Enhanced inverse kinematics calculation
   const armConfig = useMemo(() => {
-    const baseHeight = 1;
-    // Note: segment lengths could be used for more complex IK calculations
+    const baseHeight = 0;
     
-    // Distance from base to target
+    // Calculate distance and angles
     const distance = Math.sqrt(target.x * target.x + (target.y - baseHeight) * (target.y - baseHeight));
+    const maxReach = 5.5; // Total arm reach
+    const clampedDistance = Math.min(distance, maxReach);
     
-    // Base rotation (Y-axis) - follow X movement
-    const baseRotationY = Math.atan2(target.x, target.z + 3);
+    // Base rotation (Y-axis) - follows horizontal movement
+    const baseRotationY = Math.atan2(target.x, target.z + 4);
     
-    // Shoulder joint (X-axis) - main vertical movement
-    const shoulderAngle = Math.atan2(target.y - baseHeight, Math.abs(target.x)) - 0.3;
+    // Shoulder joint - main positioning
+    const shoulderAngle = Math.atan2(target.y - baseHeight, Math.abs(target.x)) * 0.8;
     
-    // Elbow joint - bend to reach target
-    const elbowAngle = Math.PI / 4 + Math.sin(distance * 0.5) * 0.5;
+    // Elbow joint - reaches toward target
+    const elbowAngle = Math.PI * 0.3 + Math.sin(clampedDistance * 0.3) * 0.8;
     
     // Wrist joint - fine adjustment
-    const wristAngle = -shoulderAngle * 0.7 - elbowAngle * 0.3;
+    const wristAngle = -shoulderAngle * 0.5 - elbowAngle * 0.3;
     
     return {
       base: [0, baseRotationY, 0] as [number, number, number],
       shoulder: [shoulderAngle, 0, 0] as [number, number, number],
       elbow: [elbowAngle, 0, 0] as [number, number, number],
-      wrist: [wristAngle, 0, 0] as [number, number, number]
+      wrist: [wristAngle, 0, 0] as [number, number, number],
+      target: [target.x, target.y, target.z] as [number, number, number]
     };
   }, [target]);
 
   return (
-    <group position={[0, -2, 0]}>
-      {/* Base */}
-      <ArmJoint position={[0, 0, 0]} rotation={[0, 0, 0]} targetRotation={armConfig.base}>
-        <Joint radius={0.3} color="#2563eb" />
-        <ArmSegment length={1} radius={0.15} color="#1e40af" />
+    <group position={[0, -1, 0]}>
+      {/* Base Platform */}
+      <mesh position={[0, -0.2, 0]} receiveShadow>
+        <cylinderGeometry args={[1, 1.2, 0.4, 16]} />
+        <meshStandardMaterial color="#1e293b" metalness={0.8} roughness={0.2} />
+      </mesh>
+
+      {/* Base Joint */}
+      <ArmJoint position={[0, 0, 0]} targetRotation={armConfig.base} name="Base">
+        <Joint radius={0.3} color="#3b82f6" emissive="#1d4ed8" />
+        <ArmSegment length={1.2} radius={0.15} color="#1e40af" emissive="#1e3a8a" />
         
-        {/* Shoulder */}
-        <ArmJoint position={[0, 1, 0]} rotation={[0, 0, 0]} targetRotation={armConfig.shoulder}>
-          <Joint radius={0.25} color="#dc2626" />
-          <ArmSegment length={2} radius={0.12} color="#b91c1c" />
+        {/* Shoulder Joint */}
+        <ArmJoint position={[0, 1.2, 0]} targetRotation={armConfig.shoulder} name="Shoulder">
+          <Joint radius={0.25} color="#ef4444" emissive="#dc2626" />
+          <ArmSegment length={2} radius={0.12} color="#dc2626" emissive="#b91c1c" />
           
-          {/* Elbow */}
-          <ArmJoint position={[0, 2, 0]} rotation={[0, 0, 0]} targetRotation={armConfig.elbow}>
-            <Joint radius={0.2} color="#16a34a" />
-            <ArmSegment length={1.8} radius={0.1} color="#15803d" />
+          {/* Elbow Joint */}
+          <ArmJoint position={[0, 2, 0]} targetRotation={armConfig.elbow} name="Elbow">
+            <Joint radius={0.2} color="#10b981" emissive="#059669" />
+            <ArmSegment length={1.8} radius={0.1} color="#059669" emissive="#047857" />
             
-            {/* Wrist */}
-            <ArmJoint position={[0, 1.8, 0]} rotation={[0, 0, 0]} targetRotation={armConfig.wrist}>
-              <Joint radius={0.15} color="#ca8a04" />
-              <ArmSegment length={1.5} radius={0.08} color="#a16207" />
+            {/* Wrist Joint */}
+            <ArmJoint position={[0, 1.8, 0]} targetRotation={armConfig.wrist} name="Wrist">
+              <Joint radius={0.15} color="#f59e0b" emissive="#d97706" />
+              <ArmSegment length={1} radius={0.08} color="#d97706" emissive="#b45309" />
               
               {/* End Effector */}
-              <mesh position={[0, 1.5, 0]}>
-                <boxGeometry args={[0.3, 0.1, 0.3]} />
-                <meshStandardMaterial color="#7c3aed" metalness={0.8} roughness={0.2} />
-              </mesh>
-              
-              {/* Targeting laser (visual effect) */}
-              <mesh position={[0, 1.5, 0]}>
-                <cylinderGeometry args={[0.01, 0.01, 10, 4]} />
-                <meshBasicMaterial color="#ef4444" transparent opacity={0.6} />
-              </mesh>
+              <group position={[0, 1, 0]}>
+                <mesh castShadow>
+                  <boxGeometry args={[0.4, 0.15, 0.4]} />
+                  <meshStandardMaterial 
+                    color="#8b5cf6" 
+                    metalness={0.9} 
+                    roughness={0.1}
+                    emissive="#7c3aed"
+                    emissiveIntensity={0.2}
+                  />
+                </mesh>
+                
+                {/* Laser sight */}
+                <mesh position={[0, 0.08, 0]}>
+                  <cylinderGeometry args={[0.005, 0.005, 8, 4]} />
+                  <meshBasicMaterial color="#ff0000" transparent opacity={0.8} />
+                </mesh>
+              </group>
             </ArmJoint>
           </ArmJoint>
         </ArmJoint>
       </ArmJoint>
+
+      {/* Target sphere */}
+      <TargetSphere position={armConfig.target} />
+      
+      {/* Grid floor */}
+      <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[20, 20]} />
+        <meshStandardMaterial 
+          color="#0f172a" 
+          transparent 
+          opacity={0.3}
+          wireframe
+        />
+      </mesh>
     </group>
   );
 }
 
-// Main scene component
+// Main scene component with enhanced lighting and environment
 export default function RoboticArmScene({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   return (
     <div className="w-full h-full">
       <Canvas
-        camera={{ position: [5, 5, 8], fov: 50 }}
-        shadows
-        gl={{ antialias: true, alpha: true }}
+        camera={{ position: [6, 4, 8], fov: 60 }}
+        shadows={{ type: THREE.PCFSoftShadowMap }}
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          powerPreference: "high-performance"
+        }}
         className="bg-transparent"
       >
-        {/* Lighting */}
-        <ambientLight intensity={0.4} />
-        <directionalLight
-          position={[10, 10, 5]}
-          intensity={1}
-          castShadow
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
-        />
-        <pointLight position={[-10, -10, -10]} intensity={0.3} color="#3b82f6" />
-        
-        {/* Environment */}
-        <Environment preset="studio" />
-        
-        {/* Robotic Arm */}
-        <RoboticArm mousePosition={mousePosition} />
-        
-        {/* Ground plane */}
-        <ContactShadows
-          opacity={0.4}
-          scale={10}
-          blur={1}
-          far={10}
-          resolution={256}
-          color="#000000"
-        />
-        
-        {/* Controls */}
-        <OrbitControls
-          enablePan={false}
-          enableZoom={false}
-          enableRotate={true}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 4}
-        />
+        <Suspense fallback={null}>
+          {/* Enhanced Lighting Setup */}
+          <ambientLight intensity={0.2} color="#4338ca" />
+          
+          {/* Key light */}
+          <directionalLight
+            position={[10, 10, 5]}
+            intensity={0.8}
+            castShadow
+            shadow-mapSize-width={2048}
+            shadow-mapSize-height={2048}
+            shadow-camera-far={50}
+            shadow-camera-left={-10}
+            shadow-camera-right={10}
+            shadow-camera-top={10}
+            shadow-camera-bottom={-10}
+            color="#ffffff"
+          />
+          
+          {/* Fill lights */}
+          <pointLight position={[-5, 5, 5]} intensity={0.4} color="#3b82f6" />
+          <pointLight position={[5, 5, -5]} intensity={0.4} color="#8b5cf6" />
+          <spotLight position={[0, 8, 0]} intensity={0.6} angle={0.6} penumbra={0.5} color="#06b6d4" />
+          
+          {/* Environment for reflections */}
+          <Environment preset="studio" />
+          
+          {/* Robotic Arm */}
+          <RoboticArm mousePosition={mousePosition} />
+          
+          {/* Enhanced ground shadows */}
+          <ContactShadows
+            opacity={0.6}
+            scale={15}
+            blur={2}
+            far={20}
+            resolution={512}
+            color="#000000"
+          />
+          
+          {/* Camera Controls */}
+          <OrbitControls
+            enablePan={false}
+            enableZoom={true}
+            enableRotate={true}
+            maxPolarAngle={Math.PI / 2.2}
+            minPolarAngle={Math.PI / 6}
+            maxDistance={15}
+            minDistance={5}
+            autoRotate={false}
+            autoRotateSpeed={0.5}
+          />
+        </Suspense>
       </Canvas>
     </div>
   );
