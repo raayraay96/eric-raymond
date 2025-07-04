@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import type { GitHubContributionDay } from '../types/GitHubContributions';
+import type { GitHubContributionDay } from '../types/GithubContributions';
 import '../styles/ContributionCalendar.css';
 import { motion } from 'framer-motion';
 
