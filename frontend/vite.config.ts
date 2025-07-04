@@ -1,16 +1,24 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(({ mode }) => ({
+// https://vitejs.dev/config/
+export default defineConfig({
   plugins: [react()],
-  server: {
-    ...(mode === 'development' && {
-      proxy: {
-        '/api': {
-          target: 'http://backend:3001',
-          changeOrigin: true,
-        },
-      },
-    }),
+  base: '/eric-raymond/',
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          three: ['three', '@react-three/fiber', '@react-three/drei']
+        }
+      }
+    }
   },
-}));
+  optimizeDeps: {
+    include: ['three', '@react-three/fiber', '@react-three/drei']
+  }
+});
