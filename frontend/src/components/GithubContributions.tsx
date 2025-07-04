@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchContributions } from '../services/githubService';
 import ContributionCalendar from './ContributionCalendar';
-import type { GitHubContributionsData } from '../types/GitHubContributions';
+import type { GitHubContributionsData } from '../types/GithubContributions';
 
 const GithubContributions: React.FC = () => {
   const [data, setData] = useState<GitHubContributionsData | null>(null);
