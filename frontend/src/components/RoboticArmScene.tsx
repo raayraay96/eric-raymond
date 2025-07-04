@@ -71,9 +71,7 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
   // Calculate inverse kinematics (simplified approach)
   const armConfig = useMemo(() => {
     const baseHeight = 1;
-    const segment1Length = 2;
-    const segment2Length = 1.8;
-    const segment3Length = 1.5;
+    // Note: segment lengths could be used for more complex IK calculations
     
     // Distance from base to target
     const distance = Math.sqrt(target.x * target.x + (target.y - baseHeight) * (target.y - baseHeight));
