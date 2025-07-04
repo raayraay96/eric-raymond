@@ -1,0 +1,49 @@
+[
+  {
+    "title": "REU Intern",
+    "company": "University of Wyoming",
+    "location": "Laramie, WY",
+    "start": "Jun 2024",
+    "end": "Current",
+    "bullets": [
+      "Developed machine learning control algorithms for real-time robotic imitation, enhancing system responsiveness by 40%.",
+      "Engineered a modular and scalable human-robot interaction system using ROS, PyTorch, and OpenCV.",
+      "Integrated MonoDepth2 algorithms to generate real-time depth maps from a single RGB camera, enabling the robot to perceive and mimic human motion with high spatial accuracy."
+    ]
+  },
+  {
+    "title": "Lead Developer",
+    "company": "Idea Garden, Indiana University-Purdue University Indianapolis",
+    "location": "Indianapolis, IN",
+    "start": "Jan 2021",
+    "end": "Current",
+    "bullets": [
+      "Conducted a comprehensive IT system audit and implemented a new data security protocol, improving data storage security and system performance by 15%.",
+      "Managed project timelines and deliverables for a team of 3 developers using Agile methodologies, resulting in a 20% improvement in project completion efficiency."
+    ]
+  },
+  {
+    "title": "iOS Software Research Assistant (Augmented Reality)",
+    "company": "Indiana University-Purdue University Indianapolis",
+    "location": "Indianapolis, IN",
+    "start": "May 2022",
+    "end": "Aug 2022",
+    "bullets": [
+      "Developed \"Nano Vision,\" an AR application in Unity and C#, increasing user engagement with nanoscience concepts by 25%.",
+      "Collaborated with a multidisciplinary engineering team in an Agile environment, utilizing Xcode for iOS deployment and ARKit to create interactive educational modules.",
+      "Designed and implemented a novel \"Accessibility Mode\" to ensure inclusive access to STEM education for young learners with physical disabilities."
+    ]
+  },
+  {
+    "title": "National Science Foundation REU Research Intern",
+    "company": "Indiana University-Purdue University Indianapolis",
+    "location": "Indianapolis, IN",
+    "start": "May 2020",
+    "end": "Aug 2020",
+    "bullets": [
+      "Developed a graph neural network model with OpenCV that replicated Vincent van Gogh's art style with 30% improved accuracy over baseline models.",
+      "Delivered a style-transfer application adopted by the university's research team for digital art creation.",
+      "Presented advanced deep learning research on dynamic artwork analysis at the National LSAMP Conference and the Indiana University Research Poster Symposium."
+    ]
+  }
+]
