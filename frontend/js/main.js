@@ -241,7 +241,7 @@ class PerformanceOptimizer {
     
     static setupLazyLoading() {
         // Lazy load Three.js if not immediately needed
-        const roboticArmCanvas = document.getElementById('roboticArm');
+        const roboticArmCanvas = document.getElementById('desk-canvas');
         
         if (roboticArmCanvas) {
             const observer = new IntersectionObserver((entries) => {
