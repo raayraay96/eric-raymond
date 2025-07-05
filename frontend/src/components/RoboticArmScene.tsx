@@ -90,15 +90,15 @@ function TargetSphere({ position }: { position: [number, number, number] }) {
 function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   const { viewport } = useThree();
   
-  // Convert mouse position to 3D world coordinates with better mapping
+  // Convert mouse position to 3D world coordinates with enhanced reach
   const target = useMemo(() => {
     const x = (mousePosition.x / window.innerWidth - 0.5) * 2;
     const y = -(mousePosition.y / window.innerHeight - 0.5) * 2;
     
-    // Map to 3D space with better constraints
-    const targetX = x * viewport.width * 0.8;
-    const targetY = y * viewport.height * 0.8 + 1;
-    const targetZ = Math.sin(x * Math.PI) * 2;
+    // Enhanced mapping for wider reach - robot can reach any webpage element
+    const targetX = x * viewport.width * 1.2;
+    const targetY = y * viewport.height * 1.2 + 1;
+    const targetZ = Math.sin(x * Math.PI) * 3;
     
     return { x: targetX, y: targetY, z: targetZ };
   }, [mousePosition, viewport]);
@@ -107,9 +107,9 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
   const armConfig = useMemo(() => {
     const baseHeight = 0;
     
-    // Calculate distance and angles
+    // Calculate distance and angles with enhanced reach
     const distance = Math.sqrt(target.x * target.x + (target.y - baseHeight) * (target.y - baseHeight));
-    const maxReach = 5.5; // Total arm reach
+    const maxReach = 7.0; // Enhanced total arm reach for better webpage coverage
     const clampedDistance = Math.min(distance, maxReach);
     
     // Base rotation (Y-axis) - follows horizontal movement
@@ -134,7 +134,54 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
   }, [target]);
 
   return (
-    <group position={[0, -1, 0]}>
+    <group position={[3, -1, 0]}>
+      {/* Realistic wooden desk */}
+      <group position={[0, -2, 0]}>
+        {/* Desk surface */}
+        <mesh position={[0, 0, 0]} receiveShadow>
+          <boxGeometry args={[8, 0.2, 4]} />
+          <meshStandardMaterial color="#8B4513" roughness={0.8} metalness={0.1} />
+        </mesh>
+        
+        {/* Desk legs */}
+        <mesh position={[-3.5, -1, 1.5]} receiveShadow>
+          <boxGeometry args={[0.2, 2, 0.2]} />
+          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
+        </mesh>
+        <mesh position={[3.5, -1, 1.5]} receiveShadow>
+          <boxGeometry args={[0.2, 2, 0.2]} />
+          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
+        </mesh>
+        <mesh position={[-3.5, -1, -1.5]} receiveShadow>
+          <boxGeometry args={[0.2, 2, 0.2]} />
+          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
+        </mesh>
+        <mesh position={[3.5, -1, -1.5]} receiveShadow>
+          <boxGeometry args={[0.2, 2, 0.2]} />
+          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
+        </mesh>
+        
+        {/* Desk drawers */}
+        <mesh position={[-2, -0.5, 1.8]} receiveShadow>
+          <boxGeometry args={[1.5, 0.8, 0.4]} />
+          <meshStandardMaterial color="#A0522D" roughness={0.8} metalness={0.1} />
+        </mesh>
+        <mesh position={[2, -0.5, 1.8]} receiveShadow>
+          <boxGeometry args={[1.5, 0.8, 0.4]} />
+          <meshStandardMaterial color="#A0522D" roughness={0.8} metalness={0.1} />
+        </mesh>
+        
+        {/* Drawer handles */}
+        <mesh position={[-2, -0.5, 2.05]} receiveShadow>
+          <boxGeometry args={[0.1, 0.1, 0.1]} />
+          <meshStandardMaterial color="#C0C0C0" metalness={0.9} roughness={0.1} />
+        </mesh>
+        <mesh position={[2, -0.5, 2.05]} receiveShadow>
+          <boxGeometry args={[0.1, 0.1, 0.1]} />
+          <meshStandardMaterial color="#C0C0C0" metalness={0.9} roughness={0.1} />
+        </mesh>
+      </group>
+
       {/* Base Platform */}
       <mesh position={[0, -0.2, 0]} receiveShadow>
         <cylinderGeometry args={[1, 1.2, 0.4, 16]} />
@@ -207,7 +254,7 @@ export default function RoboticArmScene({ mousePosition }: { mousePosition: { x:
   return (
     <div className="w-full h-full">
       <Canvas
-        camera={{ position: [6, 4, 8], fov: 60 }}
+        camera={{ position: [8, 5, 8], fov: 60 }}
         shadows={{ type: THREE.PCFSoftShadowMap }}
         gl={{ 
           antialias: true, 
