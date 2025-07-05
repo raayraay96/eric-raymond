@@ -204,28 +204,38 @@
 
         function init() {
             scene = new THREE.Scene();
-            // UPDATED: Camera pushed back to accommodate the larger robot
+            // UPDATED: Camera positioned to view the desk and monitor setup
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 16, 50);
+            camera.position.set(0, 25, 60);
 
             const canvas = document.getElementById('bg-canvas');
             renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            // Soft natural lighting for photorealistic effect
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
             scene.add(ambientLight);
-            const pointLight = new THREE.PointLight(0xffffff, 0.5);
-            pointLight.position.set(10, 20, 10);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            directionalLight.position.set(10, 30, 20);
+            scene.add(directionalLight);
+            const pointLight = new THREE.PointLight(0xffffff, 0.3);
+            pointLight.position.set(-20, 20, 10);
             scene.add(pointLight);
 
             ikTarget = new THREE.Object3D();
             scene.add(ikTarget);
 
+            // Create the desk and monitor for hyperrealistic scene
+            createDeskAndMonitor();
+            
             arm = create7DofArm();
             scene.add(arm);
-            // UPDATED: Arm position adjusted for the new scale
-            arm.position.set(12, -20, 0);
+            // Position the arm to rest on the desk
+            arm.position.set(15, -10, 5);
+
+            // Define interaction points on the monitor corresponding to portfolio sections
+            setupInteractionPoints();
 
             window.addEventListener('resize', onWindowResize, false);
             window.addEventListener('mousemove', onMouseMove, false);
@@ -233,20 +243,76 @@
             animate();
         }
 
+        function createDeskAndMonitor() {
+            // Worn wooden desk with detailed texture
+            const deskGeometry = new THREE.BoxGeometry(60, 2, 30);
+            const deskMaterial = new THREE.MeshStandardMaterial({
+                color: 0x4a2f10,
+                roughness: 0.8,
+                metalness: 0.1,
+                bumpScale: 0.5
+            });
+            const desk = new THREE.Mesh(deskGeometry, deskMaterial);
+            desk.position.set(0, -12, 0);
+            scene.add(desk);
+
+            // Adding a desk mat for realism
+            const deskMatGeometry = new THREE.BoxGeometry(30, 0.1, 20);
+            const deskMatMaterial = new THREE.MeshStandardMaterial({
+                color: 0x1a1a1a,
+                roughness: 0.9,
+                metalness: 0.05
+            });
+            const deskMat = new THREE.Mesh(deskMatGeometry, deskMatMaterial);
+            deskMat.position.set(0, -10.9, 0);
+            scene.add(deskMat);
+
+            // Adding a notebook or papers
+            const paperGeometry = new THREE.BoxGeometry(8, 0.2, 10);
+            const paperMaterial = new THREE.MeshStandardMaterial({
+                color: 0xdddddd,
+                roughness: 0.7,
+                metalness: 0.1
+            });
+            const paper = new THREE.Mesh(paperGeometry, paperMaterial);
+            paper.position.set(-10, -10.8, 5);
+            paper.rotation.y = Math.PI / 6;
+            scene.add(paper);
+
+            // Adding a pen
+            const penGeometry = new THREE.CylinderGeometry(0.2, 0.2, 5, 8);
+            const penMaterial = new THREE.MeshStandardMaterial({
+                color: 0x2d3748,
+                roughness: 0.5,
+                metalness: 0.6
+            });
+            const pen = new THREE.Mesh(penGeometry, penMaterial);
+            pen.position.set(-8, -10.7, 2);
+            pen.rotation.z = Math.PI / 2;
+            scene.add(pen);
+        }
+
         function create7DofArm() {
             const armGroup = new THREE.Group();
 
             // NEW: Scale factor to easily adjust the robot's size
-            const scale = 2.0;
+            const scale = 4.0;
 
             const bodyMaterial = new THREE.MeshStandardMaterial({
-                color: 0x2d3748,
-                metalness: 0.6,
-                roughness: 0.8,
+                color: 0x4a5568, // Lighter gray for a glass-like tint
+                metalness: 0.9, // High metalness for a reflective glass effect
+                roughness: 0.1, // Very low roughness for a smooth, clear appearance
+                emissive: 0x2d3748, // Subtle emissive glow for depth
+                emissiveIntensity: 0.1,
+                transparent: true, // Enable transparency
+                opacity: 0.3 // Semi-transparent for a see-through glass effect
             });
             const ringMaterial = new THREE.MeshStandardMaterial({
-                color: 0xdd6b20,
-                roughness: 0.4,
+                color: 0x63b3ed, // Bright cyan-blue accent for a modern tech look
+                roughness: 0.3, // Smoother finish for accents
+                metalness: 0.9, // High metalness for a shiny effect
+                emissive: 0x3182ce, // Matching emissive color for a glowing accent
+                emissiveIntensity: 0.5 // Moderate glow to highlight rings
             });
 
             // UPDATED: All arm lengths multiplied by the scale factor
@@ -314,12 +380,68 @@
             forearm2.add(wrist);
             wrist.add(createJoint(0.8 * scale, 0.15 * scale));
 
-            const endEffector = new THREE.Mesh(new THREE.CylinderGeometry(0.6 * scale, 0.6 * scale, 1 * scale, 20), bodyMaterial);
+            const endEffector = new THREE.Group();
             endEffector.position.y = 0.5 * scale;
-            const endRing = new THREE.Mesh(new THREE.TorusGeometry(0.6 * scale, 0.1 * scale, 8, 32), ringMaterial);
+            
+            // Main cylinder for the end effector (palm of the hand) - increased size
+            const effectorBase = new THREE.Mesh(new THREE.CylinderGeometry(0.9 * scale, 0.9 * scale, 1.2 * scale, 20), bodyMaterial);
+            effectorBase.position.y = 0;
+            endEffector.add(effectorBase);
+            
+            // Ring for decoration - adjusted for larger size
+            const endRing = new THREE.Mesh(new THREE.TorusGeometry(0.9 * scale, 0.15 * scale, 8, 32), ringMaterial);
             endRing.rotation.x = Math.PI / 2;
-            endRing.position.y = 0.5 * scale;
-            endEffector.add(endRing);
+            endRing.position.y = 0.6 * scale;
+            effectorBase.add(endRing);
+            
+            // Adding subtle panel lines or tech details on the effector base for a high-tech look
+            const detailRing = new THREE.Mesh(new THREE.TorusGeometry(0.7 * scale, 0.05 * scale, 4, 24), ringMaterial);
+            detailRing.rotation.x = Math.PI / 2;
+            detailRing.position.y = 0.3 * scale;
+            effectorBase.add(detailRing);
+            
+            // Adding a 3-finger hand to the end effector - increased size with refined design
+            const fingerLength = 2.0 * scale;
+            const fingerRadius = 0.2 * scale; // Slightly thinner for elegance
+            
+            // Finger 1 (left) with joint detail
+            const finger1Base = new THREE.Mesh(new THREE.CylinderGeometry(fingerRadius, fingerRadius, fingerLength * 0.6, 8), bodyMaterial);
+            finger1Base.position.set(-0.6 * scale, 0.9 * scale, 0);
+            finger1Base.rotation.z = Math.PI / 6;
+            endEffector.add(finger1Base);
+            const finger1Tip = new THREE.Mesh(new THREE.CylinderGeometry(fingerRadius * 0.8, fingerRadius * 0.6, fingerLength * 0.4, 8), bodyMaterial);
+            finger1Tip.position.set(-0.6 * scale, 1.5 * scale, 0);
+            finger1Tip.rotation.z = Math.PI / 4;
+            endEffector.add(finger1Tip);
+            const joint1 = new THREE.Mesh(new THREE.SphereGeometry(fingerRadius * 1.2, 8, 8), ringMaterial);
+            joint1.position.set(-0.6 * scale, 1.2 * scale, 0);
+            endEffector.add(joint1);
+            
+            // Finger 2 (middle) with joint detail
+            const finger2Base = new THREE.Mesh(new THREE.CylinderGeometry(fingerRadius, fingerRadius, fingerLength * 0.6, 8), bodyMaterial);
+            finger2Base.position.set(0, 0.9 * scale, 0);
+            endEffector.add(finger2Base);
+            const finger2Tip = new THREE.Mesh(new THREE.CylinderGeometry(fingerRadius * 0.8, fingerRadius * 0.6, fingerLength * 0.4, 8), bodyMaterial);
+            finger2Tip.position.set(0, 1.5 * scale, 0);
+            finger2Tip.rotation.z = Math.PI / 12;
+            endEffector.add(finger2Tip);
+            const joint2 = new THREE.Mesh(new THREE.SphereGeometry(fingerRadius * 1.2, 8, 8), ringMaterial);
+            joint2.position.set(0, 1.2 * scale, 0);
+            endEffector.add(joint2);
+            
+            // Finger 3 (right) with joint detail
+            const finger3Base = new THREE.Mesh(new THREE.CylinderGeometry(fingerRadius, fingerRadius, fingerLength * 0.6, 8), bodyMaterial);
+            finger3Base.position.set(0.6 * scale, 0.9 * scale, 0);
+            finger3Base.rotation.z = -Math.PI / 6;
+            endEffector.add(finger3Base);
+            const finger3Tip = new THREE.Mesh(new THREE.CylinderGeometry(fingerRadius * 0.8, fingerRadius * 0.6, fingerLength * 0.4, 8), bodyMaterial);
+            finger3Tip.position.set(0.6 * scale, 1.5 * scale, 0);
+            finger3Tip.rotation.z = -Math.PI / 4;
+            endEffector.add(finger3Tip);
+            const joint3 = new THREE.Mesh(new THREE.SphereGeometry(fingerRadius * 1.2, 8, 8), ringMaterial);
+            joint3.position.set(0.6 * scale, 1.2 * scale, 0);
+            endEffector.add(joint3);
+            
             wrist.add(endEffector);
             
             armGroup.userData.joints = { base, shoulder, elbow, midJoint, wrist };
@@ -342,13 +464,22 @@
         const raycaster = new THREE.Raycaster();
         const targetPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); 
         const targetPos = new THREE.Vector3();
+        let currentTargetPoint = null;
 
         function animate() {
             requestAnimationFrame(animate);
 
             raycaster.setFromCamera(mouse, camera);
             raycaster.ray.intersectPlane(targetPlane, targetPos);
-            ikTarget.position.lerp(targetPos, 0.1);
+            
+            // Check if mouse position corresponds to a portfolio section
+            const targetPoint = getInteractionPointFromMouse(mouse.x, mouse.y);
+            if (targetPoint) {
+                currentTargetPoint = targetPoint;
+                ikTarget.position.lerp(currentTargetPoint, 0.2); // Move towards specific portfolio section
+            } else {
+                ikTarget.position.lerp(targetPos, 0.2); // Default movement
+            }
 
             if (arm && arm.userData.joints) {
                 const { base, shoulder, elbow, midJoint, wrist } = arm.userData.joints;
@@ -393,6 +524,38 @@
             }
             
             renderer.render(scene, camera);
+        }
+
+        // Interaction points corresponding to portfolio sections on the monitor
+        let interactionPoints = [];
+
+        function setupInteractionPoints() {
+            // Define points on the desk corresponding to portfolio sections
+            // These are rough mappings to different areas on the desk surface
+            interactionPoints = [
+                { name: 'home', x: 0, y: -5, z: 15 },      // Center, extending forward
+                { name: 'about', x: -10, y: -5, z: 15 },   // Left, extending forward
+                { name: 'projects', x: 10, y: -5, z: 15 }, // Right, extending forward
+                { name: 'skills', x: -10, y: -5, z: 10 },  // Left, slightly less forward
+                { name: 'contact', x: 10, y: -5, z: 10 }   // Right, slightly less forward
+            ];
+        }
+
+        function getInteractionPointFromMouse(mouseX, mouseY) {
+            // Map mouse coordinates to approximate portfolio section areas
+            // This is a simplified mapping based on screen quadrants
+            if (mouseY > 0.5) {
+                return new THREE.Vector3(interactionPoints[0].x, interactionPoints[0].y, interactionPoints[0].z); // Home
+            } else if (mouseY > 0 && mouseX < 0) {
+                return new THREE.Vector3(interactionPoints[1].x, interactionPoints[1].y, interactionPoints[1].z); // About
+            } else if (mouseY > 0 && mouseX >= 0) {
+                return new THREE.Vector3(interactionPoints[2].x, interactionPoints[2].y, interactionPoints[2].z); // Projects
+            } else if (mouseY <= 0 && mouseX < 0) {
+                return new THREE.Vector3(interactionPoints[3].x, interactionPoints[3].y, interactionPoints[3].z); // Skills
+            } else if (mouseY <= 0 && mouseX >= 0) {
+                return new THREE.Vector3(interactionPoints[4].x, interactionPoints[4].y, interactionPoints[4].z); // Contact
+            }
+            return null;
         }
 
         init();
