@@ -11,8 +11,9 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden; /* Prevents scrollbars from the canvas */
-            background-color: #111827; /* bg-gray-900 */
+            overflow-x: hidden; /* Only prevent horizontal scroll */
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
         }
         #bg-canvas {
             position: fixed;
@@ -20,22 +21,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Set to be in front of content */
-            pointer-events: none; /* Allows mouse clicks to "pass through" the canvas */
+            z-index: -1; /* Behind content */
+            pointer-events: auto; /* Allow interaction */
         }
         .glass-card {
-            background: rgba(22, 22, 29, 0.6);
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
         .content-wrapper {
             position: relative;
-            z-index: 0; /* Set to be behind the canvas */
+            z-index: 10; /* Above canvas */
             width: 100%;
-            height: 100vh;
+            min-height: 100vh;
             overflow-y: auto;
             overflow-x: hidden;
+            background: transparent; /* Make content transparent */
         }
     </style>
 </head>
@@ -207,8 +210,7 @@
 
         function init() {
             scene = new THREE.Scene();
-            // Enhanced gradient background for premium look
-            scene.background = new THREE.Color(0x0f172a);
+            // No background color - let CSS background show through
             scene.fog = new THREE.Fog(0x0f172a, 50, 200);
             
             // Adaptive camera positioning
@@ -225,7 +227,14 @@
             );
 
             const canvas = document.getElementById('bg-canvas');
-            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer = new THREE.WebGLRenderer({ 
+                canvas, 
+                antialias: true, 
+                alpha: true,
+                premultipliedAlpha: false,
+                preserveDrawingBuffer: false
+            });
+            renderer.setClearColor(0x000000, 0); // Transparent background
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
