@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric Raymond | AI/ML & Robotics Engineer</title>
+    <meta name="description" content="Portfolio of Eric Raymond, specializing in AI/ML Development and Robotics Engineering.">
+    <meta name="keywords" content="Eric Raymond, AI, ML, Robotics, Developer, Engineer, Portfolio, Frontend, JavaScript, React">
+    <meta name="author" content="Eric Raymond">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="Eric Raymond | AI/ML & Robotics Engineer">
+    <meta property="og:description" content="Portfolio of Eric Raymond, specializing in AI/ML Development and Robotics Engineering.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://placehold.co/1200x630.png?text=Eric+Raymond">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Performance Optimizations -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Critical CSS -->
+    <style>
+        :root {
+            --primary: #007bff;
+            --primary-light: #4da3ff;
+            --text: #ffffff;
+            --text-secondary: #a0aec0;
+            --bg: #000000;
+            --bg-secondary: #111827;
+            --accent: #ff0077;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        .intro-text {
+            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            display: block;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.2s forwards;
+        }
+        
+        .name-text {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800;
+            margin: 0 0 1rem;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.4s forwards;
+        }
+        
+        .power-statement {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 600;
+            color: var(--text-secondary);
+            min-height: 3rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.6s forwards;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: white;
+            background: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.8s forwards;
+        }
+        
+        .cta-button:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(0, 123, 255, 0.2);
+        }
+        
+        .cta-button:active {
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                text-align: center;
+            }
+            
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" as="script">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="styles/main.css" media="print" onload="this.media='all'">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Eric Raymond",
+        "jobTitle": "AI/ML Developer & Robotics Engineer",
+        "url": "https://ericraymond.dev",
+        "sameAs": [
+            "https://github.com/raayraay96",
+            "https://linkedin.com/in/eric-raymond"
+        ]
+    }
+    </script>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" aria-live="polite">
+        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span class="sr-only">Toggle theme</span>
+    </button>
+    
+    <!-- Hero Section with 3D Robotic Arm -->
+    <section class="hero-section" id="home">
+        <div id="robotic-arm-scene" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
+        <div class="container">
+            <div class="hero-content" style="z-index: 2; background: rgba(var(--bg-rgb), 0.7);">
+                <span class="intro-text">Hi, my name is</span>
+                <h1 class="name-text">Eric Raymond.</h1>
+                <h2 id="power-statement" class="power-statement">I build things for the web.</h2>
+                <a href="#projects" class="cta-button cta-button--lg" data-magnetic aria-label="View my work">
+                    <span class="cta-button__text">View My Work</span>
+                    <svg class="cta-button__icon" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                    <span class="sr-only">(Scroll to projects section)</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects-section">
+        <h2>Projects</h2>
+        <div class="project-grid">
+            <!-- Project cards will be dynamically inserted here -->
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="content">
+                <p>My journey through a B.S. in Artificial Intelligence with a Minor in Neuroscience has fueled a deep interest in not just how systems work, but how they think and interact with humans. I build intelligent systems that bridge the gap between technology and human experience, from robotics to augmented reality.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <div class="container">
+            <h2 class="section-title">Validated Skills</h2>
+            <div class="content">
+                <h3>Programming Languages</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Python</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">C++</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">C#</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Java</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">MATLAB</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">R</li>
+                </ul>
+                <h3>AI/Machine Learning</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">PyTorch</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">OpenCV</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Computer Vision</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Neural Networks</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">ROS 1</li>
+                </ul>
+                <h3>Developer Tools</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Git</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Docker</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Google Cloud Platform (GCP)</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Unity</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">AutoCAD</li>
+                </ul>
+                <h3>Hardware Systems</h3>
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">System Design</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Debugging</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Embedded Systems</li>
+                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Software Design</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Scripts loaded deferred for performance -->
+    <!-- Three.js for 3D Robotic Arm -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.min.js" defer></script>
+    <!-- Vanilla Tilt for card effects -->
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
+    <!-- ScrollReveal for animations -->
+    <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js" defer></script>
+    <!-- Custom JS -->
+    <script src="js/main.js" defer></script>
+</body>
+</html>
