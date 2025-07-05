@@ -1,27 +1,13 @@
 import { useRef, useMemo, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows, Text, Sphere } from '@react-three/drei';
+import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Loading component
-function LoadingScreen() {
-  return (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-center">
-        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-400">Loading Robotic Arm...</p>
-      </div>
-    </div>
-  );
-}
-
 // Enhanced joint component with smooth rotation
-function ArmJoint({ position, children, targetRotation, color = "#ffffff", name }: {
+function ArmJoint({ position, children, targetRotation }: {
   position: [number, number, number];
   children?: React.ReactNode;
   targetRotation: [number, number, number];
-  color?: string;
-  name?: string;
 }) {
   const ref = useRef<THREE.Group>(null);
 
@@ -156,22 +142,22 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
       </mesh>
 
       {/* Base Joint */}
-      <ArmJoint position={[0, 0, 0]} targetRotation={armConfig.base} name="Base">
+      <ArmJoint position={[0, 0, 0]} targetRotation={armConfig.base}>
         <Joint radius={0.3} color="#3b82f6" emissive="#1d4ed8" />
         <ArmSegment length={1.2} radius={0.15} color="#1e40af" emissive="#1e3a8a" />
         
         {/* Shoulder Joint */}
-        <ArmJoint position={[0, 1.2, 0]} targetRotation={armConfig.shoulder} name="Shoulder">
+        <ArmJoint position={[0, 1.2, 0]} targetRotation={armConfig.shoulder}>
           <Joint radius={0.25} color="#ef4444" emissive="#dc2626" />
           <ArmSegment length={2} radius={0.12} color="#dc2626" emissive="#b91c1c" />
           
           {/* Elbow Joint */}
-          <ArmJoint position={[0, 2, 0]} targetRotation={armConfig.elbow} name="Elbow">
+          <ArmJoint position={[0, 2, 0]} targetRotation={armConfig.elbow}>
             <Joint radius={0.2} color="#10b981" emissive="#059669" />
             <ArmSegment length={1.8} radius={0.1} color="#059669" emissive="#047857" />
             
             {/* Wrist Joint */}
-            <ArmJoint position={[0, 1.8, 0]} targetRotation={armConfig.wrist} name="Wrist">
+            <ArmJoint position={[0, 1.8, 0]} targetRotation={armConfig.wrist}>
               <Joint radius={0.15} color="#f59e0b" emissive="#d97706" />
               <ArmSegment length={1} radius={0.08} color="#d97706" emissive="#b45309" />
               
