@@ -73,16 +73,19 @@
                     <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783-.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                     <span class="text-xl font-bold">ERIC RAYMOND</span>
                 </div>
-                <nav class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="hover:text-purple-400 transition-colors">Home</a>
-                    <a href="#about" class="hover:text-purple-400 transition-colors">About</a>
-                    <a href="#projects" class="hover:text-purple-400 transition-colors">Projects</a>
-                    <a href="#skills" class="hover:text-purple-400 transition-colors">Skills</a>
-                    <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#home" class="hover:text-cyan-400 transition-colors">Home</a>
+                    <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
+                    <a href="#experience" class="hover:text-cyan-400 transition-colors">Experience</a>
+                    <a href="#projects" class="hover:text-cyan-400 transition-colors">Projects</a>
+                    <a href="#education" class="hover:text-cyan-400 transition-colors">Education</a>
+                    <a href="#leadership" class="hover:text-cyan-400 transition-colors">Leadership</a>
+                    <a href="#skills" class="hover:text-cyan-400 transition-colors">Skills</a>
+                    <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
                 </nav>
-                <button class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-5 rounded-lg transition-colors">
+                <a href="#contact" class="bg-gradient-to-r from-cyan-500 to-pink-500 hover:from-cyan-600 hover:to-pink-600 text-white font-semibold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105">
                     Get In Touch
-                </button>
+                </a>
             </header>
 
             <main>
@@ -167,17 +170,55 @@
                     <h2 class="text-3xl font-bold mb-6 text-center">Featured Projects</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Malicious PDF Detection (GCP)</h3>
+                            <p class="text-gray-400">Engineered neural network on Google Cloud Platform to classify malicious PDFs from vast dataset, achieving <span class="text-cyan-300 font-bold">97% classification accuracy</span>.</p>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Van Gogh Style Transfer</h3>
+                            <p class="text-gray-400">Developed graph neural network with OpenCV that replicated Van Gogh's art style with <span class="text-pink-300 font-bold">30% improved accuracy</span> over baseline models.</p>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Electric Motorcycle Model</h3>
+                            <p class="text-gray-400">Engineered functional 1:4 scale E-motorcycle with custom powertrain and battery management system designed in Shapr3D.</p>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Nano Vision AR App</h3>
+                            <p class="text-gray-400">Developed AR application in Unity and C# for nanoscience education, increasing user engagement by <span class="text-cyan-300 font-bold">25%</span> with accessibility features.</p>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
                             <h3 class="text-2xl font-bold mb-2 text-purple-300">Robotic Imitation System</h3>
-                            <p class="text-gray-400">Developed ML control algorithms for real-time robotic imitation, enhancing responsiveness by 40% using ROS and PyTorch.</p>
+                            <p class="text-gray-400">Real-time ML control algorithms using ROS, PyTorch, and OpenCV with MonoDepth2 integration for <span class="text-pink-300 font-bold">40% enhanced responsiveness</span>.</p>
                         </div>
                         <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
-                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Computer Vision Module</h3>
-                            <p class="text-gray-400">Integrated MonoDepth2 algorithms with OpenCV for high spatial accuracy in human-robot interaction systems.</p>
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">IT Security Audit</h3>
+                            <p class="text-gray-400">Comprehensive system audit and data security protocol implementation, improving storage security by <span class="text-cyan-300 font-bold">15%</span>.</p>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
-                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Interactive AI Interface</h3>
-                            <p class="text-gray-400">Designed responsive AI interfaces for robotic systems, improving user engagement metrics by 25%.</p>
+                    </div>
+                </section>
+
+                <section id="education" class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Education</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-2xl font-bold mb-2 text-cyan-300">Purdue University Indianapolis</h3>
+                            <p class="text-pink-300 mb-2">Bachelor of Science in Artificial Intelligence</p>
+                            <p class="text-purple-300 mb-2">Minor in Neuroscience</p>
+                            <p class="text-gray-400"><span class="text-cyan-300 font-bold">Expected Graduation:</span> October 2025</p>
                         </div>
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-2xl font-bold mb-2 text-cyan-300">Ivy Tech Community College</h3>
+                            <p class="text-pink-300 mb-2">Associate of Science in Engineering</p>
+                            <p class="text-gray-400"><span class="text-cyan-300 font-bold">Graduated:</span> May 2020</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="leadership" class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Leadership Experience</h2>
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-cyan-300">Robotics Club Mentor</h3>
+                        <p class="text-pink-300 mb-2">Purdue University Indianapolis</p>
+                        <p class="text-gray-300">Mentored a team of <span class="text-cyan-300 font-bold">15 students</span> through design, programming, and testing phases for VEX Robotics competitions. Provided strategic guidance that led the team to a <span class="text-pink-300 font-bold">Top 5 finish</span> at regional competition.</p>
                     </div>
                 </section>
 
@@ -187,41 +228,45 @@
                         <div class="glass-card rounded-2xl p-6">
                             <h3 class="text-xl font-bold mb-3 text-purple-300">Programming Languages</h3>
                             <ul class="text-gray-400 space-y-1">
-                                <li>Python</li>
-                                <li>C++</li>
-                                <li>C#</li>
-                                <li>Java</li>
-                                <li>MATLAB</li>
-                                <li>R</li>
+                                <li><span class="text-cyan-300">•</span> Python</li>
+                                <li><span class="text-cyan-300">•</span> Java</li>
+                                <li><span class="text-cyan-300">•</span> JavaScript</li>
+                                <li><span class="text-cyan-300">•</span> C++</li>
+                                <li><span class="text-cyan-300">•</span> C#</li>
+                                <li><span class="text-cyan-300">•</span> MATLAB</li>
+                                <li><span class="text-cyan-300">•</span> R</li>
                             </ul>
                         </div>
                         <div class="glass-card rounded-2xl p-6">
                             <h3 class="text-xl font-bold mb-3 text-purple-300">AI/Machine Learning</h3>
                             <ul class="text-gray-400 space-y-1">
-                                <li>PyTorch</li>
-                                <li>OpenCV</li>
-                                <li>Computer Vision</li>
-                                <li>Neural Networks</li>
-                                <li>ROS 1</li>
+                                <li><span class="text-pink-300">•</span> PyTorch</li>
+                                <li><span class="text-pink-300">•</span> OpenCV</li>
+                                <li><span class="text-pink-300">•</span> Scikit-learn</li>
+                                <li><span class="text-pink-300">•</span> Computer Vision</li>
+                                <li><span class="text-pink-300">•</span> NLP</li>
+                                <li><span class="text-pink-300">•</span> Neural Networks</li>
+                                <li><span class="text-pink-300">•</span> Supervised Learning</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-3 text-purple-300">Frameworks & Technologies</h3>
+                            <ul class="text-gray-400 space-y-1">
+                                <li><span class="text-cyan-300">•</span> ROS (Robot Operating System)</li>
+                                <li><span class="text-cyan-300">•</span> Unity</li>
+                                <li><span class="text-cyan-300">•</span> ARKit</li>
+                                <li><span class="text-cyan-300">•</span> Google Cloud Platform</li>
+                                <li><span class="text-cyan-300">•</span> Docker</li>
                             </ul>
                         </div>
                         <div class="glass-card rounded-2xl p-6">
                             <h3 class="text-xl font-bold mb-3 text-purple-300">Developer Tools</h3>
                             <ul class="text-gray-400 space-y-1">
-                                <li>Git</li>
-                                <li>Docker</li>
-                                <li>Google Cloud Platform</li>
-                                <li>Unity</li>
-                                <li>AutoCAD</li>
-                            </ul>
-                        </div>
-                        <div class="glass-card rounded-2xl p-6">
-                            <h3 class="text-xl font-bold mb-3 text-purple-300">Hardware Systems</h3>
-                            <ul class="text-gray-400 space-y-1">
-                                <li>System Design</li>
-                                <li>Debugging</li>
-                                <li>Embedded Systems</li>
-                                <li>Software Design</li>
+                                <li><span class="text-pink-300">•</span> Git</li>
+                                <li><span class="text-pink-300">•</span> Xcode</li>
+                                <li><span class="text-pink-300">•</span> AutoCAD</li>
+                                <li><span class="text-pink-300">•</span> Shapr3D</li>
+                                <li><span class="text-pink-300">•</span> Visual Studio</li>
                             </ul>
                         </div>
                     </div>
@@ -864,25 +909,33 @@
             interactionPoints = [
                 { name: 'home', x: 0, y: -5, z: forwardReach },
                 { name: 'about', x: -reach, y: -5, z: forwardReach },
-                { name: 'projects', x: reach, y: -5, z: forwardReach },
-                { name: 'skills', x: -reach * 0.7, y: -5, z: forwardReach * 0.7 },
-                { name: 'contact', x: reach * 0.7, y: -5, z: forwardReach * 0.7 }
+                { name: 'experience', x: -reach * 0.6, y: -5, z: forwardReach },
+                { name: 'projects', x: reach * 0.6, y: -5, z: forwardReach },
+                { name: 'education', x: reach, y: -5, z: forwardReach },
+                { name: 'leadership', x: -reach * 0.8, y: -5, z: forwardReach * 0.7 },
+                { name: 'skills', x: 0, y: -5, z: forwardReach * 0.7 },
+                { name: 'contact', x: reach * 0.8, y: -5, z: forwardReach * 0.7 }
             ];
         }
 
         function getInteractionPointFromMouse(mouseX, mouseY) {
-            // Map mouse coordinates to approximate portfolio section areas
-            // This is a simplified mapping based on screen quadrants
-            if (mouseY > 0.5) {
+            // Enhanced mapping for all portfolio sections
+            if (mouseY > 0.7) {
                 return new THREE.Vector3(interactionPoints[0].x, interactionPoints[0].y, interactionPoints[0].z); // Home
-            } else if (mouseY > 0 && mouseX < 0) {
+            } else if (mouseY > 0.4 && mouseX < -0.5) {
                 return new THREE.Vector3(interactionPoints[1].x, interactionPoints[1].y, interactionPoints[1].z); // About
-            } else if (mouseY > 0 && mouseX >= 0) {
-                return new THREE.Vector3(interactionPoints[2].x, interactionPoints[2].y, interactionPoints[2].z); // Projects
-            } else if (mouseY <= 0 && mouseX < 0) {
-                return new THREE.Vector3(interactionPoints[3].x, interactionPoints[3].y, interactionPoints[3].z); // Skills
-            } else if (mouseY <= 0 && mouseX >= 0) {
-                return new THREE.Vector3(interactionPoints[4].x, interactionPoints[4].y, interactionPoints[4].z); // Contact
+            } else if (mouseY > 0.4 && mouseX >= -0.5 && mouseX < -0.1) {
+                return new THREE.Vector3(interactionPoints[2].x, interactionPoints[2].y, interactionPoints[2].z); // Experience
+            } else if (mouseY > 0.4 && mouseX >= -0.1 && mouseX < 0.3) {
+                return new THREE.Vector3(interactionPoints[3].x, interactionPoints[3].y, interactionPoints[3].z); // Projects
+            } else if (mouseY > 0.4 && mouseX >= 0.3) {
+                return new THREE.Vector3(interactionPoints[4].x, interactionPoints[4].y, interactionPoints[4].z); // Education
+            } else if (mouseY <= 0.4 && mouseX < -0.2) {
+                return new THREE.Vector3(interactionPoints[5].x, interactionPoints[5].y, interactionPoints[5].z); // Leadership
+            } else if (mouseY <= 0.4 && mouseX >= -0.2 && mouseX < 0.2) {
+                return new THREE.Vector3(interactionPoints[6].x, interactionPoints[6].y, interactionPoints[6].z); // Skills
+            } else if (mouseY <= 0.4 && mouseX >= 0.2) {
+                return new THREE.Vector3(interactionPoints[7].x, interactionPoints[7].y, interactionPoints[7].z); // Contact
             }
             return null;
         }
