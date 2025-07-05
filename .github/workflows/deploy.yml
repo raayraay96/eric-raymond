@@ -27,6 +27,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         working-directory: ./frontend
@@ -37,6 +39,18 @@ jobs:
       - name: Build
         working-directory: ./frontend
         run: npm run build
+
+      - name: Debug - List build output
+        run: |
+          echo "📁 Contents of frontend/dist:"
+          ls -la frontend/dist/
+          echo "📄 Checking for index.html:"
+          if [ -f "frontend/dist/index.html" ]; then
+            echo "✅ index.html found"
+            head -n 10 frontend/dist/index.html
+          else
+            echo "❌ index.html NOT found"
+          fi
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
