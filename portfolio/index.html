@@ -244,8 +244,9 @@
         }
 
         function createDeskAndMonitor() {
-            // Enhanced wooden desk with realistic texture
-            const deskGeometry = new THREE.BoxGeometry(60, 2, 30);
+            // Enhanced wooden desk with realistic texture - FULL WIDTH
+            const deskWidth = Math.max(120, window.innerWidth / 8); // Dynamic width based on screen size
+            const deskGeometry = new THREE.BoxGeometry(deskWidth, 2, 35);
             const deskMaterial = new THREE.MeshStandardMaterial({
                 color: 0x8B4513,
                 roughness: 0.8,
@@ -256,29 +257,30 @@
             desk.position.set(0, -12, 0);
             scene.add(desk);
 
-            // Desk legs for more realism
-            const legGeometry = new THREE.BoxGeometry(1, 8, 1);
+            // Desk legs for more realism - ADAPTIVE TO DESK WIDTH
+            const legGeometry = new THREE.BoxGeometry(1.5, 8, 1.5);
             const legMaterial = new THREE.MeshStandardMaterial({
                 color: 0x654321,
                 roughness: 0.8,
                 metalness: 0.1
             });
             
-            // Four desk legs
+            // Four desk legs - positioned based on desk width
+            const legOffsetX = (deskWidth / 2) - 5;
             const leg1 = new THREE.Mesh(legGeometry, legMaterial);
-            leg1.position.set(-28, -16, 13);
+            leg1.position.set(-legOffsetX, -16, 15);
             scene.add(leg1);
             
             const leg2 = new THREE.Mesh(legGeometry, legMaterial);
-            leg2.position.set(28, -16, 13);
+            leg2.position.set(legOffsetX, -16, 15);
             scene.add(leg2);
             
             const leg3 = new THREE.Mesh(legGeometry, legMaterial);
-            leg3.position.set(-28, -16, -13);
+            leg3.position.set(-legOffsetX, -16, -15);
             scene.add(leg3);
             
             const leg4 = new THREE.Mesh(legGeometry, legMaterial);
-            leg4.position.set(28, -16, -13);
+            leg4.position.set(legOffsetX, -16, -15);
             scene.add(leg4);
 
             // Desk drawers
@@ -313,8 +315,8 @@
             handle2.position.set(15, -13, 15.2);
             scene.add(handle2);
 
-            // Adding a desk mat for realism
-            const deskMatGeometry = new THREE.BoxGeometry(30, 0.1, 20);
+            // Adding a desk mat for realism - FULL WIDTH
+            const deskMatGeometry = new THREE.BoxGeometry(deskWidth - 4, 0.1, 25);
             const deskMatMaterial = new THREE.MeshStandardMaterial({
                 color: 0x1a1a1a,
                 roughness: 0.9,
@@ -533,9 +535,15 @@
             const targetPoint = getInteractionPointFromMouse(mouse.x, mouse.y);
             if (targetPoint) {
                 currentTargetPoint = targetPoint;
-                ikTarget.position.lerp(currentTargetPoint, 0.2); // Move towards specific portfolio section
+                ikTarget.position.lerp(currentTargetPoint, 0.15); // Smoother movement
             } else {
-                ikTarget.position.lerp(targetPos, 0.2); // Default movement
+                // Enhanced smooth movement with bounds checking
+                const boundedTarget = new THREE.Vector3(
+                    THREE.MathUtils.clamp(targetPos.x, -40, 40),
+                    THREE.MathUtils.clamp(targetPos.y, -15, 20),
+                    THREE.MathUtils.clamp(targetPos.z, -10, 25)
+                );
+                ikTarget.position.lerp(boundedTarget, 0.12);
             }
 
             if (arm && arm.userData.joints) {
@@ -571,9 +579,13 @@
                 const elbowRot = totalBendRot * 0.6;
                 const midJointRot = totalBendRot * 0.4;
 
-                shoulder.rotation.x = THREE.MathUtils.lerp(shoulder.rotation.x, shoulderTargetRot, 0.1);
-                elbow.rotation.x = THREE.MathUtils.lerp(elbow.rotation.x, elbowRot, 0.1);
-                midJoint.rotation.x = THREE.MathUtils.lerp(midJoint.rotation.x, midJointRot, 0.1);
+                // Enhanced kinematics with smoother interpolation
+                shoulder.rotation.x = THREE.MathUtils.lerp(shoulder.rotation.x, shoulderTargetRot, 0.08);
+                elbow.rotation.x = THREE.MathUtils.lerp(elbow.rotation.x, elbowRot, 0.08);
+                midJoint.rotation.x = THREE.MathUtils.lerp(midJoint.rotation.x, midJointRot, 0.08);
+                
+                // Add subtle wrist rotation for more natural movement
+                wrist.rotation.z = THREE.MathUtils.lerp(wrist.rotation.z, Math.sin(Date.now() * 0.001) * 0.1, 0.05);
 
                 const targetWorldPos = new THREE.Vector3();
                 ikTarget.getWorldPosition(targetWorldPos);
@@ -587,14 +599,13 @@
         let interactionPoints = [];
 
         function setupInteractionPoints() {
-            // Enhanced interaction points with better reach for right-side robot
-            // Robot can now reach any element on the webpage
+            // Enhanced interaction points with better reach across full desk width
             interactionPoints = [
                 { name: 'home', x: 0, y: -5, z: 15 },      // Center, extending forward
-                { name: 'about', x: -20, y: -5, z: 15 },   // Far left, enhanced reach
-                { name: 'projects', x: 20, y: -5, z: 15 }, // Far right, enhanced reach
-                { name: 'skills', x: -15, y: -5, z: 10 },  // Left, enhanced reach
-                { name: 'contact', x: 15, y: -5, z: 10 }   // Right, enhanced reach
+                { name: 'about', x: -30, y: -5, z: 15 },   // Far left, full desk reach
+                { name: 'projects', x: 30, y: -5, z: 15 }, // Far right, full desk reach
+                { name: 'skills', x: -20, y: -5, z: 10 },  // Left, enhanced reach
+                { name: 'contact', x: 20, y: -5, z: 10 }   // Right, enhanced reach
             ];
         }
 
