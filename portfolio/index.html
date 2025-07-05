@@ -1,304 +1,402 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Eric Raymond | AI/ML & Robotics Engineer</title>
-    <meta name="description" content="Portfolio of Eric Raymond, specializing in AI/ML Development and Robotics Engineering.">
-    <meta name="keywords" content="Eric Raymond, AI, ML, Robotics, Developer, Engineer, Portfolio, Frontend, JavaScript, React">
-    <meta name="author" content="Eric Raymond">
-    <meta name="theme-color" content="#000000">
-    
-    <!-- Open Graph / Social -->
-    <meta property="og:title" content="Eric Raymond | AI/ML & Robotics Engineer">
-    <meta property="og:description" content="Portfolio of Eric Raymond, specializing in AI/ML Development and Robotics Engineering.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="https://placehold.co/1200x630.png?text=Eric+Raymond">
-    <meta name="twitter:card" content="summary_large_image">
-    
-    <!-- Performance Optimizations -->
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 7-DOF Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    
-    <!-- Critical CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #007bff;
-            --primary-light: #4da3ff;
-            --text: #ffffff;
-            --text-secondary: #a0aec0;
-            --bg: #000000;
-            --bg-secondary: #111827;
-            --accent: #ff0077;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; /* Prevents scrollbars from the canvas */
+            background-color: #111827; /* bg-gray-900 */
         }
-        
-        #particles-js {
+        #bg-canvas {
             position: fixed;
-            width: 100%;
-            height: 100%;
             top: 0;
             left: 0;
-            z-index: -1;
-            opacity: 0.3;
-        }
-        
-        .container {
             width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
+            height: 100%;
+            z-index: 1; /* Set to be in front of content */
+            pointer-events: none; /* Allows mouse clicks to "pass through" the canvas */
         }
-        
-        /* Hero Section */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: left;
+        .glass-card {
+            background: rgba(22, 22, 29, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .content-wrapper {
             position: relative;
-            overflow: hidden;
-            padding: 2rem 0;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            animation: fadeIn 1s ease-out forwards;
-        }
-        
-        .intro-text {
-            color: var(--primary);
-            font-size: 1.25rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            display: block;
-            opacity: 0;
-            animation: fadeIn 0.6s ease-out 0.2s forwards;
-        }
-        
-        .name-text {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 800;
-            margin: 0 0 1rem;
-            background: linear-gradient(to right, #fff, #a5b4fc);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            animation: fadeIn 0.6s ease-out 0.4s forwards;
-        }
-        
-        .power-statement {
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 600;
-            color: var(--text-secondary);
-            min-height: 3rem;
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: fadeIn 0.6s ease-out 0.6s forwards;
-        }
-        
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.875rem 2rem;
-            font-size: 1.125rem;
-            font-weight: 500;
-            color: white;
-            background: var(--primary);
-            border: 2px solid var(--primary);
-            border-radius: 0.5rem;
-            text-decoration: none;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            opacity: 0;
-            animation: fadeIn 0.6s ease-out 0.8s forwards;
-        }
-        
-        .cta-button:hover {
-            background: transparent;
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(0, 123, 255, 0.2);
-        }
-        
-        .cta-button:active {
-            transform: translateY(0);
-        }
-        
-        @media (max-width: 768px) {
-            .hero-section {
-                text-align: center;
-            }
-            
-            .cta-button {
-                width: 100%;
-                max-width: 300px;
-                margin: 0 auto;
-            }
+            z-index: 0; /* Set to be behind the canvas */
+            width: 100%;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
     </style>
-    
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" as="script">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="stylesheet" href="styles/main.css" media="print" onload="this.media='all'">
-    
-    <!-- Structured Data for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Eric Raymond",
-        "jobTitle": "AI/ML Developer & Robotics Engineer",
-        "url": "https://ericraymond.dev",
-        "sameAs": [
-            "https://github.com/raayraay96",
-            "https://linkedin.com/in/eric-raymond"
-        ]
-    }
-    </script>
 </head>
-<body>
-    <!-- Theme Toggle -->
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" aria-live="polite">
-        <svg class="sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-        <svg class="moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-        <span class="sr-only">Toggle theme</span>
-    </button>
-    
-    <!-- Hero Section with 3D Robotic Arm -->
-    <section class="hero-section" id="home" style="position: relative; overflow: hidden; height: 100vh;">
-        <div id="robotic-arm-scene"></div>
-        <div class="container" style="position: relative; z-index: 2;">
-            <div class="hero-content">
-                <span class="intro-text">Hi, my name is</span>
-                <h1 class="name-text">Eric Raymond.</h1>
-                <h2 id="power-statement" class="power-statement">I build things for the web.</h2>
-                <a href="#projects" class="cta-button cta-button--lg" data-magnetic aria-label="View my work">
-                    <span class="cta-button__text">View My Work</span>
-                    <svg class="cta-button__icon" aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                    <span class="sr-only">(Scroll to projects section)</span>
-                </a>
-            </div>
+<body class="text-white">
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="content-wrapper">
+        <div class="container mx-auto px-6 py-8">
+            
+            <header class="flex justify-between items-center mb-16 md:mb-24">
+                <div class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783-.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                    <span class="text-xl font-bold">ERIC RAYMOND</span>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="hover:text-purple-400 transition-colors">Home</a>
+                    <a href="#about" class="hover:text-purple-400 transition-colors">About</a>
+                    <a href="#projects" class="hover:text-purple-400 transition-colors">Projects</a>
+                    <a href="#skills" class="hover:text-purple-400 transition-colors">Skills</a>
+                    <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
+                </nav>
+                <button class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-5 rounded-lg transition-colors">
+                    Get In Touch
+                </button>
+            </header>
+
+            <main>
+                <h1 class="text-4xl md:text-6xl font-bold mb-4 text-center">AI/ML Systems Engineer</h1>
+                <p class="text-lg md:text-xl text-gray-400 mb-12 text-center max-w-3xl mx-auto">
+                    Specializing in robotics, computer vision, and human-robot interaction.
+                </p>
+
+                <section id="about" class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6 text-center">About Me</h2>
+                    <div class="glass-card rounded-2xl p-6 max-w-4xl mx-auto">
+                        <p class="text-gray-300 mb-4">
+                            I'm pursuing a B.S. in Artificial Intelligence with a Minor in Neuroscience at Purdue University Indianapolis. 
+                            My fascination lies at the intersection of artificial intelligence and human cognition – understanding how 
+                            intelligent systems can interact with and learn from humans.
+                        </p>
+                        <p class="text-gray-300 mb-4">
+                            Currently developing machine learning control algorithms for real-time robotic imitation at the University 
+                            of Wyoming, I've enhanced system responsiveness by 40% using ROS, PyTorch, and OpenCV. My work integrates 
+                            MonoDepth2 algorithms for high spatial accuracy in human-robot interaction.
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                            <div class="text-center p-4 bg-gray-800 rounded-lg">
+                                <span class="text-3xl font-bold text-purple-400 block">40%</span>
+                                <span class="text-sm text-gray-400">System Responsiveness Improvement</span>
+                            </div>
+                            <div class="text-center p-4 bg-gray-800 rounded-lg">
+                                <span class="text-3xl font-bold text-purple-400 block">25%</span>
+                                <span class="text-sm text-gray-400">User Engagement Increase</span>
+                            </div>
+                            <div class="text-center p-4 bg-gray-800 rounded-lg">
+                                <span class="text-3xl font-bold text-purple-400 block">15%</span>
+                                <span class="text-sm text-gray-400">Data Security Enhancement</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="projects" class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Featured Projects</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Robotic Imitation System</h3>
+                            <p class="text-gray-400">Developed ML control algorithms for real-time robotic imitation, enhancing responsiveness by 40% using ROS and PyTorch.</p>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Computer Vision Module</h3>
+                            <p class="text-gray-400">Integrated MonoDepth2 algorithms with OpenCV for high spatial accuracy in human-robot interaction systems.</p>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <h3 class="text-2xl font-bold mb-2 text-purple-300">Interactive AI Interface</h3>
+                            <p class="text-gray-400">Designed responsive AI interfaces for robotic systems, improving user engagement metrics by 25%.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="skills" class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Technical Expertise</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-3 text-purple-300">Programming Languages</h3>
+                            <ul class="text-gray-400 space-y-1">
+                                <li>Python</li>
+                                <li>C++</li>
+                                <li>C#</li>
+                                <li>Java</li>
+                                <li>MATLAB</li>
+                                <li>R</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-3 text-purple-300">AI/Machine Learning</h3>
+                            <ul class="text-gray-400 space-y-1">
+                                <li>PyTorch</li>
+                                <li>OpenCV</li>
+                                <li>Computer Vision</li>
+                                <li>Neural Networks</li>
+                                <li>ROS 1</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-3 text-purple-300">Developer Tools</h3>
+                            <ul class="text-gray-400 space-y-1">
+                                <li>Git</li>
+                                <li>Docker</li>
+                                <li>Google Cloud Platform</li>
+                                <li>Unity</li>
+                                <li>AutoCAD</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-xl font-bold mb-3 text-purple-300">Hardware Systems</h3>
+                            <ul class="text-gray-400 space-y-1">
+                                <li>System Design</li>
+                                <li>Debugging</li>
+                                <li>Embedded Systems</li>
+                                <li>Software Design</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="contact" class="mb-16">
+                    <h2 class="text-3xl font-bold mb-6 text-center">Let's Build Something Amazing</h2>
+                    <div class="glass-card rounded-2xl p-6 max-w-2xl mx-auto">
+                        <div class="text-gray-300 space-y-3 text-center">
+                            <div><strong>Email:</strong> erraymon@iu.edu</div>
+                            <div><strong>Phone:</strong> (317) 835-5211</div>
+                            <div><strong>Location:</strong> Indianapolis, IN</div>
+                            <div class="flex justify-center space-x-6 mt-4">
+                                <a href="https://linkedin.com/in/eric–raymond" target="_blank" class="text-purple-400 hover:text-purple-300">LinkedIn</a>
+                                <a href="https://github.com/raayraay96" target="_blank" class="text-purple-400 hover:text-purple-300">GitHub</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            
+            <footer class="text-center text-gray-500 py-12 mt-16">
+                <p>&copy; 2025 Eric Raymond. All Rights Reserved.</p>
+            </footer>
+
         </div>
-    </section>
+    </div>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects-section">
-        <h2>Projects</h2>
-        <div class="project-grid">
-            <!-- Project cards will be dynamically inserted here -->
-        </div>
-    </section>
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
 
-    <!-- About Me Section -->
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="content">
-                <p>My journey through a B.S. in Artificial Intelligence with a Minor in Neuroscience has fueled a deep interest in not just how systems work, but how they think and interact with humans. I build intelligent systems that bridge the gap between technology and human experience, from robotics to augmented reality.</p>
-            </div>
-        </div>
-    </section>
+    <script type="module">
+        import * as THREE from 'three';
 
-    <!-- Skills Section -->
-    <section id="skills" class="section">
-        <div class="container">
-            <h2 class="section-title">Validated Skills</h2>
-            <div class="content">
-                <h3>Programming Languages</h3>
-                <ul style="list-style-type: none; padding: 0;">
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Python</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">C++</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">C#</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Java</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">MATLAB</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">R</li>
-                </ul>
-                <h3>AI/Machine Learning</h3>
-                <ul style="list-style-type: none; padding: 0;">
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">PyTorch</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">OpenCV</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Computer Vision</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Neural Networks</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">ROS 1</li>
-                </ul>
-                <h3>Developer Tools</h3>
-                <ul style="list-style-type: none; padding: 0;">
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Git</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Docker</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Google Cloud Platform (GCP)</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Unity</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">AutoCAD</li>
-                </ul>
-                <h3>Hardware Systems</h3>
-                <ul style="list-style-type: none; padding: 0;">
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">System Design</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Debugging</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Embedded Systems</li>
-                    <li style="display: inline-block; margin-right: 1rem; margin-bottom: 0.5rem; background: var(--bg-secondary); padding: 0.5rem 1rem; border-radius: 0.5rem;">Software Design</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        let scene, camera, renderer;
+        let arm, ikTarget;
+        const mouse = new THREE.Vector2();
 
+        function init() {
+            scene = new THREE.Scene();
+            // UPDATED: Camera pushed back to accommodate the larger robot
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 16, 50);
 
+            const canvas = document.getElementById('bg-canvas');
+            renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    <!-- Scripts loaded in order -->
-    <!-- Three.js for 3D Robotic Arm -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.min.js"></script>
-    <!-- Main JavaScript -->
-    <script src="js/main.js"></script>
-    <!-- Other scripts (can be deferred) -->
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
-    <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js" defer></script>
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            const pointLight = new THREE.PointLight(0xffffff, 0.5);
+            pointLight.position.set(10, 20, 10);
+            scene.add(pointLight);
+
+            ikTarget = new THREE.Object3D();
+            scene.add(ikTarget);
+
+            arm = create7DofArm();
+            scene.add(arm);
+            // UPDATED: Arm position adjusted for the new scale
+            arm.position.set(12, -20, 0);
+
+            window.addEventListener('resize', onWindowResize, false);
+            window.addEventListener('mousemove', onMouseMove, false);
+
+            animate();
+        }
+
+        function create7DofArm() {
+            const armGroup = new THREE.Group();
+
+            // NEW: Scale factor to easily adjust the robot's size
+            const scale = 2.0;
+
+            const bodyMaterial = new THREE.MeshStandardMaterial({
+                color: 0x2d3748,
+                metalness: 0.6,
+                roughness: 0.8,
+            });
+            const ringMaterial = new THREE.MeshStandardMaterial({
+                color: 0xdd6b20,
+                roughness: 0.4,
+            });
+
+            // UPDATED: All arm lengths multiplied by the scale factor
+            const armLength1 = 9 * scale;
+            const armLength2 = 4 * scale;
+            const armLength3 = 4 * scale;
+            const totalForearmLength = armLength2 + armLength3;
+
+            function createJoint(radius, ringThickness) {
+                const jointGroup = new THREE.Group();
+                const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius, 20, 20), bodyMaterial);
+                const ring = new THREE.Mesh(
+                    new THREE.TorusGeometry(radius, ringThickness, 8, 32),
+                    ringMaterial
+                );
+                ring.rotation.x = Math.PI / 2;
+                jointGroup.add(sphere);
+                jointGroup.add(ring);
+                return jointGroup;
+            }
+
+            // UPDATED: All geometry and positions are now scaled
+            const base = new THREE.Mesh(new THREE.CylinderGeometry(2.5 * scale, 3.5 * scale, 1.5 * scale, 32), bodyMaterial);
+            const baseRing = new THREE.Mesh(new THREE.TorusGeometry(2.5 * scale, 0.2 * scale, 8, 32), ringMaterial);
+            baseRing.rotation.x = Math.PI / 2;
+            baseRing.position.y = 0.75 * scale;
+            base.add(baseRing);
+            armGroup.add(base);
+
+            const shoulder = new THREE.Group();
+            shoulder.position.y = 0.75 * scale;
+            base.add(shoulder);
+            shoulder.add(createJoint(1.5 * scale, 0.2 * scale));
+
+            const upperArm = new THREE.Group();
+            shoulder.add(upperArm);
+            const upperArmMesh = new THREE.Mesh(new THREE.CylinderGeometry(1.2 * scale, 0.9 * scale, armLength1, 20), bodyMaterial);
+            upperArmMesh.position.y = armLength1 / 2;
+            upperArm.add(upperArmMesh);
+
+            const elbow = new THREE.Group();
+            elbow.position.y = armLength1;
+            upperArm.add(elbow);
+            elbow.add(createJoint(1.1 * scale, 0.2 * scale));
+            
+            const forearm1 = new THREE.Group();
+            elbow.add(forearm1);
+            const forearm1Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.9 * scale, 0.8 * scale, armLength2, 20), bodyMaterial);
+            forearm1Mesh.position.y = armLength2 / 2;
+            forearm1.add(forearm1Mesh);
+
+            const midJoint = new THREE.Group();
+            midJoint.position.y = armLength2;
+            forearm1.add(midJoint);
+            midJoint.add(createJoint(0.9 * scale, 0.15 * scale));
+
+            const forearm2 = new THREE.Group();
+            midJoint.add(forearm2);
+            const forearm2Mesh = new THREE.Mesh(new THREE.CylinderGeometry(0.8 * scale, 0.7 * scale, armLength3, 20), bodyMaterial);
+            forearm2Mesh.position.y = armLength3 / 2;
+            forearm2.add(forearm2Mesh);
+
+            const wrist = new THREE.Group();
+            wrist.position.y = armLength3;
+            forearm2.add(wrist);
+            wrist.add(createJoint(0.8 * scale, 0.15 * scale));
+
+            const endEffector = new THREE.Mesh(new THREE.CylinderGeometry(0.6 * scale, 0.6 * scale, 1 * scale, 20), bodyMaterial);
+            endEffector.position.y = 0.5 * scale;
+            const endRing = new THREE.Mesh(new THREE.TorusGeometry(0.6 * scale, 0.1 * scale, 8, 32), ringMaterial);
+            endRing.rotation.x = Math.PI / 2;
+            endRing.position.y = 0.5 * scale;
+            endEffector.add(endRing);
+            wrist.add(endEffector);
+            
+            armGroup.userData.joints = { base, shoulder, elbow, midJoint, wrist };
+            armGroup.userData.armLengths = { l1: armLength1, l2: totalForearmLength };
+
+            return armGroup;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+        
+        const raycaster = new THREE.Raycaster();
+        const targetPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); 
+        const targetPos = new THREE.Vector3();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            raycaster.setFromCamera(mouse, camera);
+            raycaster.ray.intersectPlane(targetPlane, targetPos);
+            ikTarget.position.lerp(targetPos, 0.1);
+
+            if (arm && arm.userData.joints) {
+                const { base, shoulder, elbow, midJoint, wrist } = arm.userData.joints;
+                const { l1, l2 } = arm.userData.armLengths;
+                
+                const localTarget = arm.worldToLocal(ikTarget.position.clone());
+                const angleY = Math.atan2(localTarget.x, localTarget.z);
+                base.rotation.y = THREE.MathUtils.lerp(base.rotation.y, angleY, 0.1);
+                
+                const y = localTarget.y - shoulder.position.y;
+                const flatDist = Math.sqrt(localTarget.x * localTarget.x + localTarget.z * localTarget.z);
+                const dist = Math.sqrt(flatDist * flatDist + y * y);
+
+                let shoulderTargetRot, totalBendRot;
+
+                if (dist > l1 + l2) {
+                    shoulderTargetRot = Math.atan2(y, flatDist);
+                    totalBendRot = 0;
+                } else {
+                    const a1 = Math.atan2(y, flatDist);
+                    const cos_a2 = THREE.MathUtils.clamp((dist * dist + l1 * l1 - l2 * l2) / (2 * dist * l1), -1, 1);
+                    const a2 = Math.acos(cos_a2);
+                    shoulderTargetRot = a1 + a2;
+
+                    const cos_b = THREE.MathUtils.clamp((l1 * l1 + l2 * l2 - dist * dist) / (2 * l1 * l2), -1, 1);
+                    totalBendRot = Math.acos(cos_b) - Math.PI;
+                }
+
+                shoulderTargetRot = THREE.MathUtils.clamp(shoulderTargetRot, -Math.PI / 2, Math.PI / 2);
+                totalBendRot = THREE.MathUtils.clamp(totalBendRot, -Math.PI * 0.9, 0);
+
+                const elbowRot = totalBendRot * 0.6;
+                const midJointRot = totalBendRot * 0.4;
+
+                shoulder.rotation.x = THREE.MathUtils.lerp(shoulder.rotation.x, shoulderTargetRot, 0.1);
+                elbow.rotation.x = THREE.MathUtils.lerp(elbow.rotation.x, elbowRot, 0.1);
+                midJoint.rotation.x = THREE.MathUtils.lerp(midJoint.rotation.x, midJointRot, 0.1);
+
+                const targetWorldPos = new THREE.Vector3();
+                ikTarget.getWorldPosition(targetWorldPos);
+                wrist.lookAt(targetWorldPos);
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+
 </body>
 </html>
