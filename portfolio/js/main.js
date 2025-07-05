@@ -52,7 +52,7 @@ function initThemeToggle() {
 }
 
 /**
- * Initialize 3D Robotic Arm Scene with Three.js
+ * Initialize 3D Robotic Arm Scene with Three.js and Inverse Kinematics
  */
 function initRoboticArmScene() {
     if (typeof THREE === 'undefined') {
@@ -68,121 +68,295 @@ function initRoboticArmScene() {
 
     // Scene setup
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
     // Set camera position
-    camera.position.set(0, 5, 10);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(0, 3, 15);
+    camera.lookAt(0, 3, 0);
 
-    // Add lighting for dramatic effect
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+    // Add lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1);
-    keyLight.position.set(5, 10, 5);
-    keyLight.lookAt(0, 0, 0);
-    scene.add(keyLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 10, 7);
+    directionalLight.castShadow = true;
+    scene.add(directionalLight);
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.7);
-    fillLight.position.set(-5, 8, -5);
-    fillLight.lookAt(0, 0, 0);
-    scene.add(fillLight);
-
-    const rimLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    rimLight.position.set(0, 5, -10);
-    rimLight.lookAt(0, 0, 0);
-    scene.add(rimLight);
-
-    // Create a simple robotic arm placeholder (cylinders to simulate arm parts)
+    // Create arm parts with proper hierarchy
     const armGroup = new THREE.Group();
+    armGroup.position.y = 0;
+
+    // Materials
+    const metalMaterial = new THREE.MeshPhongMaterial({
+        color: 0x555555,
+        shininess: 100,
+        flatShading: true
+    });
+
+    const accentMaterial = new THREE.MeshPhongMaterial({
+        color: 0x1e88e5,
+        shininess: 50,
+        flatShading: true
+    });
 
     // Base
-    const baseGeometry = new THREE.CylinderGeometry(1, 2, 1, 32);
-    const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333, shininess: 100 });
-    const base = new THREE.Mesh(baseGeometry, baseMaterial);
-    base.position.y = 0.5;
+    const base = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.2, 1.5, 0.8, 32),
+        metalMaterial
+    );
+    base.rotation.x = Math.PI / 2;
+    base.position.y = 0.4;
     armGroup.add(base);
 
-    // Lower arm
-    const lowerArmGeometry = new THREE.CylinderGeometry(0.3, 0.5, 3, 32);
-    const lowerArmMaterial = new THREE.MeshPhongMaterial({ color: 0x555555, shininess: 100 });
-    const lowerArm = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
-    lowerArm.position.y = 2;
-    armGroup.add(lowerArm);
+    // Shoulder (rotation point for entire arm)
+    const shoulder = new THREE.Group();
+    shoulder.position.y = 0.8;
+    armGroup.add(shoulder);
 
     // Upper arm
-    const upperArmGeometry = new THREE.CylinderGeometry(0.3, 0.5, 2, 32);
-    const upperArm = new THREE.Mesh(upperArmGeometry, lowerArmMaterial);
-    upperArm.position.y = 4;
-    armGroup.add(upperArm);
+    const upperArm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.25, 0.3, 3, 8),
+        accentMaterial
+    );
+    upperArm.rotation.z = Math.PI / 2;
+    upperArm.position.y = 1.5;
+    shoulder.add(upperArm);
 
-    // Gripper
-    const gripperGeometry = new THREE.BoxGeometry(0.2, 0.2, 1);
-    const gripperMaterial = new THREE.MeshPhongMaterial({ color: 0x777777, shininess: 100 });
-    const gripper = new THREE.Mesh(gripperGeometry, gripperMaterial);
-    gripper.position.y = 5;
-    gripper.position.z = 0.5;
-    armGroup.add(gripper);
+    // Elbow joint
+    const elbow = new THREE.Group();
+    elbow.position.set(3, 0, 0);
+    upperArm.add(elbow);
 
+    // Lower arm
+    const lowerArm = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.2, 0.25, 2.5, 8),
+        metalMaterial
+    );
+    lowerArm.rotation.z = Math.PI / 2;
+    lowerArm.position.x = 1.25;
+    elbow.add(lowerArm);
+
+    // Wrist joint
+    const wrist = new THREE.Group();
+    wrist.position.set(2.5, 0, 0);
+    lowerArm.add(wrist);
+
+    // Gripper (two fingers)
+    const gripperGroup = new THREE.Group();
+    
+    const gripperBase = new THREE.Mesh(
+        new THREE.BoxGeometry(0.5, 0.3, 0.3),
+        accentMaterial
+    );
+    gripperGroup.add(gripperBase);
+    
+    // Left finger
+    const leftFinger = new THREE.Mesh(
+        new THREE.BoxGeometry(0.15, 0.15, 0.8),
+        metalMaterial
+    );
+    leftFinger.position.set(0.15, 0, 0.3);
+    gripperGroup.add(leftFinger);
+    
+    // Right finger
+    const rightFinger = leftFinger.clone();
+    rightFinger.position.z = -0.3;
+    gripperGroup.add(rightFinger);
+    
+    // Position gripper
+    gripperGroup.position.set(0.5, 0, 0);
+    gripperGroup.rotation.z = -Math.PI / 2;
+    wrist.add(gripperGroup);
+
+    // Add to scene
     scene.add(armGroup);
 
+    // Raycaster for interaction
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    
+    // Track mouse position
+    const targetPosition = new THREE.Vector3(4, 3, 0);
+    const currentPosition = new THREE.Vector3();
+    
+    // Track hovered elements
+    let hoveredElement = null;
+    let isClicking = false;
+
+    // Handle mouse move
+    function onMouseMove(event) {
+        // Normalize mouse position to -1 to 1
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        
+        // Update target position for arm
+        const x = (mouse.x * 8);
+        const y = (mouse.y * 4) + 3; // Offset Y to keep arm visible
+        targetPosition.set(x, y, 0);
+        
+        // Check for hovered elements
+        checkIntersections();
+    }
+
+    // Check for intersections with clickable elements
+    function checkIntersections() {
+        // Reset previous hover
+        if (hoveredElement) {
+            hoveredElement.classList.remove('arm-hover');
+            hoveredElement = null;
+        }
+        
+        // Check for navigation items
+        const navItems = document.querySelectorAll('a[href^="#"], button, .project-card');
+        const elements = [];
+        
+        navItems.forEach(item => {
+            if (item.offsetParent !== null) { // Only visible elements
+                const rect = item.getBoundingClientRect();
+                elements.push({
+                    element: item,
+                    left: rect.left,
+                    top: rect.top,
+                    right: rect.right,
+                    bottom: rect.bottom,
+                    width: rect.width,
+                    height: rect.height
+                });
+            }
+        });
+        
+        // Check if mouse is over any element
+        for (const element of elements) {
+            if (
+                mouse.x >= (element.left / window.innerWidth) * 2 - 1 &&
+                mouse.x <= (element.right / window.innerWidth) * 2 - 1 &&
+                mouse.y >= -((element.bottom / window.innerHeight) * 2 - 1) &&
+                mouse.y <= -((element.top / window.innerHeight) * 2 - 1)
+            ) {
+                hoveredElement = element.element;
+                hoveredElement.classList.add('arm-hover');
+                break;
+            }
+        }
+    }
+    
+    // Handle click
+    function onClick() {
+        if (hoveredElement && !isClicking) {
+            isClicking = true;
+            
+            // Animate gripper close
+            const leftFinger = gripperGroup.children[1];
+            const rightFinger = gripperGroup.children[2];
+            
+            // Close gripper
+            leftFinger.position.z = 0.4;
+            rightFinger.position.z = -0.4;
+            
+            // Trigger click after a short delay
+            setTimeout(() => {
+                if (hoveredElement.tagName === 'A' || hoveredElement.tagName === 'BUTTON') {
+                    hoveredElement.click();
+                } else if (hoveredElement.closest('a, button')) {
+                    hoveredElement.closest('a, button').click();
+                }
+                
+                // Open gripper
+                leftFinger.position.z = 0.3;
+                rightFinger.position.z = -0.3;
+                isClicking = false;
+            }, 300);
+        }
+    }
+
+    // Inverse Kinematics function
+    function updateArmIK(target) {
+        const upperArm = shoulder.children[0];
+        const lowerArm = upperArm.children[0].children[0];
+        const wrist = lowerArm.parent;
+        
+        // Arm lengths
+        const upperArmLength = 3;
+        const lowerArmLength = 2.5;
+        
+        // Convert target to local space
+        const localTarget = new THREE.Vector3();
+        localTarget.copy(target);
+        shoulder.worldToLocal(localTarget);
+        
+        // Calculate distance to target
+        const dx = localTarget.x;
+        const dy = localTarget.y - 0.8; // Adjust for shoulder height
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Check if target is reachable
+        if (distance > 0) {
+            // Calculate angles using law of cosines
+            const a = upperArmLength;
+            const b = lowerArmLength;
+            const c = Math.min(distance, a + b - 0.1); // Prevent over-extension
+            
+            const cosAngle0 = (a * a + c * c - b * b) / (2 * a * c);
+            const angle0 = Math.acos(Math.max(-1, Math.min(1, cosAngle0)));
+            
+            const angle1 = Math.atan2(dy, dx);
+            const angle2 = Math.atan2(localTarget.y - 0.8 - a * Math.sin(angle1 + angle0), 
+                                    localTarget.x - a * Math.cos(angle1 + angle0));
+            
+            // Apply rotations
+            shoulder.rotation.z = angle1 + angle0 - Math.PI / 2;
+            elbow.rotation.z = angle2 - angle0 - angle1;
+            
+            // Rotate wrist to point at target
+            if (wrist) {
+                wrist.rotation.z = -elbow.rotation.z - shoulder.rotation.z - Math.PI / 2;
+            }
+        }
+    }
+
     // Handle window resize
-    window.addEventListener('resize', () => {
+    function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    // Mouse position for arm movement
-    let mouseX = 0;
-    let mouseY = 0;
-
-    container.addEventListener('mousemove', (e) => {
-        // Convert mouse position to 3D space
-        mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-        mouseY = 1 - (e.clientY / window.innerHeight); // Invert Y for intuitive control
-    });
-
-    // Navigation click events on arm parts (simplified for placeholder)
-    container.addEventListener('click', (e) => {
-        // For simplicity, this is a placeholder. In a full implementation, raycasting would detect specific parts.
-        // Here, we'll simulate clicking the gripper if near the top of the screen, base if near bottom.
-        const clickY = e.clientY / window.innerHeight;
-        if (clickY < 0.3) {
-            // Simulate clicking gripper -> go to projects
-            window.scrollTo({
-                top: document.getElementById('projects').offsetTop - 80,
-                behavior: 'smooth'
-            });
-        } else if (clickY > 0.7) {
-            // Simulate clicking base -> go to about (assuming there will be an about section)
-            const aboutSection = document.querySelector('#about') || document.querySelector('#projects');
-            if (aboutSection) {
-                window.scrollTo({
-                    top: aboutSection.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-            }
-        }
-    });
+    }
 
     // Animation loop
     function animate() {
         requestAnimationFrame(animate);
-
-        // Rotate arm based on mouse position (simplified movement)
-        armGroup.rotation.y = mouseX * Math.PI / 2;
-        lowerArm.rotation.x = (mouseY - 0.5) * Math.PI / 2;
-        upperArm.rotation.x = (mouseY - 0.5) * Math.PI / 4;
-
+        
+        // Smoothly interpolate to target position
+        currentPosition.lerp(targetPosition, 0.1);
+        
+        // Update arm IK
+        updateArmIK(currentPosition);
+        
+        // Rotate base slightly based on mouse X position
+        armGroup.rotation.y = mouse.x * 0.5;
+        
         renderer.render(scene, camera);
     }
 
+    // Event listeners
+    window.addEventListener('mousemove', onMouseMove, false);
+    window.addEventListener('click', onClick, false);
+    window.addEventListener('resize', onWindowResize, false);
+    
+    // Start animation
     animate();
+    
+    // Cleanup function
+    return () => {
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('click', onClick);
+        window.removeEventListener('resize', onWindowResize);
+        container.removeChild(renderer.domElement);
+    };
 }
 
 /**
