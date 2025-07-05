@@ -64,10 +64,14 @@ function initThemeToggle() {
  * Initialize 3D Robotic Arm Scene with Three.js and Inverse Kinematics
  */
 function initRoboticArmScene() {
+    console.log('Initializing robotic arm scene...');
+    
     if (typeof THREE === 'undefined') {
         console.error('Three.js is not loaded. Cannot initialize 3D scene.');
         return;
     }
+    
+    console.log('Three.js version:', THREE.REVISION);
 
     const container = document.getElementById('robotic-arm-scene');
     if (!container) {
@@ -78,10 +82,24 @@ function initRoboticArmScene() {
     // Scene setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    
+    // Create renderer with alpha and antialiasing
+    const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: 'high-performance'
+    });
+    
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0); // Transparent background
+    
+    // Add the renderer to the container
+    container.innerHTML = ''; // Clear any existing content
     container.appendChild(renderer.domElement);
+    
+    // Debug: Add border to canvas for visibility
+    renderer.domElement.style.border = '1px solid red'; // Temporary for debugging
 
     // Set camera position
     camera.position.set(0, 3, 15);
@@ -184,6 +202,10 @@ function initRoboticArmScene() {
 
     // Add to scene
     scene.add(armGroup);
+    
+    console.log('Robotic arm added to scene');
+    console.log('Renderer:', renderer);
+    console.log('Camera:', camera);
 
     // Raycaster for interaction
     const raycaster = new THREE.Raycaster();
@@ -336,6 +358,7 @@ function initRoboticArmScene() {
     }
 
     // Animation loop
+    let frameCount = 0;
     function animate() {
         requestAnimationFrame(animate);
         
@@ -349,6 +372,22 @@ function initRoboticArmScene() {
         armGroup.rotation.y = mouse.x * 0.5;
         
         renderer.render(scene, camera);
+        
+        // Log first few frames for debugging
+        if (frameCount < 5) {
+            console.log(`Frame ${frameCount}:`, {
+                renderer,
+                scene: {
+                    children: scene.children.length,
+                    position: scene.position
+                },
+                camera: {
+                    position: camera.position,
+                    rotation: camera.rotation
+                }
+            });
+            frameCount++;
+        }
     }
 
     // Event listeners

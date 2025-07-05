@@ -951,26 +951,21 @@ body.theme-transitions {
 }
 
 #robotic-arm-scene {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 1 !important;
-    visibility: visible !important;
-    background-color: transparent !important;
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+    background-color: transparent;
 }
 
 #robotic-arm-scene canvas {
     display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
     width: 100% !important;
     height: 100% !important;
-    z-index: 1000;
 }
 
 /* Make sure clickable elements have proper stacking context */

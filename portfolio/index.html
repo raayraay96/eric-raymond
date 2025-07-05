@@ -213,10 +213,10 @@
     </button>
     
     <!-- Hero Section with 3D Robotic Arm -->
-    <section class="hero-section" id="home">
-        <div id="robotic-arm-scene" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></div>
-        <div class="container">
-            <div class="hero-content" style="z-index: 2; background: rgba(var(--bg-rgb), 0.7);">
+    <section class="hero-section" id="home" style="position: relative; overflow: hidden; height: 100vh;">
+        <div id="robotic-arm-scene"></div>
+        <div class="container" style="position: relative; z-index: 2;">
+            <div class="hero-content">
                 <span class="intro-text">Hi, my name is</span>
                 <h1 class="name-text">Eric Raymond.</h1>
                 <h2 id="power-statement" class="power-statement">I build things for the web.</h2>
