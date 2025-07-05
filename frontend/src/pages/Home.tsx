@@ -180,7 +180,7 @@ const Home = () => {
 
         {/* Right Side - 3D Robotic Arm */}
         <motion.div 
-          className="flex-1 relative h-screen max-w-2xl"
+          className="flex-1 relative h-screen max-w-2xl z-20"
           style={{ y: y2 }}
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
@@ -248,7 +248,7 @@ const Home = () => {
           
           <div className="grid lg:grid-cols-2 gap-8">
             <motion.div 
-              className="group relative p-8 bg-slate-900/30 backdrop-blur-sm border border-slate-700/50 rounded-3xl hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105"
+              className="group relative p-8 bg-slate-900/30 backdrop-filter backdrop-blur-lg border border-solid border-white/20 rounded-3xl hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105"
               whileHover={{ y: -10 }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -258,16 +258,18 @@ const Home = () => {
                 </div>
                 <h4 className="text-2xl font-bold text-white mb-4">University of Wyoming REU</h4>
                 <p className="text-gray-400 leading-relaxed mb-4">
-                  Developed machine learning control algorithms for real-time robotic imitation, 
-                  enhancing system responsiveness by 40%. Integrated MonoDepth2 algorithms for 
-                  advanced depth perception and human motion mimicking.
+                  Significantly enhancing system responsiveness and used MonoDepth2 algorithms to generate real-time depth maps.
                 </p>
-                <div className="text-blue-400 font-semibold">40% Performance Improvement</div>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full">PyTorch</span>
+                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs font-semibold rounded-full">GCP</span>
+                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs font-semibold rounded-full">Unity</span>
+                </div>
               </div>
             </motion.div>
             
             <motion.div 
-              className="group relative p-8 bg-slate-900/30 backdrop-blur-sm border border-slate-700/50 rounded-3xl hover:border-green-500/50 transition-all duration-500 hover:transform hover:scale-105"
+              className="group relative p-8 bg-slate-900/30 backdrop-filter backdrop-blur-lg border border-solid border-white/20 rounded-3xl hover:border-green-500/50 transition-all duration-500 hover:transform hover:scale-105"
               whileHover={{ y: -10 }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-green-600/10 to-cyan-600/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -277,11 +279,13 @@ const Home = () => {
                 </div>
                 <h4 className="text-2xl font-bold text-white mb-4">AR Research Assistant</h4>
                 <p className="text-gray-400 leading-relaxed mb-4">
-                  Developed \"Nano Vision\" AR application using Unity and C#, creating interactive 
-                  educational modules with ARKit. Designed accessibility features for inclusive 
-                  STEM education for learners with physical disabilities.
+                  Reduced latency by 15% through strategic architectural re-design.
                 </p>
-                <div className="text-green-400 font-semibold">25% Engagement Increase</div>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full">PyTorch</span>
+                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs font-semibold rounded-full">GCP</span>
+                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs font-semibold rounded-full">Unity</span>
+                </div>
               </div>
             </motion.div>
           </div>
