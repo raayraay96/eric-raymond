@@ -363,6 +363,219 @@
             scene.add(particles);
         }
 
+        function createProjectElements() {
+            // EPIC project showcase elements scattered around the scene
+            
+            // 1. Lithium Battery Cells for Electric Motorcycle
+            const batteryGroup = new THREE.Group();
+            for (let i = 0; i < 6; i++) {
+                const batteryGeometry = new THREE.CylinderGeometry(0.8, 0.8, 4, 16);
+                const batteryMaterial = new THREE.MeshStandardMaterial({
+                    color: isMobile ? 0x1e40af : 0x2563eb, // Blue battery casing
+                    metalness: 0.8,
+                    roughness: 0.3,
+                    emissive: new THREE.Color(0x1e3a8a),
+                    emissiveIntensity: 0.1
+                });
+                const battery = new THREE.Mesh(batteryGeometry, batteryMaterial);
+                
+                // Arrange batteries in a pack formation
+                const row = Math.floor(i / 3);
+                const col = i % 3;
+                battery.position.set((col - 1) * 2, -8 + row * 1.5, -15);
+                battery.rotation.z = Math.PI / 2; // Horizontal orientation
+                
+                // Add positive terminal (red)
+                const terminalGeometry = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 8);
+                const terminalMaterial = new THREE.MeshStandardMaterial({
+                    color: 0xff0000,
+                    emissive: new THREE.Color(0x660000),
+                    emissiveIntensity: 0.3
+                });
+                const terminal = new THREE.Mesh(terminalGeometry, terminalMaterial);
+                terminal.position.set(2.2, 0, 0);
+                battery.add(terminal);
+                
+                batteryGroup.add(battery);
+            }
+            scene.add(batteryGroup);
+            
+            // 2. Neural Network Visualization for AI Projects
+            const neuralNetGroup = new THREE.Group();
+            const nodeCount = 12;
+            const nodes = [];
+            
+            for (let i = 0; i < nodeCount; i++) {
+                const nodeGeometry = new THREE.SphereGeometry(0.3, 8, 8);
+                const nodeMaterial = new THREE.MeshStandardMaterial({
+                    color: isMobile ? 0x10b981 : 0x34d399, // Green nodes
+                    emissive: new THREE.Color(0x065f46),
+                    emissiveIntensity: 0.4,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const node = new THREE.Mesh(nodeGeometry, nodeMaterial);
+                
+                // Arrange in layers (input, hidden, output)
+                const layer = Math.floor(i / 4);
+                const nodeInLayer = i % 4;
+                node.position.set(
+                    15 + layer * 4, 
+                    -5 + (nodeInLayer - 1.5) * 2, 
+                    -10
+                );
+                
+                nodes.push(node);
+                neuralNetGroup.add(node);
+                
+                // Add connections between layers
+                if (layer > 0) {
+                    for (let j = 0; j < 4; j++) {
+                        const prevNodeIndex = (layer - 1) * 4 + j;
+                        if (prevNodeIndex < i) {
+                            // Create connection line
+                            const points = [];
+                            points.push(nodes[prevNodeIndex].position.clone());
+                            points.push(node.position.clone());
+                            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                            const material = new THREE.LineBasicMaterial({
+                                color: 0x00ffdd,
+                                transparent: true,
+                                opacity: 0.3
+                            });
+                            const line = new THREE.Line(geometry, material);
+                            neuralNetGroup.add(line);
+                        }
+                    }
+                }
+            }
+            scene.add(neuralNetGroup);
+            
+            // 3. AR/VR Headset for Nano Vision Project
+            const headsetGroup = new THREE.Group();
+            
+            // Main headset body
+            const headsetGeometry = new THREE.BoxGeometry(6, 3, 4);
+            const headsetMaterial = new THREE.MeshStandardMaterial({
+                color: isMobile ? 0x374151 : 0x1f2937, // Dark gray
+                metalness: 0.7,
+                roughness: 0.2,
+                emissive: new THREE.Color(0x111827),
+                emissiveIntensity: 0.05
+            });
+            const headset = new THREE.Mesh(headsetGeometry, headsetMaterial);
+            
+            // Add lenses (cyan glow)
+            const lensGeometry = new THREE.CircleGeometry(0.8, 16);
+            const lensMaterial = new THREE.MeshStandardMaterial({
+                color: 0x00ffdd,
+                emissive: new THREE.Color(0x00ffdd),
+                emissiveIntensity: 0.6,
+                transparent: true,
+                opacity: 0.7
+            });
+            
+            const leftLens = new THREE.Mesh(lensGeometry, lensMaterial);
+            leftLens.position.set(-1, 0, 2.1);
+            headset.add(leftLens);
+            
+            const rightLens = new THREE.Mesh(lensGeometry, lensMaterial);
+            rightLens.position.set(1, 0, 2.1);
+            headset.add(rightLens);
+            
+            headset.position.set(-20, 5, -8);
+            headset.rotation.y = Math.PI / 6;
+            headsetGroup.add(headset);
+            scene.add(headsetGroup);
+            
+            // 4. Floating Code Fragments for Programming Projects
+            const codeFragments = [
+                'PyTorch', 'OpenCV', 'ROS', 'Unity', 'GCP', 'Docker', 'ARKit', 'C++', 'Python'
+            ];
+            
+            codeFragments.forEach((text, index) => {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                canvas.width = 256;
+                canvas.height = 64;
+                
+                context.fillStyle = 'rgba(0, 255, 221, 0.8)';
+                context.font = '24px Arial';
+                context.textAlign = 'center';
+                context.fillText(text, 128, 40);
+                
+                const texture = new THREE.CanvasTexture(canvas);
+                const spriteMaterial = new THREE.SpriteMaterial({ 
+                    map: texture,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const sprite = new THREE.Sprite(spriteMaterial);
+                
+                // Random positioning around the scene
+                sprite.position.set(
+                    (Math.random() - 0.5) * 80,
+                    Math.random() * 20 + 5,
+                    (Math.random() - 0.5) * 40
+                );
+                sprite.scale.set(4, 1, 1);
+                
+                scene.add(sprite);
+                
+                // Store for animation
+                sprite.userData = { 
+                    originalY: sprite.position.y,
+                    floatSpeed: 0.5 + Math.random() * 0.5
+                };
+            });
+            
+            // 5. CPU/GPU Chips for ML Processing
+            const chipGroup = new THREE.Group();
+            for (let i = 0; i < 3; i++) {
+                const chipGeometry = new THREE.BoxGeometry(2, 0.2, 2);
+                const chipMaterial = new THREE.MeshStandardMaterial({
+                    color: 0x059669, // Emerald green
+                    metalness: 0.9,
+                    roughness: 0.1,
+                    emissive: new THREE.Color(0x047857),
+                    emissiveIntensity: 0.2
+                });
+                const chip = new THREE.Mesh(chipGeometry, chipMaterial);
+                chip.position.set(-10 + i * 3, -9, 8);
+                
+                // Add pins
+                for (let j = 0; j < 16; j++) {
+                    const pinGeometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
+                    const pinMaterial = new THREE.MeshStandardMaterial({
+                        color: 0xfbbf24, // Gold pins
+                        metalness: 1.0,
+                        roughness: 0.0
+                    });
+                    const pin = new THREE.Mesh(pinGeometry, pinMaterial);
+                    const side = Math.floor(j / 4);
+                    const pinIndex = j % 4;
+                    
+                    if (side < 2) {
+                        pin.position.set(
+                            side === 0 ? -1.1 : 1.1,
+                            -0.3,
+                            -0.6 + pinIndex * 0.4
+                        );
+                    } else {
+                        pin.position.set(
+                            -0.6 + pinIndex * 0.4,
+                            -0.3,
+                            side === 2 ? -1.1 : 1.1
+                        );
+                    }
+                    chip.add(pin);
+                }
+                
+                chipGroup.add(chip);
+            }
+            scene.add(chipGroup);
+        }
+
         function init() {
             scene = new THREE.Scene();
             // No background color - let CSS background show through
@@ -437,6 +650,9 @@
             if (!isMobile) {
                 createParticleSystem();
             }
+            
+            // Add project showcase elements
+            createProjectElements();
 
             // Create the desk and monitor for hyperrealistic scene
             createDeskAndMonitor();
@@ -762,6 +978,10 @@
             // Recreate scene if device type changed
             if (wasMobile !== isMobile) {
                 scene.clear();
+                if (!isMobile) {
+                    createParticleSystem();
+                }
+                createProjectElements();
                 createDeskAndMonitor();
                 arm = create7DofArm();
                 scene.add(arm);
@@ -889,6 +1109,14 @@
                     const particlePulse = Math.sin(time * 2) * 0.3 + 0.7;
                     particles.material.opacity = particlePulse * 0.6;
                 }
+                
+                // Animate floating code fragments
+                scene.traverse((object) => {
+                    if (object instanceof THREE.Sprite && object.userData.floatSpeed) {
+                        object.position.y = object.userData.originalY + Math.sin(time * object.userData.floatSpeed) * 2;
+                        object.rotation.z = Math.sin(time * 0.5) * 0.1;
+                    }
+                });
 
                 const targetWorldPos = new THREE.Vector3();
                 ikTarget.getWorldPosition(targetWorldPos);
