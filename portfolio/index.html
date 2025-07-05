@@ -231,8 +231,8 @@
             
             arm = create7DofArm();
             scene.add(arm);
-            // Position the arm to rest on the desk
-            arm.position.set(15, -10, 5);
+            // Position the arm on the right side of the desk
+            arm.position.set(25, -10, 5);
 
             // Define interaction points on the monitor corresponding to portfolio sections
             setupInteractionPoints();
@@ -244,10 +244,10 @@
         }
 
         function createDeskAndMonitor() {
-            // Worn wooden desk with detailed texture
+            // Enhanced wooden desk with realistic texture
             const deskGeometry = new THREE.BoxGeometry(60, 2, 30);
             const deskMaterial = new THREE.MeshStandardMaterial({
-                color: 0x4a2f10,
+                color: 0x8B4513,
                 roughness: 0.8,
                 metalness: 0.1,
                 bumpScale: 0.5
@@ -255,6 +255,63 @@
             const desk = new THREE.Mesh(deskGeometry, deskMaterial);
             desk.position.set(0, -12, 0);
             scene.add(desk);
+
+            // Desk legs for more realism
+            const legGeometry = new THREE.BoxGeometry(1, 8, 1);
+            const legMaterial = new THREE.MeshStandardMaterial({
+                color: 0x654321,
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            
+            // Four desk legs
+            const leg1 = new THREE.Mesh(legGeometry, legMaterial);
+            leg1.position.set(-28, -16, 13);
+            scene.add(leg1);
+            
+            const leg2 = new THREE.Mesh(legGeometry, legMaterial);
+            leg2.position.set(28, -16, 13);
+            scene.add(leg2);
+            
+            const leg3 = new THREE.Mesh(legGeometry, legMaterial);
+            leg3.position.set(-28, -16, -13);
+            scene.add(leg3);
+            
+            const leg4 = new THREE.Mesh(legGeometry, legMaterial);
+            leg4.position.set(28, -16, -13);
+            scene.add(leg4);
+
+            // Desk drawers
+            const drawerGeometry = new THREE.BoxGeometry(12, 4, 3);
+            const drawerMaterial = new THREE.MeshStandardMaterial({
+                color: 0xA0522D,
+                roughness: 0.8,
+                metalness: 0.1
+            });
+            
+            const drawer1 = new THREE.Mesh(drawerGeometry, drawerMaterial);
+            drawer1.position.set(-15, -13, 13.5);
+            scene.add(drawer1);
+            
+            const drawer2 = new THREE.Mesh(drawerGeometry, drawerMaterial);
+            drawer2.position.set(15, -13, 13.5);
+            scene.add(drawer2);
+
+            // Drawer handles
+            const handleGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+            const handleMaterial = new THREE.MeshStandardMaterial({
+                color: 0xC0C0C0,
+                metalness: 0.9,
+                roughness: 0.1
+            });
+            
+            const handle1 = new THREE.Mesh(handleGeometry, handleMaterial);
+            handle1.position.set(-15, -13, 15.2);
+            scene.add(handle1);
+            
+            const handle2 = new THREE.Mesh(handleGeometry, handleMaterial);
+            handle2.position.set(15, -13, 15.2);
+            scene.add(handle2);
 
             // Adding a desk mat for realism
             const deskMatGeometry = new THREE.BoxGeometry(30, 0.1, 20);
@@ -530,14 +587,14 @@
         let interactionPoints = [];
 
         function setupInteractionPoints() {
-            // Define points on the desk corresponding to portfolio sections
-            // These are rough mappings to different areas on the desk surface
+            // Enhanced interaction points with better reach for right-side robot
+            // Robot can now reach any element on the webpage
             interactionPoints = [
                 { name: 'home', x: 0, y: -5, z: 15 },      // Center, extending forward
-                { name: 'about', x: -10, y: -5, z: 15 },   // Left, extending forward
-                { name: 'projects', x: 10, y: -5, z: 15 }, // Right, extending forward
-                { name: 'skills', x: -10, y: -5, z: 10 },  // Left, slightly less forward
-                { name: 'contact', x: 10, y: -5, z: 10 }   // Right, slightly less forward
+                { name: 'about', x: -20, y: -5, z: 15 },   // Far left, enhanced reach
+                { name: 'projects', x: 20, y: -5, z: 15 }, // Far right, enhanced reach
+                { name: 'skills', x: -15, y: -5, z: 10 },  // Left, enhanced reach
+                { name: 'contact', x: 15, y: -5, z: 10 }   // Right, enhanced reach
             ];
         }
 
