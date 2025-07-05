@@ -12,8 +12,15 @@
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden; /* Only prevent horizontal scroll */
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            background: linear-gradient(135deg, #000011 0%, #001122 25%, #002233 50%, #003344 75%, #004455 100%);
             min-height: 100vh;
+            animation: backgroundPulse 8s ease-in-out infinite alternate;
+        }
+        
+        @keyframes backgroundPulse {
+            0% { background: linear-gradient(135deg, #000011 0%, #001122 25%, #002233 50%, #003344 75%, #004455 100%); }
+            50% { background: linear-gradient(135deg, #110022 0%, #220033 25%, #330044 50%, #440055 75%, #550066 100%); }
+            100% { background: linear-gradient(135deg, #000011 0%, #001122 25%, #002233 50%, #003344 75%, #004455 100%); }
         }
         #bg-canvas {
             position: fixed;
@@ -25,11 +32,23 @@
             pointer-events: auto; /* Allow interaction */
         }
         .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: rgba(0, 20, 40, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 221, 0.2);
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.6),
+                0 0 20px rgba(0, 255, 221, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            border-color: rgba(255, 6, 102, 0.4);
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.6),
+                0 0 30px rgba(255, 6, 102, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
         .content-wrapper {
             position: relative;
@@ -207,6 +226,55 @@
         let isMobile = window.innerWidth < 768;
         let isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
         let cameraDistance = isMobile ? 80 : isTablet ? 70 : 60;
+        let particles;
+
+        function createParticleSystem() {
+            // INSANE floating particles for cyberpunk effect
+            const particleCount = 200;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                // Random positions around the scene
+                positions[i * 3] = (Math.random() - 0.5) * 200;
+                positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+                positions[i * 3 + 2] = (Math.random() - 0.5) * 200;
+                
+                // Random colors - cyan, pink, purple
+                const colorChoice = Math.random();
+                if (colorChoice < 0.33) {
+                    // Cyan
+                    colors[i * 3] = 0;
+                    colors[i * 3 + 1] = 1;
+                    colors[i * 3 + 2] = 0.8;
+                } else if (colorChoice < 0.66) {
+                    // Hot pink
+                    colors[i * 3] = 1;
+                    colors[i * 3 + 1] = 0;
+                    colors[i * 3 + 2] = 0.4;
+                } else {
+                    // Purple
+                    colors[i * 3] = 0.6;
+                    colors[i * 3 + 1] = 0;
+                    colors[i * 3 + 2] = 1;
+                }
+            }
+            
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            
+            const material = new THREE.PointsMaterial({
+                size: 2,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+            
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+        }
 
         function init() {
             scene = new THREE.Scene();
@@ -242,8 +310,8 @@
             const ambientLight = new THREE.AmbientLight(0x64748b, 0.3);
             scene.add(ambientLight);
             
-            // Main key light
-            const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            // EPIC lighting setup - Cyberpunk vibes
+            const keyLight = new THREE.DirectionalLight(0x00ffdd, 1.0); // Cyan key light
             keyLight.position.set(20, 40, 30);
             keyLight.castShadow = true;
             keyLight.shadow.mapSize.width = isMobile ? 1024 : 2048;
@@ -252,15 +320,20 @@
             keyLight.shadow.camera.far = 100;
             scene.add(keyLight);
             
-            // Fill light
-            const fillLight = new THREE.DirectionalLight(0x3b82f6, 0.4);
+            // Hot pink fill light
+            const fillLight = new THREE.DirectionalLight(0xff0066, 0.6);
             fillLight.position.set(-20, 20, 20);
             scene.add(fillLight);
             
-            // Accent rim light
-            const rimLight = new THREE.PointLight(0x8b5cf6, 0.6, 100);
+            // Purple accent rim light
+            const rimLight = new THREE.PointLight(0x9c27b0, 0.8, 120);
             rimLight.position.set(0, 30, -20);
             scene.add(rimLight);
+            
+            // Electric blue accent light
+            const accentLight = new THREE.PointLight(0x2196f3, 0.5, 80);
+            accentLight.position.set(30, 10, 10);
+            scene.add(accentLight);
             
             // Environment light for realism
             const envLight = new THREE.HemisphereLight(0x87ceeb, 0x2d3748, 0.4);
@@ -272,6 +345,11 @@
 
             ikTarget = new THREE.Object3D();
             scene.add(ikTarget);
+            
+            // Add badass particle effects for desktop
+            if (!isMobile) {
+                createParticleSystem();
+            }
 
             // Create the desk and monitor for hyperrealistic scene
             createDeskAndMonitor();
@@ -427,24 +505,24 @@
             // Adaptive scale based on device
             const scale = isMobile ? 2.5 : isTablet ? 3.2 : 4.0;
 
-            // Premium materials for desktop vs optimized for mobile
+            // BADASS color schemes - Cyberpunk meets premium tech
             const bodyMaterial = new THREE.MeshStandardMaterial({
-                color: isMobile ? 0x6366f1 : 0x4f46e5,
-                metalness: isMobile ? 0.7 : 0.9,
-                roughness: isMobile ? 0.2 : 0.05,
-                emissive: new THREE.Color(isMobile ? 0x312e81 : 0x1e1b4b),
-                emissiveIntensity: isMobile ? 0.15 : 0.08,
+                color: isMobile ? 0x00ff88 : 0x00ffdd, // Neon cyan/green
+                metalness: isMobile ? 0.8 : 0.95,
+                roughness: isMobile ? 0.15 : 0.02,
+                emissive: new THREE.Color(isMobile ? 0x004d2a : 0x003d33), // Dark cyan glow
+                emissiveIntensity: isMobile ? 0.2 : 0.12,
                 transparent: !isMobile,
-                opacity: isMobile ? 1.0 : 0.85,
-                envMapIntensity: isMobile ? 0.5 : 1.0
+                opacity: isMobile ? 1.0 : 0.9,
+                envMapIntensity: isMobile ? 0.7 : 1.2
             });
             
             const ringMaterial = new THREE.MeshStandardMaterial({
-                color: isMobile ? 0xf59e0b : 0xfbbf24,
-                roughness: isMobile ? 0.4 : 0.2,
-                metalness: isMobile ? 0.8 : 0.95,
-                emissive: new THREE.Color(isMobile ? 0xd97706 : 0xf59e0b),
-                emissiveIntensity: isMobile ? 0.3 : 0.6
+                color: isMobile ? 0xff1744 : 0xff0066, // Hot pink/red accents
+                roughness: isMobile ? 0.3 : 0.1,
+                metalness: isMobile ? 0.9 : 0.98,
+                emissive: new THREE.Color(isMobile ? 0xb71c1c : 0xd50000), // Deep red glow
+                emissiveIntensity: isMobile ? 0.4 : 0.7
             });
             
             // Enable shadows for desktop
@@ -687,7 +765,7 @@
                 elbow.rotation.x = THREE.MathUtils.lerp(elbow.rotation.x, elbowRot, lerpSpeed);
                 midJoint.rotation.x = THREE.MathUtils.lerp(midJoint.rotation.x, midJointRot, lerpSpeed);
                 
-                // Enhanced natural movement
+                // EPIC animated effects
                 const time = Date.now() * 0.001;
                 wrist.rotation.z = THREE.MathUtils.lerp(
                     wrist.rotation.z, 
@@ -695,8 +773,35 @@
                     0.05
                 );
                 
-                // Subtle breathing animation for the base
+                // Breathing animation with color pulse
                 base.scale.y = 1 + Math.sin(time * 0.5) * 0.02;
+                
+                // Dynamic color breathing for materials
+                const colorPulse = (Math.sin(time * 0.8) + 1) * 0.5;
+                bodyMaterial.emissiveIntensity = (isMobile ? 0.2 : 0.12) + colorPulse * 0.1;
+                ringMaterial.emissiveIntensity = (isMobile ? 0.4 : 0.7) + colorPulse * 0.3;
+                
+                // Color shift on movement
+                const isMoving = Math.abs(shoulder.rotation.x - shoulderTargetRot) > 0.01;
+                if (isMoving) {
+                    // Shift to more intense colors when moving
+                    bodyMaterial.emissive.setHex(isMobile ? 0x00ff88 : 0x00ffaa);
+                    ringMaterial.emissive.setHex(isMobile ? 0xff1744 : 0xff0044);
+                } else {
+                    // Return to base colors when idle
+                    bodyMaterial.emissive.setHex(isMobile ? 0x004d2a : 0x003d33);
+                    ringMaterial.emissive.setHex(isMobile ? 0xb71c1c : 0xd50000);
+                }
+                
+                // Animate particles for ultimate cyberpunk effect
+                if (particles && !isMobile) {
+                    particles.rotation.y += 0.001;
+                    particles.rotation.x += 0.0005;
+                    
+                    // Make particles pulse
+                    const particlePulse = Math.sin(time * 2) * 0.3 + 0.7;
+                    particles.material.opacity = particlePulse * 0.6;
+                }
 
                 const targetWorldPos = new THREE.Vector3();
                 ikTarget.getWorldPosition(targetWorldPos);
