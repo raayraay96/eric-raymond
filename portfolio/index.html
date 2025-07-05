@@ -292,14 +292,13 @@
 
 
 
-    <!-- Scripts loaded deferred for performance -->
+    <!-- Scripts loaded in order -->
     <!-- Three.js for 3D Robotic Arm -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.min.js" defer></script>
-    <!-- Vanilla Tilt for card effects -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.144.0/build/three.min.js"></script>
+    <!-- Main JavaScript -->
+    <script src="js/main.js"></script>
+    <!-- Other scripts (can be deferred) -->
     <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js" defer></script>
-    <!-- ScrollReveal for animations -->
-    <script src="https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js" defer></script>
-    <!-- Custom JS -->
-    <script src="js/main.js" defer></script>
+    <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js" defer></script>
 </body>
 </html>

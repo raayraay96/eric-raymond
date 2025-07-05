@@ -3,18 +3,27 @@
  * Modern, performant, and accessible implementation
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize components
+// Initialize components when DOM is ready
+function init() {
     initThemeToggle();
     initRoboticArmScene();
     initTypewriter();
     initSmoothScroll();
     initMagneticButtons();
     initIntersectionObserver();
-    
-    // Add loaded class to body for animations
-    document.body.classList.add('loaded');
-});
+    createProjectCards();
+}
+
+// Check if Three.js is loaded before initializing
+if (typeof THREE !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+} else {
+    console.error('Three.js not loaded. Robotic arm will not be available.');
+}
 
 /**
  * Initialize theme toggle functionality
