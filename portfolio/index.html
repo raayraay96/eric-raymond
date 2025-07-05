@@ -201,27 +201,65 @@
         let scene, camera, renderer;
         let arm, ikTarget;
         const mouse = new THREE.Vector2();
+        let isMobile = window.innerWidth < 768;
+        let isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+        let cameraDistance = isMobile ? 80 : isTablet ? 70 : 60;
 
         function init() {
             scene = new THREE.Scene();
-            // UPDATED: Camera positioned to view the desk and monitor setup
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 25, 60);
+            // Enhanced gradient background for premium look
+            scene.background = new THREE.Color(0x0f172a);
+            scene.fog = new THREE.Fog(0x0f172a, 50, 200);
+            
+            // Adaptive camera positioning
+            camera = new THREE.PerspectiveCamera(
+                isMobile ? 65 : 75, 
+                window.innerWidth / window.innerHeight, 
+                0.1, 
+                1000
+            );
+            camera.position.set(
+                isMobile ? 0 : 5, 
+                isMobile ? 35 : 25, 
+                cameraDistance
+            );
 
             const canvas = document.getElementById('bg-canvas');
             renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Soft natural lighting for photorealistic effect
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            // Premium studio lighting setup
+            const ambientLight = new THREE.AmbientLight(0x64748b, 0.3);
             scene.add(ambientLight);
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-            directionalLight.position.set(10, 30, 20);
-            scene.add(directionalLight);
-            const pointLight = new THREE.PointLight(0xffffff, 0.3);
-            pointLight.position.set(-20, 20, 10);
-            scene.add(pointLight);
+            
+            // Main key light
+            const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            keyLight.position.set(20, 40, 30);
+            keyLight.castShadow = true;
+            keyLight.shadow.mapSize.width = isMobile ? 1024 : 2048;
+            keyLight.shadow.mapSize.height = isMobile ? 1024 : 2048;
+            keyLight.shadow.camera.near = 0.1;
+            keyLight.shadow.camera.far = 100;
+            scene.add(keyLight);
+            
+            // Fill light
+            const fillLight = new THREE.DirectionalLight(0x3b82f6, 0.4);
+            fillLight.position.set(-20, 20, 20);
+            scene.add(fillLight);
+            
+            // Accent rim light
+            const rimLight = new THREE.PointLight(0x8b5cf6, 0.6, 100);
+            rimLight.position.set(0, 30, -20);
+            scene.add(rimLight);
+            
+            // Environment light for realism
+            const envLight = new THREE.HemisphereLight(0x87ceeb, 0x2d3748, 0.4);
+            scene.add(envLight);
+            
+            // Enable shadows
+            renderer.shadowMap.enabled = !isMobile;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
             ikTarget = new THREE.Object3D();
             scene.add(ikTarget);
@@ -231,30 +269,53 @@
             
             arm = create7DofArm();
             scene.add(arm);
-            // Position the arm on the right side of the desk
-            arm.position.set(25, -10, 5);
+            // Adaptive arm positioning
+            const armX = isMobile ? 0 : 25;
+            const armY = isMobile ? -8 : -10;
+            const armZ = isMobile ? -5 : 5;
+            arm.position.set(armX, armY, armZ);
 
             // Define interaction points on the monitor corresponding to portfolio sections
             setupInteractionPoints();
 
             window.addEventListener('resize', onWindowResize, false);
             window.addEventListener('mousemove', onMouseMove, false);
+            window.addEventListener('touchmove', onTouchMove, false);
+            window.addEventListener('touchstart', onTouchMove, false);
+            
+            // Mobile-specific optimizations
+            if (isMobile) {
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                // Add subtle auto-animation for mobile
+                setInterval(() => {
+                    if (isMobile && Math.random() < 0.3) {
+                        mouse.x = (Math.random() - 0.5) * 1.5;
+                        mouse.y = (Math.random() - 0.5) * 1.5;
+                    }
+                }, 3000);
+            }
 
             animate();
         }
 
         function createDeskAndMonitor() {
-            // Enhanced wooden desk with realistic texture - FULL WIDTH
-            const deskWidth = Math.max(120, window.innerWidth / 8); // Dynamic width based on screen size
-            const deskGeometry = new THREE.BoxGeometry(deskWidth, 2, 35);
+            // Premium desk with adaptive sizing
+            const deskWidth = isMobile ? 80 : Math.max(120, window.innerWidth / 8);
+            const deskDepth = isMobile ? 25 : 35;
+            const deskGeometry = new THREE.BoxGeometry(deskWidth, 2, deskDepth);
+            
+            // Premium wood material with better texturing
             const deskMaterial = new THREE.MeshStandardMaterial({
-                color: 0x8B4513,
-                roughness: 0.8,
-                metalness: 0.1,
-                bumpScale: 0.5
+                color: isMobile ? 0x4a5568 : 0x8B4513,
+                roughness: 0.7,
+                metalness: 0.15,
+                bumpScale: 0.3,
+                emissive: new THREE.Color(0x1a1a1a),
+                emissiveIntensity: 0.02
             });
             const desk = new THREE.Mesh(deskGeometry, deskMaterial);
             desk.position.set(0, -12, 0);
+            desk.receiveShadow = true;
             scene.add(desk);
 
             // Desk legs for more realism - ADAPTIVE TO DESK WIDTH
@@ -354,25 +415,34 @@
         function create7DofArm() {
             const armGroup = new THREE.Group();
 
-            // NEW: Scale factor to easily adjust the robot's size
-            const scale = 4.0;
+            // Adaptive scale based on device
+            const scale = isMobile ? 2.5 : isTablet ? 3.2 : 4.0;
 
+            // Premium materials for desktop vs optimized for mobile
             const bodyMaterial = new THREE.MeshStandardMaterial({
-                color: 0x4a5568, // Lighter gray for a glass-like tint
-                metalness: 0.9, // High metalness for a reflective glass effect
-                roughness: 0.1, // Very low roughness for a smooth, clear appearance
-                emissive: 0x2d3748, // Subtle emissive glow for depth
-                emissiveIntensity: 0.1,
-                transparent: true, // Enable transparency
-                opacity: 0.3 // Semi-transparent for a see-through glass effect
+                color: isMobile ? 0x6366f1 : 0x4f46e5,
+                metalness: isMobile ? 0.7 : 0.9,
+                roughness: isMobile ? 0.2 : 0.05,
+                emissive: new THREE.Color(isMobile ? 0x312e81 : 0x1e1b4b),
+                emissiveIntensity: isMobile ? 0.15 : 0.08,
+                transparent: !isMobile,
+                opacity: isMobile ? 1.0 : 0.85,
+                envMapIntensity: isMobile ? 0.5 : 1.0
             });
+            
             const ringMaterial = new THREE.MeshStandardMaterial({
-                color: 0x63b3ed, // Bright cyan-blue accent for a modern tech look
-                roughness: 0.3, // Smoother finish for accents
-                metalness: 0.9, // High metalness for a shiny effect
-                emissive: 0x3182ce, // Matching emissive color for a glowing accent
-                emissiveIntensity: 0.5 // Moderate glow to highlight rings
+                color: isMobile ? 0xf59e0b : 0xfbbf24,
+                roughness: isMobile ? 0.4 : 0.2,
+                metalness: isMobile ? 0.8 : 0.95,
+                emissive: new THREE.Color(isMobile ? 0xd97706 : 0xf59e0b),
+                emissiveIntensity: isMobile ? 0.3 : 0.6
             });
+            
+            // Enable shadows for desktop
+            if (!isMobile) {
+                bodyMaterial.shadowSide = THREE.DoubleSide;
+                ringMaterial.shadowSide = THREE.DoubleSide;
+            }
 
             // UPDATED: All arm lengths multiplied by the scale factor
             const armLength1 = 9 * scale;
@@ -510,6 +580,20 @@
         }
 
         function onWindowResize() {
+            // Update device detection
+            const wasMobile = isMobile;
+            isMobile = window.innerWidth < 768;
+            isTablet = window.innerWidth >= 768 && window.innerWidth < 1024;
+            
+            // Recreate scene if device type changed
+            if (wasMobile !== isMobile) {
+                scene.clear();
+                createDeskAndMonitor();
+                arm = create7DofArm();
+                scene.add(arm);
+                setupInteractionPoints();
+            }
+            
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -518,6 +602,15 @@
         function onMouseMove(event) {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+        
+        // Add touch support for mobile
+        function onTouchMove(event) {
+            if (event.touches.length > 0) {
+                const touch = event.touches[0];
+                mouse.x = (touch.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
+            }
         }
         
         const raycaster = new THREE.Raycaster();
@@ -579,13 +672,22 @@
                 const elbowRot = totalBendRot * 0.6;
                 const midJointRot = totalBendRot * 0.4;
 
-                // Enhanced kinematics with smoother interpolation
-                shoulder.rotation.x = THREE.MathUtils.lerp(shoulder.rotation.x, shoulderTargetRot, 0.08);
-                elbow.rotation.x = THREE.MathUtils.lerp(elbow.rotation.x, elbowRot, 0.08);
-                midJoint.rotation.x = THREE.MathUtils.lerp(midJoint.rotation.x, midJointRot, 0.08);
+                // Device-adaptive kinematics
+                const lerpSpeed = isMobile ? 0.12 : 0.08;
+                shoulder.rotation.x = THREE.MathUtils.lerp(shoulder.rotation.x, shoulderTargetRot, lerpSpeed);
+                elbow.rotation.x = THREE.MathUtils.lerp(elbow.rotation.x, elbowRot, lerpSpeed);
+                midJoint.rotation.x = THREE.MathUtils.lerp(midJoint.rotation.x, midJointRot, lerpSpeed);
                 
-                // Add subtle wrist rotation for more natural movement
-                wrist.rotation.z = THREE.MathUtils.lerp(wrist.rotation.z, Math.sin(Date.now() * 0.001) * 0.1, 0.05);
+                // Enhanced natural movement
+                const time = Date.now() * 0.001;
+                wrist.rotation.z = THREE.MathUtils.lerp(
+                    wrist.rotation.z, 
+                    Math.sin(time) * 0.1 + Math.cos(time * 0.7) * 0.05, 
+                    0.05
+                );
+                
+                // Subtle breathing animation for the base
+                base.scale.y = 1 + Math.sin(time * 0.5) * 0.02;
 
                 const targetWorldPos = new THREE.Vector3();
                 ikTarget.getWorldPosition(targetWorldPos);
@@ -599,13 +701,16 @@
         let interactionPoints = [];
 
         function setupInteractionPoints() {
-            // Enhanced interaction points with better reach across full desk width
+            // Device-adaptive interaction points
+            const reach = isMobile ? 15 : 30;
+            const forwardReach = isMobile ? 10 : 15;
+            
             interactionPoints = [
-                { name: 'home', x: 0, y: -5, z: 15 },      // Center, extending forward
-                { name: 'about', x: -30, y: -5, z: 15 },   // Far left, full desk reach
-                { name: 'projects', x: 30, y: -5, z: 15 }, // Far right, full desk reach
-                { name: 'skills', x: -20, y: -5, z: 10 },  // Left, enhanced reach
-                { name: 'contact', x: 20, y: -5, z: 10 }   // Right, enhanced reach
+                { name: 'home', x: 0, y: -5, z: forwardReach },
+                { name: 'about', x: -reach, y: -5, z: forwardReach },
+                { name: 'projects', x: reach, y: -5, z: forwardReach },
+                { name: 'skills', x: -reach * 0.7, y: -5, z: forwardReach * 0.7 },
+                { name: 'contact', x: reach * 0.7, y: -5, z: forwardReach * 0.7 }
             ];
         }
 
@@ -626,6 +731,33 @@
             return null;
         }
 
+        // Performance monitoring for mobile
+        let frameCount = 0;
+        let lastTime = Date.now();
+        
+        function checkPerformance() {
+            frameCount++;
+            const now = Date.now();
+            if (now - lastTime > 1000) {
+                const fps = frameCount;
+                frameCount = 0;
+                lastTime = now;
+                
+                // Reduce quality on mobile if performance is poor
+                if (isMobile && fps < 30) {
+                    renderer.setPixelRatio(1);
+                    scene.fog.far = 100;
+                }
+            }
+        }
+        
+        // Enhanced animate function with performance monitoring
+        const originalAnimate = animate;
+        animate = function() {
+            checkPerformance();
+            originalAnimate();
+        };
+        
         init();
     </script>
 
