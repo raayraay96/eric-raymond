@@ -1,32 +1,20 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eric Raymond - AI/ML Developer Portfolio</title>
-    <meta name="description" content="Eric Raymond - AI/ML Developer specializing in robotics, computer vision, and human-robot interaction. Interactive 3D robotic arm portfolio." />
-    <meta name="keywords" content="Eric Raymond, AI, ML, robotics, computer vision, ROS, PyTorch, OpenCV, developer, portfolio" />
-    <meta name="author" content="Eric Raymond" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eric Raymond - AI/ML Systems Engineer</title>
     
-    <!-- Open Graph / Social Media Tags -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://raayraay96.github.io/eric-raymond/" />
-    <meta property="og:title" content="Eric Raymond - AI/ML Developer Portfolio" />
-    <meta property="og:description" content="Interactive 3D robotic arm portfolio showcasing expertise in robotics, ROS, and human-robot interaction systems." />
-    <meta property="og:image" content="https://raayraay96.github.io/eric-raymond/og-image.jpg" />
+    <!-- Performance & SEO -->
+    <meta name="description" content="Eric Raymond - AI/ML Systems Engineer specializing in robotics, computer vision, and human-robot interaction. Expert in Python, ROS, PyTorch, and OpenCV.">
+    <meta name="keywords" content="Eric Raymond, AI Engineer, Machine Learning, Robotics, Computer Vision, ROS, PyTorch, OpenCV, Systems Engineering">
+    <meta name="author" content="Eric Raymond">
     
-    <!-- Twitter Card Tags -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://raayraay96.github.io/eric-raymond/" />
-    <meta property="twitter:title" content="Eric Raymond - AI/ML Developer Portfolio" />
-    <meta property="twitter:description" content="Interactive 3D robotic arm portfolio showcasing expertise in robotics, ROS, and human-robot interaction systems." />
-    <meta property="twitter:image" content="https://raayraay96.github.io/eric-raymond/og-image.jpg" />
-    
-    <!-- Additional SEO -->
-    <link rel="canonical" href="https://raayraay96.github.io/eric-raymond/" />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#1f2937" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Eric Raymond - AI/ML Systems Engineer">
+    <meta property="og:description" content="Intelligent systems engineer specializing in robotics and human-robot interaction">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://raayraay96.github.io/eric-raymond/">
     
     <!-- Structured Data -->
     <script type="application/ld+json">
@@ -34,7 +22,7 @@
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Eric Raymond",
-      "jobTitle": "AI/ML Developer",
+      "jobTitle": "AI/ML Systems Engineer",
       "description": "AI/ML Developer specializing in robotics, computer vision, and human-robot interaction",
       "url": "https://raayraay96.github.io/eric-raymond/",
       "email": "erraymon@iu.edu",
@@ -45,15 +33,200 @@
         "addressRegion": "IN",
         "addressCountry": "US"
       },
+      "alumniOf": "Purdue University Indianapolis",
+      "knowsAbout": ["Artificial Intelligence", "Machine Learning", "Robotics", "Computer Vision", "ROS", "PyTorch", "OpenCV"],
       "sameAs": [
         "https://linkedin.com/in/eric–raymond",
         "https://github.com/raayraay96"
       ]
     }
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav__container">
+            <a href="#home" class="nav__brand">Eric Raymond</a>
+            <div class="nav__menu" id="nav-menu">
+                <a href="#home" class="nav__link">Home</a>
+                <a href="#about" class="nav__link">About</a>
+                <a href="#projects" class="nav__link">Projects</a>
+                <a href="#skills" class="nav__link">Skills</a>
+                <a href="#contact" class="nav__link">Contact</a>
+            </div>
+            <button class="nav__toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero__container">
+            <div class="hero__content">
+                <div class="hero__text">
+                    <h1 class="hero__title">
+                        <span class="typewriter" id="typewriter-text"></span>
+                        <span class="cursor">|</span>
+                    </h1>
+                    <p class="hero__subtitle">
+                        AI/ML Systems Engineer specializing in robotics and human-robot interaction
+                    </p>
+                    <div class="hero__cta">
+                        <a href="#projects" class="btn btn--primary">View My Work</a>
+                        <a href="#contact" class="btn btn--secondary">Get In Touch</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3D Robotic Arm Canvas -->
+            <div class="hero__visual">
+                <canvas id="roboticArm" class="robotic-arm"></canvas>
+                <div class="arm-instructions">
+                    <p>Move your cursor to control the robotic arm</p>
+                    <p><strong>Click gripper</strong> → Projects | <strong>Click base</strong> → Skills</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about__container">
+            <h2 class="section__title">About Me</h2>
+            <div class="about__content">
+                <div class="about__text">
+                    <p class="about__description">
+                        I'm pursuing a B.S. in Artificial Intelligence with a Minor in Neuroscience at Purdue University Indianapolis. 
+                        My fascination lies at the intersection of artificial intelligence and human cognition – understanding how 
+                        intelligent systems can interact with and learn from humans.
+                    </p>
+                    <p class="about__description">
+                        Currently developing machine learning control algorithms for real-time robotic imitation at the University 
+                        of Wyoming, I've enhanced system responsiveness by 40% using ROS, PyTorch, and OpenCV. My work integrates 
+                        MonoDepth2 algorithms for high spatial accuracy in human-robot interaction.
+                    </p>
+                    <div class="about__stats">
+                        <div class="stat">
+                            <span class="stat__number">40%</span>
+                            <span class="stat__label">System Responsiveness Improvement</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__number">25%</span>
+                            <span class="stat__label">User Engagement Increase</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat__number">15%</span>
+                            <span class="stat__label">Data Security Enhancement</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="projects__container">
+            <h2 class="section__title">Featured Projects</h2>
+            <div class="projects__grid">
+                <!-- Project cards will be dynamically generated -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <div class="skills__container">
+            <h2 class="section__title">Technical Expertise</h2>
+            <div class="skills__grid">
+                <div class="skill-category">
+                    <h3 class="skill-category__title">Programming Languages</h3>
+                    <ul class="skill-list">
+                        <li>Python</li>
+                        <li>C++</li>
+                        <li>C#</li>
+                        <li>Java</li>
+                        <li>MATLAB</li>
+                        <li>R</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="skill-category__title">AI/Machine Learning</h3>
+                    <ul class="skill-list">
+                        <li>PyTorch</li>
+                        <li>OpenCV</li>
+                        <li>Computer Vision</li>
+                        <li>Neural Networks</li>
+                        <li>ROS 1</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="skill-category__title">Developer Tools</h3>
+                    <ul class="skill-list">
+                        <li>Git</li>
+                        <li>Docker</li>
+                        <li>Google Cloud Platform</li>
+                        <li>Unity</li>
+                        <li>AutoCAD</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3 class="skill-category__title">Hardware Systems</h3>
+                    <ul class="skill-list">
+                        <li>System Design</li>
+                        <li>Debugging</li>
+                        <li>Embedded Systems</li>
+                        <li>Software Design</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact__container">
+            <h2 class="section__title">Let's Build Something Amazing</h2>
+            <div class="contact__content">
+                <div class="contact__info">
+                    <div class="contact__item">
+                        <strong>Email:</strong> erraymon@iu.edu
+                    </div>
+                    <div class="contact__item">
+                        <strong>Phone:</strong> (317) 835-5211
+                    </div>
+                    <div class="contact__item">
+                        <strong>Location:</strong> Indianapolis, IN
+                    </div>
+                    <div class="contact__links">
+                        <a href="https://linkedin.com/in/eric–raymond" target="_blank" class="contact__link">LinkedIn</a>
+                        <a href="https://github.com/raayraay96" target="_blank" class="contact__link">GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="js/robotic-arm.js"></script>
+    <script src="js/typewriter.js"></script>
+    <script src="js/main.js"></script>
+</body>
 </html>
