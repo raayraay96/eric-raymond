@@ -1,8 +1,8 @@
 // src/pages/About.tsx
 import '../styles/About.css';
 import Navbar from '../components/Navbar';
-import Skills from '../components/skills';
-import Jobs from '../components/jobs';
+import Skills from '../components/Skills';
+import Jobs from '../components/Jobs';
 import Education from '../components/Education';
 import Leadership from '../components/Leadership';
 

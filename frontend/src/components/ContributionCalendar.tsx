@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import type { GitHubContributionDay } from '../types/GithubContributions';
+import type { GitHubContribution } from '../types/GithubContributions';
 import '../styles/ContributionCalendar.css';
 import { motion } from 'framer-motion';
 
@@ -8,7 +8,7 @@ const WEEKDAYS = ['Mon', 'Wed', 'Fri'];
 // const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 type Props = {
-  contributions: GitHubContributionDay[];
+  contributions: GitHubContribution[];
 };
 
 const ContributionCalendar: React.FC<Props> = ({ contributions }) => {
@@ -25,7 +25,7 @@ const ContributionCalendar: React.FC<Props> = ({ contributions }) => {
     [contributions, year]
   );
 
-  const weeks: GitHubContributionDay[][] = [];
+  const weeks: GitHubContribution[][] = [];
   for (let i = 0; i < filtered.length; i += 7) {
     weeks.push(filtered.slice(i, i + 7));
   }

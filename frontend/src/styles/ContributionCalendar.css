@@ -1,0 +1,155 @@
+/* GitHub Contribution Calendar Styles */
+.contribution-calendar {
+  background: #0d1117;
+  border-radius: 8px;
+  padding: 20px;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.year-button-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.year-button {
+  background: #21262d;
+  color: #e6edf3;
+  border: 1px solid #30363d;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.year-button:hover {
+  background: #30363d;
+  border-color: #484f58;
+}
+
+.year-button.active {
+  background: #238636;
+  border-color: #238636;
+}
+
+.flex {
+  display: flex;
+  gap: 8px;
+}
+
+.weekday-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 10px;
+  color: #7d8590;
+  padding-top: 14px;
+}
+
+.weekday-labels div {
+  height: 11px;
+  line-height: 11px;
+}
+
+.grid-wrapper {
+  display: flex;
+  gap: 3px;
+}
+
+.week-column {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.contribution-cell {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  background: #161b22;
+  border: 1px solid #21262d;
+}
+
+.contribution-cell.bg-0 {
+  background: #161b22;
+}
+
+.contribution-cell.bg-1 {
+  background: #0e4429;
+}
+
+.contribution-cell.bg-2 {
+  background: #006d32;
+}
+
+.contribution-cell.bg-3 {
+  background: #26a641;
+}
+
+.contribution-cell.bg-4 {
+  background: #39d353;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .contribution-calendar {
+    padding: 12px;
+  }
+  
+  .year-button-container {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  
+  .year-button {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .weekday-labels {
+    font-size: 9px;
+  }
+  
+  .contribution-cell {
+    width: 9px;
+    height: 9px;
+  }
+  
+  .grid-wrapper {
+    gap: 2px;
+  }
+  
+  .week-column {
+    gap: 2px;
+  }
+}
