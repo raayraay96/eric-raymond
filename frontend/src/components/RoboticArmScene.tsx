@@ -1,6 +1,6 @@
-import { useRef, useMemo, Suspense } from 'react';
+import { Suspense, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, ContactShadows } from '@react-three/drei';
+import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 // Enhanced joint component with smooth rotation
@@ -134,54 +134,7 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
   }, [target]);
 
   return (
-    <group position={[3, -1, 0]}>
-      {/* Realistic wooden desk */}
-      <group position={[0, -2, 0]}>
-        {/* Desk surface */}
-        <mesh position={[0, 0, 0]} receiveShadow>
-          <boxGeometry args={[8, 0.2, 4]} />
-          <meshStandardMaterial color="#8B4513" roughness={0.8} metalness={0.1} />
-        </mesh>
-        
-        {/* Desk legs */}
-        <mesh position={[-3.5, -1, 1.5]} receiveShadow>
-          <boxGeometry args={[0.2, 2, 0.2]} />
-          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
-        </mesh>
-        <mesh position={[3.5, -1, 1.5]} receiveShadow>
-          <boxGeometry args={[0.2, 2, 0.2]} />
-          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
-        </mesh>
-        <mesh position={[-3.5, -1, -1.5]} receiveShadow>
-          <boxGeometry args={[0.2, 2, 0.2]} />
-          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
-        </mesh>
-        <mesh position={[3.5, -1, -1.5]} receiveShadow>
-          <boxGeometry args={[0.2, 2, 0.2]} />
-          <meshStandardMaterial color="#654321" roughness={0.8} metalness={0.1} />
-        </mesh>
-        
-        {/* Desk drawers */}
-        <mesh position={[-2, -0.5, 1.8]} receiveShadow>
-          <boxGeometry args={[1.5, 0.8, 0.4]} />
-          <meshStandardMaterial color="#A0522D" roughness={0.8} metalness={0.1} />
-        </mesh>
-        <mesh position={[2, -0.5, 1.8]} receiveShadow>
-          <boxGeometry args={[1.5, 0.8, 0.4]} />
-          <meshStandardMaterial color="#A0522D" roughness={0.8} metalness={0.1} />
-        </mesh>
-        
-        {/* Drawer handles */}
-        <mesh position={[-2, -0.5, 2.05]} receiveShadow>
-          <boxGeometry args={[0.1, 0.1, 0.1]} />
-          <meshStandardMaterial color="#C0C0C0" metalness={0.9} roughness={0.1} />
-        </mesh>
-        <mesh position={[2, -0.5, 2.05]} receiveShadow>
-          <boxGeometry args={[0.1, 0.1, 0.1]} />
-          <meshStandardMaterial color="#C0C0C0" metalness={0.9} roughness={0.1} />
-        </mesh>
-      </group>
-
+    <group position={[0, -2, 0]}>
       {/* Base Platform */}
       <mesh position={[0, -0.2, 0]} receiveShadow>
         <cylinderGeometry args={[1, 1.2, 0.4, 16]} />
@@ -254,7 +207,7 @@ export default function RoboticArmScene({ mousePosition }: { mousePosition: { x:
   return (
     <div className="w-full h-full">
       <Canvas
-        camera={{ position: [8, 5, 8], fov: 60 }}
+        camera={{ position: [15, 15, 15], fov: 60 }}
         shadows={{ type: THREE.PCFSoftShadowMap }}
         gl={{ 
           antialias: true, 
@@ -265,7 +218,7 @@ export default function RoboticArmScene({ mousePosition }: { mousePosition: { x:
       >
         <Suspense fallback={null}>
           {/* Enhanced Lighting Setup */}
-          <ambientLight intensity={0.2} color="#4338ca" />
+          <ambientLight intensity={1} />
           
           {/* Key light */}
           <directionalLight
@@ -320,3 +273,4 @@ export default function RoboticArmScene({ mousePosition }: { mousePosition: { x:
     </div>
   );
 }
+

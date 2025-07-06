@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar';
 import RoboticArmScene from '../components/RoboticArmScene';
 import { useMousePosition } from '../hooks/useMousePosition';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Projects from '../components/Projects';
+import Contact from '../components/Contact';
 
 const Home = () => {
   const mousePosition = useMousePosition();
@@ -28,7 +30,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+    <div id="home" className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* Animated Orbs */}
@@ -231,66 +233,12 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* Research Highlights */}
-      <section className="relative py-32 px-8 lg:px-16">
-        <motion.div 
-          className="max-w-7xl mx-auto"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-4xl lg:text-5xl font-bold text-center mb-16">
-            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Research Impact
-            </span>
-          </h3>
-          
-          <div className="grid lg:grid-cols-2 gap-8">
-            <motion.div 
-              className="group relative p-8 bg-slate-900/30 backdrop-filter backdrop-blur-lg border border-solid border-white/20 rounded-3xl hover:border-blue-500/50 transition-all duration-500 hover:transform hover:scale-105"
-              whileHover={{ y: -10 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-6">
-                  <span className="text-2xl">🤖</span>
-                </div>
-                <h4 className="text-2xl font-bold text-white mb-4">University of Wyoming REU</h4>
-                <p className="text-gray-400 leading-relaxed mb-4">
-                  Significantly enhancing system responsiveness and used MonoDepth2 algorithms to generate real-time depth maps.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full">PyTorch</span>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs font-semibold rounded-full">GCP</span>
-                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs font-semibold rounded-full">Unity</span>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div 
-              className="group relative p-8 bg-slate-900/30 backdrop-filter backdrop-blur-lg border border-solid border-white/20 rounded-3xl hover:border-green-500/50 transition-all duration-500 hover:transform hover:scale-105"
-              whileHover={{ y: -10 }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-green-600/10 to-cyan-600/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6">
-                  <span className="text-2xl">🥽</span>
-                </div>
-                <h4 className="text-2xl font-bold text-white mb-4">AR Research Assistant</h4>
-                <p className="text-gray-400 leading-relaxed mb-4">
-                  Reduced latency by 15% through strategic architectural re-design.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full">PyTorch</span>
-                  <span className="px-2 py-1 bg-green-500/20 text-green-300 text-xs font-semibold rounded-full">GCP</span>
-                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs font-semibold rounded-full">Unity</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
+      <div id="projects">
+        <Projects />
+      </div>
+      <div id="contact">
+        <Contact />
+      </div>
     </div>
   );
 };
