@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive 7-DOF Portfolio</title>
+    <title>Eric Raymond - AI/ML Engineer with 3D Robotic Arm</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -577,9 +577,11 @@
         }
 
         function init() {
+            console.log('🤖 Initializing 3D scene...');
             scene = new THREE.Scene();
             // No background color - let CSS background show through
             scene.fog = new THREE.Fog(0x0f172a, 50, 200);
+            console.log('✅ Scene created successfully');
             
             // Adaptive camera positioning
             camera = new THREE.PerspectiveCamera(
@@ -658,12 +660,14 @@
             createDeskAndMonitor();
             
             arm = create7DofArm();
+            console.log('🦾 Robotic arm created:', arm);
             scene.add(arm);
             // Adaptive arm positioning
             const armX = isMobile ? 0 : 25;
             const armY = isMobile ? -8 : -10;
             const armZ = isMobile ? -5 : 5;
             arm.position.set(armX, armY, armZ);
+            console.log(`🎯 Arm positioned at: x=${armX}, y=${armY}, z=${armZ}`);
 
             // Define interaction points on the monitor corresponding to portfolio sections
             setupInteractionPoints();
@@ -1195,7 +1199,11 @@
             originalAnimate();
         };
         
+        console.log('🚀 Starting 3D portfolio initialization...');
+        console.log('📱 Device type:', isMobile ? 'Mobile' : 'Desktop');
         init();
+        console.log('🎯 3D portfolio should now be visible!');
+        console.log('🔍 Check console for any Three.js errors if not visible');
     </script>
 
 </body>
