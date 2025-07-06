@@ -1,4 +1,4 @@
-import { Suspense, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -205,7 +205,7 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
 // Main scene component with enhanced lighting and environment
 export default function RoboticArmScene({ mousePosition }: { mousePosition: { x: number; y: number } }) {
   return (
-    <div className="w-full h-full">
+    <div id="desk-canvas" className="w-full h-full">
       <Canvas
         camera={{ position: [15, 15, 15], fov: 60 }}
         shadows={{ type: THREE.PCFSoftShadowMap }}
@@ -216,59 +216,57 @@ export default function RoboticArmScene({ mousePosition }: { mousePosition: { x:
         }}
         className="bg-transparent"
       >
-        <Suspense fallback={null}>
-          {/* Enhanced Lighting Setup */}
-          <ambientLight intensity={1} />
-          
-          {/* Key light */}
-          <directionalLight
-            position={[10, 10, 5]}
-            intensity={0.8}
-            castShadow
-            shadow-mapSize-width={2048}
-            shadow-mapSize-height={2048}
-            shadow-camera-far={50}
-            shadow-camera-left={-10}
-            shadow-camera-right={10}
-            shadow-camera-top={10}
-            shadow-camera-bottom={-10}
-            color="#ffffff"
-          />
-          
-          {/* Fill lights */}
-          <pointLight position={[-5, 5, 5]} intensity={0.4} color="#3b82f6" />
-          <pointLight position={[5, 5, -5]} intensity={0.4} color="#8b5cf6" />
-          <spotLight position={[0, 8, 0]} intensity={0.6} angle={0.6} penumbra={0.5} color="#06b6d4" />
-          
-          {/* Environment for reflections */}
-          <Environment preset="studio" />
-          
-          {/* Robotic Arm */}
-          <RoboticArm mousePosition={mousePosition} />
-          
-          {/* Enhanced ground shadows */}
-          <ContactShadows
-            opacity={0.6}
-            scale={15}
-            blur={2}
-            far={20}
-            resolution={512}
-            color="#000000"
-          />
-          
-          {/* Camera Controls */}
-          <OrbitControls
-            enablePan={false}
-            enableZoom={true}
-            enableRotate={true}
-            maxPolarAngle={Math.PI / 2.2}
-            minPolarAngle={Math.PI / 6}
-            maxDistance={15}
-            minDistance={5}
-            autoRotate={false}
-            autoRotateSpeed={0.5}
-          />
-        </Suspense>
+        {/* Enhanced Lighting Setup */}
+        <ambientLight intensity={1} />
+        
+        {/* Key light */}
+        <directionalLight
+          position={[10, 10, 5]}
+          intensity={0.8}
+          castShadow
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          shadow-camera-far={50}
+          shadow-camera-left={-10}
+          shadow-camera-right={10}
+          shadow-camera-top={10}
+          shadow-camera-bottom={-10}
+          color="#ffffff"
+        />
+        
+        {/* Fill lights */}
+        <pointLight position={[-5, 5, 5]} intensity={0.4} color="#3b82f6" />
+        <pointLight position={[5, 5, -5]} intensity={0.4} color="#8b5cf6" />
+        <spotLight position={[0, 8, 0]} intensity={0.6} angle={0.6} penumbra={0.5} color="#06b6d4" />
+        
+        {/* Environment for reflections */}
+        <Environment preset="studio" />
+        
+        {/* Robotic Arm */}
+        <RoboticArm mousePosition={mousePosition} />
+        
+        {/* Enhanced ground shadows */}
+        <ContactShadows
+          opacity={0.6}
+          scale={15}
+          blur={2}
+          far={20}
+          resolution={512}
+          color="#000000"
+        />
+        
+        {/* Camera Controls */}
+        <OrbitControls
+          enablePan={false}
+          enableZoom={true}
+          enableRotate={true}
+          maxPolarAngle={Math.PI / 2.2}
+          minPolarAngle={Math.PI / 6}
+          maxDistance={15}
+          minDistance={5}
+          autoRotate={false}
+          autoRotateSpeed={0.5}
+        />
       </Canvas>
     </div>
   );
