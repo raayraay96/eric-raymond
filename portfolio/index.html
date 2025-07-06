@@ -295,17 +295,30 @@
         </div>
     </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-            }
+    <!-- Fallback Three.js loading -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        console.log('🔗 Three.js loaded:', typeof THREE !== 'undefined');
+        if (typeof THREE === 'undefined') {
+            console.error('❌ Three.js failed to load!');
+        } else {
+            console.log('✅ Three.js version available');
         }
     </script>
 
-    <script type="module">
-        import * as THREE from 'three';
+    <script>
+        // Use global THREE instead of module import
+        console.log('🎬 Script starting...');
+        
+        // Simple visibility test
+        setTimeout(() => {
+            const canvas = document.getElementById('bg-canvas');
+            console.log('🎨 Canvas element found:', !!canvas);
+            if (canvas) {
+                console.log('📏 Canvas dimensions:', canvas.width, 'x', canvas.height);
+                console.log('🎭 Canvas style:', canvas.style.cssText);
+            }
+        }, 1000);
 
         let scene, camera, renderer;
         let arm, ikTarget;
@@ -597,16 +610,23 @@
             );
 
             const canvas = document.getElementById('bg-canvas');
-            renderer = new THREE.WebGLRenderer({ 
-                canvas, 
-                antialias: true, 
-                alpha: true,
-                premultipliedAlpha: false,
-                preserveDrawingBuffer: false
-            });
-            renderer.setClearColor(0x000000, 0); // Transparent background
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            console.log('🎨 Creating WebGL renderer for canvas:', canvas);
+            
+            try {
+                renderer = new THREE.WebGLRenderer({ 
+                    canvas: canvas, 
+                    antialias: true, 
+                    alpha: true
+                });
+                renderer.setClearColor(0x000000, 0); // Transparent background
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                console.log('✅ WebGL renderer created successfully');
+                console.log('📊 Renderer size:', window.innerWidth, 'x', window.innerHeight);
+            } catch (error) {
+                console.error('❌ Failed to create WebGL renderer:', error);
+                return;
+            }
 
             // Premium studio lighting setup
             const ambientLight = new THREE.AmbientLight(0x64748b, 0.3);
@@ -655,6 +675,14 @@
             
             // Add project showcase elements
             createProjectElements();
+            
+            // TEST: Add a simple red cube to verify rendering works
+            const testGeometry = new THREE.BoxGeometry(5, 5, 5);
+            const testMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            const testCube = new THREE.Mesh(testGeometry, testMaterial);
+            testCube.position.set(0, 0, 10);
+            scene.add(testCube);
+            console.log('🔴 Test red cube added to scene at (0,0,10)');
 
             // Create the desk and monitor for hyperrealistic scene
             createDeskAndMonitor();
