@@ -182,7 +182,7 @@ const Home = () => {
 
         {/* Right Side - 3D Robotic Arm */}
         <motion.div 
-          className="flex-1 relative h-screen max-w-2xl z-20"
+          className="flex-1 relative h-screen max-w-2xl z-60"
           style={{ y: y2 }}
           initial={{ opacity: 0, x: 100 }}
           animate={{ opacity: 1, x: 0 }}
