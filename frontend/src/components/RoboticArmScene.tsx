@@ -3,50 +3,118 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { ContactShadows, Environment, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Enhanced joint component with smooth rotation
-function ArmJoint({ position, children, targetRotation }: {
+// Industrial robotic joint with realistic movement
+function ArmJoint({ 
+  position, 
+  children, 
+  targetRotation,
+  axis = 'y',
+  speed = 0.05,
+  minAngle = -Math.PI * 2,
+  maxAngle = Math.PI * 2
+}: {
   position: [number, number, number];
   children?: React.ReactNode;
   targetRotation: [number, number, number];
+  axis?: 'x' | 'y' | 'z';
+  speed?: number;
+  minAngle?: number;
+  maxAngle?: number;
 }) {
   const ref = useRef<THREE.Group>(null);
 
   useFrame(() => {
     if (ref.current) {
-      // Smooth interpolation to target rotation with easing
-      ref.current.rotation.x = THREE.MathUtils.lerp(ref.current.rotation.x, targetRotation[0], 0.08);
-      ref.current.rotation.y = THREE.MathUtils.lerp(ref.current.rotation.y, targetRotation[1], 0.08);
-      ref.current.rotation.z = THREE.MathUtils.lerp(ref.current.rotation.z, targetRotation[2], 0.08);
+      // Smooth interpolation with angle constraints
+      const currentRot = ref.current.rotation[axis];
+      let targetRot = targetRotation[axis === 'x' ? 0 : axis === 'y' ? 1 : 2];
+      
+      // Apply angle constraints
+      targetRot = Math.max(minAngle, Math.min(maxAngle, targetRot));
+      
+      // Smooth movement with easing
+      const newRot = THREE.MathUtils.lerp(currentRot, targetRot, speed);
+      ref.current.rotation[axis] = newRot;
     }
   });
 
   return (
-    <group ref={ref} position={position}>
-      {children}
+    <group position={position}>
+      <group ref={ref}>
+        {/* Joint visual */}
+        <mesh 
+          castShadow 
+          receiveShadow
+        >
+          <sphereGeometry args={[0.5, 12, 12]} />
+          <meshStandardMaterial 
+            color="#808080" 
+            metalness={0.8}
+            roughness={0.3}
+            envMapIntensity={0.5}
+          />
+        </mesh>
+        {children}
+      </group>
     </group>
   );
 }
 
-// Enhanced arm segment with better materials
-function ArmSegment({ length, radius }: {
+// Industrial arm segment with better materials and details
+function ArmSegment({ 
+  length, 
+  radius = 0.4,
+  detail = 16
+}: {
   length: number;
-  radius: number;
+  radius?: number;
+  detail?: number;
 }) {
   return (
-    <mesh position={[0, length / 2, 0]} castShadow receiveShadow>
-      <cylinderGeometry args={[radius, radius * 0.8, length, 12]} />
-      <meshStandardMaterial 
-        color="#808080" 
-        metalness={0.9} 
-        roughness={0.1}
-      />
-    </mesh>
+    <group>
+      {/* Main arm segment */}
+      <mesh 
+        position={[0, length / 2, 0]} 
+        castShadow 
+        receiveShadow
+      >
+        <cylinderGeometry args={[radius, radius * 0.9, length, detail]} />
+        <meshStandardMaterial 
+          color="#808080"
+          metalness={0.85}
+          roughness={0.15}
+          envMapIntensity={0.5}
+        />
+      </mesh>
+      
+      {/* Arm details */}
+      <mesh position={[0, length, 0]} castShadow>
+        <boxGeometry args={[radius * 1.8, radius * 0.4, radius * 1.8]} />
+        <meshStandardMaterial 
+          color="#808080" 
+          metalness={0.7}
+          roughness={0.3}
+        />
+      </mesh>
+      
+      {/* Cable details */}
+      <mesh position={[0, length / 2, radius * 0.8]} rotation={[0, 0, 0]}>
+        <cylinderGeometry args={[radius * 0.2, radius * 0.2, length * 0.9, 8]} />
+        <meshStandardMaterial 
+          color="#808080" 
+          metalness={0.2}
+          roughness={0.8}
+        />
+      </mesh>
+    </group>
   );
 }
 
-// Enhanced joint connector
-function Joint({ radius }: { 
-  radius: number; 
+// Industrial joint connector with better details
+function Joint({ 
+  radius = 0.5
+}: { 
+  radius?: number;
 }) {
   return (
     <mesh castShadow receiveShadow>
