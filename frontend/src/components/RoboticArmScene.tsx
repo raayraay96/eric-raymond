@@ -28,41 +28,33 @@ function ArmJoint({ position, children, targetRotation }: {
 }
 
 // Enhanced arm segment with better materials
-function ArmSegment({ length, radius, color, emissive = "#000000" }: {
+function ArmSegment({ length, radius }: {
   length: number;
   radius: number;
-  color: string;
-  emissive?: string;
 }) {
   return (
     <mesh position={[0, length / 2, 0]} castShadow receiveShadow>
       <cylinderGeometry args={[radius, radius * 0.8, length, 12]} />
       <meshStandardMaterial 
-        color={color} 
+        color="#808080" 
         metalness={0.9} 
         roughness={0.1}
-        emissive={emissive}
-        emissiveIntensity={0.1}
       />
     </mesh>
   );
 }
 
 // Enhanced joint connector
-function Joint({ radius, color, emissive = "#000000" }: { 
+function Joint({ radius }: { 
   radius: number; 
-  color: string;
-  emissive?: string;
 }) {
   return (
     <mesh castShadow receiveShadow>
       <sphereGeometry args={[radius, 16, 16]} />
       <meshStandardMaterial 
-        color={color} 
+        color="#808080" 
         metalness={0.95} 
         roughness={0.05}
-        emissive={emissive}
-        emissiveIntensity={0.2}
       />
     </mesh>
   );
@@ -81,7 +73,7 @@ function TargetSphere({ position }: { position: [number, number, number] }) {
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[0.1, 8, 8]} />
-      <meshBasicMaterial color="#ff4444" transparent opacity={0.6} />
+      <meshBasicMaterial color="#808080" transparent opacity={0.6} />
     </mesh>
   );
 }
@@ -138,46 +130,44 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
       {/* Base Platform */}
       <mesh position={[0, -0.2, 0]} receiveShadow>
         <cylinderGeometry args={[1, 1.2, 0.4, 16]} />
-        <meshStandardMaterial color="#1e293b" metalness={0.8} roughness={0.2} />
+        <meshStandardMaterial color="#808080" metalness={0.8} roughness={0.2} />
       </mesh>
 
       {/* Base Joint */}
       <ArmJoint position={[0, 0, 0]} targetRotation={armConfig.base}>
-        <Joint radius={0.3} color="#3b82f6" emissive="#1d4ed8" />
-        <ArmSegment length={1.2} radius={0.15} color="#1e40af" emissive="#1e3a8a" />
+        <Joint radius={0.3} />
+        <ArmSegment length={1.2} radius={0.15} />
         
         {/* Shoulder Joint */}
         <ArmJoint position={[0, 1.2, 0]} targetRotation={armConfig.shoulder}>
-          <Joint radius={0.25} color="#ef4444" emissive="#dc2626" />
-          <ArmSegment length={2} radius={0.12} color="#dc2626" emissive="#b91c1c" />
+          <Joint radius={0.25} />
+          <ArmSegment length={2} radius={0.12} />
           
           {/* Elbow Joint */}
           <ArmJoint position={[0, 2, 0]} targetRotation={armConfig.elbow}>
-            <Joint radius={0.2} color="#10b981" emissive="#059669" />
-            <ArmSegment length={1.8} radius={0.1} color="#059669" emissive="#047857" />
+            <Joint radius={0.2} />
+            <ArmSegment length={1.8} radius={0.1} />
             
             {/* Wrist Joint */}
             <ArmJoint position={[0, 1.8, 0]} targetRotation={armConfig.wrist}>
-              <Joint radius={0.15} color="#f59e0b" emissive="#d97706" />
-              <ArmSegment length={1} radius={0.08} color="#d97706" emissive="#b45309" />
+              <Joint radius={0.15} />
+              <ArmSegment length={1} radius={0.08} />
               
               {/* End Effector */}
               <group position={[0, 1, 0]}>
                 <mesh castShadow>
                   <boxGeometry args={[0.4, 0.15, 0.4]} />
                   <meshStandardMaterial 
-                    color="#8b5cf6" 
+                    color="#808080" 
                     metalness={0.9} 
                     roughness={0.1}
-                    emissive="#7c3aed"
-                    emissiveIntensity={0.2}
                   />
                 </mesh>
                 
                 {/* Laser sight */}
                 <mesh position={[0, 0.08, 0]}>
                   <cylinderGeometry args={[0.005, 0.005, 8, 4]} />
-                  <meshBasicMaterial color="#ff0000" transparent opacity={0.8} />
+                  <meshBasicMaterial color="#808080" transparent opacity={0.8} />
                 </mesh>
               </group>
             </ArmJoint>
@@ -192,7 +182,7 @@ function RoboticArm({ mousePosition }: { mousePosition: { x: number; y: number }
       <mesh position={[0, -0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[20, 20]} />
         <meshStandardMaterial 
-          color="#0f172a" 
+          color="#808080" 
           transparent 
           opacity={0.3}
           wireframe
@@ -231,13 +221,12 @@ export default function RoboticArmScene({ mousePosition }: { mousePosition: { x:
           shadow-camera-right={10}
           shadow-camera-top={10}
           shadow-camera-bottom={-10}
-          color="#ffffff"
         />
         
         {/* Fill lights */}
-        <pointLight position={[-5, 5, 5]} intensity={0.4} color="#3b82f6" />
-        <pointLight position={[5, 5, -5]} intensity={0.4} color="#8b5cf6" />
-        <spotLight position={[0, 8, 0]} intensity={0.6} angle={0.6} penumbra={0.5} color="#06b6d4" />
+        <pointLight position={[-5, 5, 5]} intensity={0.4} />
+        <pointLight position={[5, 5, -5]} intensity={0.4} />
+        <spotLight position={[0, 8, 0]} intensity={0.6} angle={0.6} penumbra={0.5} />
         
         {/* Environment for reflections */}
         <Environment preset="studio" />
@@ -271,4 +260,3 @@ export default function RoboticArmScene({ mousePosition }: { mousePosition: { x:
     </div>
   );
 }
-
